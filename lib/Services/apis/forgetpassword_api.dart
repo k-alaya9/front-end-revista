@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:revista/Controllers/forget_password_controller.dart';
+import 'package:revista/Services/apis/linking.dart';
 import 'package:revista/View/Screens/forgetpasswordscreen.dart';
 
 import '../../Controllers/resetpassword_ controller.dart';
@@ -14,7 +15,7 @@ forgetPasswordController controller =Get.find();
     print(username);
     controller.onLoading.value=true;
     final response = await http.post(
-      Uri.parse('http://192.168.43.231:9000/accounts/forget-password/'),
+      Uri.parse('http://$ip/accounts/forget-password/'),
       body: {'username': username,},
     );
     if (response.statusCode == 200) {

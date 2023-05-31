@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:revista/Controllers/logincontroller.dart';
+import 'package:revista/Services/apis/login_api.dart';
+import 'package:revista/View/Screens/register_screen.dart';
 import 'package:revista/View/Widgets/bottomsheetwidget.dart';
+
+import '../../Controllers/register_controller.dart';
 
 class login extends StatelessWidget {
    login({Key? key}) : super(key: key);
-  var controller=Get.put(LoginController(),permanent: true);
+  var controller=Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
+    Get.put(register_Controller());
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -40,7 +46,6 @@ class login extends StatelessWidget {
                       backgroundColor: Theme.of(context).backgroundColor,
                     enterBottomSheetDuration: const  Duration(seconds: 1),
                     exitBottomSheetDuration: const Duration(seconds: 1),
-
                   );
 
                 },
@@ -86,7 +91,9 @@ class login extends StatelessWidget {
               SizedBox(
                 width: 220,
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: (){
+                    loginWithGoogle();
+                  },
                   elevation: 0,
                   animationDuration: const Duration(seconds: 1),
                   shape: RoundedRectangleBorder(
@@ -112,14 +119,28 @@ class login extends StatelessWidget {
                 children: [
                   Text("Don't have an account?",style: Theme.of(context).textTheme.bodyText1,),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.bottomSheet(
+                          Register(),
+                          backgroundColor: Theme.of(context).backgroundColor,
+                          elevation: 10,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(40),
+                                topLeft: Radius.circular(40),
+                              )),
+                          enterBottomSheetDuration: const  Duration(seconds: 1),
+                          exitBottomSheetDuration: const Duration(seconds: 1),
+                        );
+                      },
                       style: ButtonStyle(
                           animationDuration: Duration(seconds: 1),
                           elevation: MaterialStateProperty.all(0),
                           splashFactory: NoSplash.splashFactory),
                       child: Text(
                         'Create one!',
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).accentColor),
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).accentColor,decoration: TextDecoration.underline),
                       )),
                 ],
               ),

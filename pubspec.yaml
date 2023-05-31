@@ -39,10 +39,29 @@ dependencies:
   get: ^4.6.5
   get_storage:
   http:
-  shared_preferences:
+  shared_preferences: ^2.1.1
   lottie:
   smooth_page_indicator:
   hidden_drawer_menu: ^3.0.1
+  image_picker:
+  intl: ^0.18.1
+  flutter_zoom_drawer: ^3.0.4+1
+  web_socket_channel: ^2.4.0
+  flutter_local_notifications: ^14.1.0
+  url_launcher: ^6.1.11
+  google_sign_in: ^6.1.1
+  readmore: ^2.2.0
+  like_button: ^2.0.5
+  flutter_svg: ^1.1.6
+  flutter_cache_manager: ^3.3.0
+  permission_handler: ^10.2.0
+  curved_navigation_bar: ^1.0.3
+  shimmer: ^3.0.0
+  cached_network_image: ^3.2.3
+  flutter_file_dialog: ^3.0.1
+  flutter_easyloading: ^3.0.5
+  pull_to_refresh: ^2.0.0
+  easy_search_bar: ^2.5.0
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +110,10 @@ flutter:
     - asset/animations/116791-chat.json
     - asset/animations/47047-dark-mode-button.json
     - asset/animations/113817-confidentiality.json
+    - asset/image/blank_profile_picture.png
+    - asset/image/loading.png
+    - asset/image/instagram-share-icon.svg
+    - asset/image/post_.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -103,6 +126,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: SF-Compact-Rounded
+      fonts:
+        - asset: asset/fonts/SF-Compact-Rounded-Regular.otf
     - family: Comic Neue
       fonts:
          - asset: asset/fonts/ComicNeue-Italic.ttf

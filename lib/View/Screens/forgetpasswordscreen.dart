@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -57,7 +58,7 @@ class forgetPassword extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
-                      .copyWith(color: Colors.black),
+                      .copyWith(color: Colors.black,fontSize: 18),
                 ),
               ),
               Container(
@@ -142,7 +143,7 @@ class forgetPassword extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(25, 0, 25, 8),
                   child: controller.onLoading.value
                       ? Center(
-                          child: CircularProgressIndicator(
+                          child: CupertinoActivityIndicator(
                             color: Theme.of(context).primaryColor,
                           ),
                         )

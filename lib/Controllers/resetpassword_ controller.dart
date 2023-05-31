@@ -29,8 +29,8 @@ class resetPasswordController extends GetxController{
     if(isValid){
       formKey.currentState!.save();
       try{
-        // forgetPasswordController controller=Get.find();
-        // resetPasswordApi(controller.id,password);
+        forgetPasswordController controller=Get.find();
+        resetPasswordApi(controller.id,password);
       } catch (e) {
         showSnackBar(e);
       }

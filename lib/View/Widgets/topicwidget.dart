@@ -31,7 +31,7 @@ class TopicWidget extends StatelessWidget {
                       border: pressed.value?Border.all(color: Theme.of(context).primaryColor,width: 5):null,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(30),
-                      image: DecorationImage(image: AssetImage(imageUrl,),fit: BoxFit.fill,)
+                      image: DecorationImage(image: NetworkImage(imageUrl,),fit: BoxFit.fill,)
                   ),
                 ),
                 pressed.value?Positioned(left: -14,

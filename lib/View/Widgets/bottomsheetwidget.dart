@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:revista/Controllers/logincontroller.dart';
@@ -27,7 +28,7 @@ class bottomSheet extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headline1!
-                      .copyWith(color: Colors.black, fontSize: 35),
+                      .copyWith( fontSize: 35),
                 ),
               ),
               const SizedBox(
@@ -39,8 +40,7 @@ class bottomSheet extends StatelessWidget {
                   'Username',
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
-                      .copyWith(color: Colors.black),
+                      .bodyText1,
                 ),
               ),
               Container(
@@ -51,8 +51,7 @@ class bottomSheet extends StatelessWidget {
                       controller: controller.usernameController,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.black),
+                          .bodyText1,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
                       cursorColor: Theme.of(context).accentColor,
@@ -107,8 +106,7 @@ class bottomSheet extends StatelessWidget {
                   'Password',
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
-                      .copyWith(color: Colors.black),
+                      .bodyText1,
                 ),
               ),
               Container(
@@ -119,8 +117,7 @@ class bottomSheet extends StatelessWidget {
                           obscureText: !controller.visibility.value,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
-                              .copyWith(color: Colors.black),
+                              .bodyText1,
                           keyboardType: TextInputType.visiblePassword,
                           autocorrect: false,
                           cursorColor: Theme.of(context).accentColor,
@@ -177,7 +174,7 @@ class bottomSheet extends StatelessWidget {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    Get.to(()=>const forgetPassword(),);
+                    Get.toNamed('/resetpass');
                   },
                   style: ButtonStyle(
                       animationDuration: Duration(seconds: 1),
@@ -198,15 +195,13 @@ class bottomSheet extends StatelessWidget {
                   child: controller
                       .onLoading.value
                       ? Center(
-                        child: CircularProgressIndicator(
+                        child: CupertinoActivityIndicator(
                     color: Theme.of(context).primaryColor,
                   ),
                       )
                       : ElevatedButton(
                     onPressed: () {
-                      controller.submitFunc(
-                          controller.username,
-                          controller.password);
+                      controller.submitFunc();
                     },
                     style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0),

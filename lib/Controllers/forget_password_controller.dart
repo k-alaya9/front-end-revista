@@ -27,9 +27,9 @@ class forgetPasswordController extends GetxController {
     if (isValid) {
       formKey.currentState!.save();
       try {
-        // var data= await forgetPasswordApi(username);
-        // id=data['id'];
-        // email=data['email'];
+        var data= await forgetPasswordApi(username);
+        id=data['id'];
+        email=data['email'];
         int code = 0;
         Get.defaultDialog(
             title: 'Enter confirmation code',
@@ -67,7 +67,7 @@ class forgetPasswordController extends GetxController {
                   return Container(
                     width: double.infinity,
                     child: controller.onLoadingDialog.value
-                        ? const CircularProgressIndicator()
+                        ? const CupertinoActivityIndicator()
                         : ElevatedButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff705DF2)),elevation: MaterialStateProperty.all(0)),
                             onPressed: () async {
@@ -76,7 +76,7 @@ class forgetPasswordController extends GetxController {
                                     codeKey.currentState!.validate();
                                 if (isValid) {
                                   codeKey.currentState!.save();
-                                   // await checkCode(code);
+                                   await checkCode(code);
                                   Get.offAllNamed('/resetpass');
                                 }
                               } catch (e) {

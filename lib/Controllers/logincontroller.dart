@@ -21,13 +21,11 @@ class LoginController extends GetxController {
     update();
   }
 
-  void submitFunc(String username, String password) async{
+  void submitFunc() async{
     final isValid=formKey.currentState!.validate();
     if(isValid){
       formKey.currentState!.save();
       try {
-        print(username);
-        print(password);
         await login(username, password);
       } catch (e) {
         showSnackBar(e);

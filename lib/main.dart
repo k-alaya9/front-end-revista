@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:revista/Controllers/onbordingcontroller.dart';
 import 'package:revista/Services/Thems/themes.dart';
 import 'package:revista/Services/Thems/themeservice.dart';
+import 'package:revista/View/Screens/EditProfielScreen.dart';
+import 'package:revista/View/Screens/followersScreen.dart';
 import 'package:revista/View/Screens/loginscreen.dart';
 import 'package:revista/View/Screens/onboarding_screen.dart';
 import 'package:revista/View/Screens/resetpassword_screen.dart';
+import 'package:revista/View/Widgets/drawer.dart';
+import 'package:revista/middleware/loginMIddleware.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'View/Screens/createPost.dart';
+import 'View/Screens/followingScreen.dart';
 import 'View/Screens/forgetpasswordscreen.dart';
+import 'View/Screens/notification_screen.dart';
+import 'View/Screens/register_screen.dart';
+import 'View/Screens/topicsscreen.dart';
+import 'View/Screens/visiterProfile.dart';
 SharedPreferences? sharedPreferences;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   sharedPreferences=await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
+//ToDo AnimationConfiguration.staggeredList SlideAnimation FadeInAnimation flutter_staggered_animations: ^1.1.1
+//ToDo Hero animation
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -29,68 +41,25 @@ class MyApp extends StatelessWidget {
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
-      // home: LottieLearn(),
+      builder: EasyLoading.init(),
       initialRoute: '/',
+      defaultTransition: Transition.cupertino,
+      transitionDuration: Duration(milliseconds: 500),
       getPages: [
-        GetPage(name: '/', page: ()=>OnBordingScreen(),middlewares: [onBoradingMiddleWare()]),
-        GetPage(name: '/login', page: ()=>login()),
+        GetPage(name: '/', page: ()=>OnBordingScreen(),middlewares: [onBoradingMiddleWare()],),
+        GetPage(name: '/login', page: ()=>login(),middlewares: [loginMiddleWare()]),
+        GetPage(name: '/register', page: ()=>Register()),
         GetPage(name: '/forgetpass', page: ()=>forgetPassword()),
         GetPage(name: '/resetpass', page: ()=>resetPassword()),
+        GetPage(name: '/topic', page: ()=>TopicScreen()),
+        GetPage(name: '/notification', page: ()=>notification_screen()),
+        GetPage(name: '/home', page: ()=>Home()),
+        GetPage(name: '/CreatePost', page: ()=>CreatePost()),
+        GetPage(name: '/EditProfile', page: ()=>EditProfileScreen()),
+        GetPage(name: '/followers', page: ()=>FollowersScreen()),
+        GetPage(name: '/following', page: ()=>FollowingScreen()),
+        GetPage(name: '/visitProfile', page: ()=>visiterProfileScreen()),
       ],
     );
   }
 }
-
-class LottieLearn extends StatefulWidget {
-  const LottieLearn({Key? key}) : super(key: key);
-
-  @override
-  State<LottieLearn> createState() => _LottieLearnState();
-}
-
-class _LottieLearnState extends State<LottieLearn> with TickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    final AnimationController darkmodeController =
-    AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
-    final AnimationController favoriteController =
-    AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    bool isLight = false;
-    bool isFavorite = false;
-    const String favoriteButton = "https://assets10.lottiefiles.com/packages/lf20_slDcnv.json";
-    const String darkMode = "asset/animations/47047-dark-mode-button.json";
-
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:[
-                Text('Dark Mode'),
-                InkWell(
-                radius: 200,
-                borderRadius: BorderRadius.circular(250),
-                  splashColor: null,
-                  hoverColor: null,
-                  highlightColor: null,
-                  overlayColor: null,
-                  onTap: () async {
-                    await darkmodeController.animateTo(isLight ? 0.5 : 1,duration: Duration(milliseconds: 500));
-                    // controller.animateTo(0.5);
-                    isLight = !isLight;
-                    ThemeService().switchTheme();
-                  },
-                  child: Lottie.asset(darkMode, repeat: false, controller: darkmodeController,fit: BoxFit.contain,height: MediaQuery.of(context).size.height*0.1)),
-            ],),
-            // InkWell(
-            //     onTap: () async {
-            //       await favoriteController.animateTo(isFavorite ? 1 : 0);
-            //       isFavorite = !isFavorite;
-            //     },
-            //     child: Lottie.network(favoriteButton, repeat: false, controller: favoriteController)),
-          ],),
-        ),
-      ),
-    );}}
