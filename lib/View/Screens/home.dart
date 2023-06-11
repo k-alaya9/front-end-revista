@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../Controllers/drawerController.dart';
@@ -35,14 +36,12 @@ drawerController controller=Get.find();
     Posts.add((Posts.length+1).toString());
     if(mounted)
       setState(() {
-
       });
     _refreshController.loadComplete();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: CupertinoNavigationBar(
         padding: EdgeInsetsDirectional.zero ,
@@ -55,7 +54,37 @@ drawerController controller=Get.find();
         trailing: Material(
           color: Theme.of(context).backgroundColor,
           child: IconButton(onPressed: (){
-            Get.toNamed('/notification');
+            // Get.toNamed('/notification');
+            FlutterLocalNotificationsPlugin notifications =
+            new FlutterLocalNotificationsPlugin();
+            notifications
+                .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()!
+                .requestPermission();
+            var androidInit = AndroidInitializationSettings('@mipmap/ic_launcher',);
+            var init = InitializationSettings(android: androidInit);
+            notifications
+                .initialize(
+              init,
+            ).then((done) {
+                notifications.show(
+                    0,
+                    'revista',
+                   'hi',
+                    payload: 'Default_Sound',
+                    NotificationDetails(
+                        android: AndroidNotificationDetails(
+                          "revista app",
+                          "Revista App",
+                          groupKey: "com.example.revista",
+                          playSound: true,
+                          importance: Importance.max,
+                          ticker: 'ticker',
+                          priority: Priority.high,
+                        )));
+              });
+
+
           }, icon: Icon(Icons.notifications,size: 28,)),
         ),
       ),
@@ -65,30 +94,6 @@ drawerController controller=Get.find();
           enablePullDown: true,
           enablePullUp: true,
           header:ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
-          // footer: CustomFooter(
-            // builder: (BuildContext context,LoadStatus mode){
-            //   Widget body ;
-            //   if(mode==LoadStatus.idle){
-            //     body =  Text("pull up load");
-            //   }
-            //   else if(mode==LoadStatus.loading){
-            //     body =  CupertinoActivityIndicator();
-            //   }
-            //   else if(mode == LoadStatus.failed){
-            //     body = Text("Load Failed!Click retry!");
-            //   }
-            //   else if(mode == LoadStatus.canLoading){
-            //     body = Text("release to load more");
-            //   }
-            //   else{
-            //     body = Text("No more Data");
-            //   }
-            //   return Container(
-            //     height: 55.0,
-            //     child: Center(child:body),
-            //   );
-            // },
-
           controller: _refreshController,
           onRefresh: _onRefresh,
           onLoading: _onLoading,

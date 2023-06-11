@@ -4,16 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:revista/Controllers/ProfileController.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../Models/topic.dart';
 
 class CreatePostController extends GetxController{
+  ProfileController controller=Get.find();
   var PostTextField=TextEditingController();
   var UrlTextField=TextEditingController();
-  var profileImage='https://scontent-ams4-1.xx.fbcdn.net/v/t39.30808-1/263316426_1138060467020345_1597101672072243926_n.jpg?stp=dst-jpg_p240x240&_nc_cat=101&ccb=1-7&_nc_sid=7206a8&_nc_ohc=sOLljIGWsI0AX-QxLMV&_nc_ht=scontent-ams4-1.xx&oh=00_AfBuv3dRH7mNzjBLtTBUXmefj02jBHzEAl6Z0E9IbggZ0g&oe=6477A0B6';
-  var userName='k.alaya9';
-  var Name='khaled alaya';
+  var profileImage=''.obs;
+  var userName=''.obs;
+  var Name=''.obs;
+  var isVisible=false.obs;
   late PickedFile imageFile;
+  PanelController panelController=PanelController();
   List<topicItem>items=[
     topicItem(id: 0, name: 'General', imageUrl:'',pressed: false.obs),
     topicItem(id: 1, name: 'news', imageUrl: 'asset/image/news.jpg',pressed: false.obs),
@@ -30,10 +35,13 @@ class CreatePostController extends GetxController{
     topicItem(id: 12, name: 'travel', imageUrl: 'asset/image/travel.jpg',pressed: false.obs),
   ];
   List<int?> selecteditems=[];
-
+@override
+  void onInit() {
+  fetchData();
+    super.onInit();
+  }
   final ImagePicker picker = ImagePicker();
    Rx<File> fileImage =File('').obs;
-
   void takePhoto() async {
     var pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
@@ -143,6 +151,21 @@ class CreatePostController extends GetxController{
       // Validation passed
       print('Hello world');
     }
+  }
+  switchBottomSheet(){
+    isVisible.value=!isVisible.value;
+    if(isVisible.value){
+      panelController.open();
+    }
+    else{
+      panelController.close();
+    }
+
+  }
+  fetchData(){
+    profileImage.value=controller.profileImage.value;
+    userName.value=controller.Username.value;
+    Name.value=controller.firstname.value+" "+controller.lastName.value;
   }
 
 }

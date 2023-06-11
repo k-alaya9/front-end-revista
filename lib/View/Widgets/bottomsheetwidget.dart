@@ -174,7 +174,7 @@ class bottomSheet extends StatelessWidget {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    Get.toNamed('/resetpass');
+                    Get.toNamed('/forgetpass');
                   },
                   style: ButtonStyle(
                       animationDuration: Duration(seconds: 1),

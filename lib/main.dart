@@ -16,6 +16,7 @@ import 'View/Screens/createPost.dart';
 import 'View/Screens/followingScreen.dart';
 import 'View/Screens/forgetpasswordscreen.dart';
 import 'View/Screens/notification_screen.dart';
+import 'View/Screens/profile_screen.dart';
 import 'View/Screens/register_screen.dart';
 import 'View/Screens/topicsscreen.dart';
 import 'View/Screens/visiterProfile.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
       builder: EasyLoading.init(),
-      initialRoute: '/',
+      initialRoute: '/home',
       defaultTransition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 500),
       getPages: [
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/followers', page: ()=>FollowersScreen()),
         GetPage(name: '/following', page: ()=>FollowingScreen()),
         GetPage(name: '/visitProfile', page: ()=>visiterProfileScreen()),
+        GetPage(name: '/Profile', page: ()=>ProfileScreen()),
       ],
     );
   }

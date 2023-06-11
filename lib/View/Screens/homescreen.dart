@@ -1,15 +1,21 @@
 
+import 'dart:convert';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:revista/Services/apis/linking.dart';
 import 'package:revista/View/Screens/DiscoverScreen.dart';
 import 'package:revista/View/Screens/MessageScreen.dart';
 import 'package:revista/View/Screens/createPost.dart';
 import 'package:revista/View/Screens/home.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:flutter/cupertino.dart';
+
+import '../../main.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +27,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController? _message;
-  bool _iserror = false;
   var channel;
   var sub;
   String? text;
@@ -33,7 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-
+    var token = sharedPreferences!.getInt('access_id');
+    print(token);
     super.initState();
     FlutterLocalNotificationsPlugin notifications =
         new FlutterLocalNotificationsPlugin();
@@ -42,9 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
             AndroidFlutterLocalNotificationsPlugin>()!
         .requestPermission();
     var androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    channel = WebSocketChannel.connect(
-      Uri.parse('ws://192.168.137.252:9000/ws/notifications/'),
-    );
+    channel =IOWebSocketChannel.connect(Uri.parse('ws://$ip/ws/notifications/'), headers: {'Authorization':token });
     _message = new TextEditingController();
     var init = InitializationSettings(android: androidInit);
     notifications
@@ -52,23 +56,30 @@ class _HomeScreenState extends State<HomeScreen> {
       init,
     ).then((done) {
       sub = channel.stream.listen((newData){
-        print(newData);
+        //var data=json.decode(newData);
+        //print(data);
+        //  var username=data['text']['username'];
+        // var Text=data['text']['detail'];
+        // var imageUrl=data['text']['profile_image'];
+        // var dateTime=data['text']['created_at'];
         notifications.show(
             0,
-            "revista app",
+            'revista',
             newData,
+            payload: 'Default_Sound',
             NotificationDetails(
                 android: AndroidNotificationDetails(
               "revista app",
               "Revista App",
-                  showWhen: true,
+                  groupKey: "com.example.revista",
+                  importance: Importance.max,
                   enableVibration: true,
                   enableLights: true,
-                  priority: Priority.high,
                   playSound: true,
-                  visibility:NotificationVisibility.public,
-                  sound: RawResourceAndroidNotificationSound('pop'),
-                  color: Theme.of(context).primaryColor,
+                  ticker: 'ticker',
+                  largeIcon: const DrawableResourceAndroidBitmap(''),
+                  priority: Priority.high,
+
             )));
       });
     });
@@ -77,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     super.dispose();
-    _iserror = false;
     _message!.dispose();
     channel.sink.close(status.goingAway);
     sub.cancel();
@@ -85,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Homepages[pageindex],

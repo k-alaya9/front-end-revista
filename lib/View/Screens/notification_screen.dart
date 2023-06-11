@@ -2,13 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:revista/Services/apis/forgetpassword_api.dart';
+import 'package:revista/Services/apis/linking.dart';
 import 'package:revista/View/Widgets/notifications.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../Controllers/notifications_controller.dart';
-import '../../Models/notfications_model.dart';
-
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 class notification_screen extends StatelessWidget {
   const notification_screen({Key? key}) : super(key: key);
 
@@ -16,7 +15,7 @@ class notification_screen extends StatelessWidget {
   Widget build(BuildContext context) {
     notificationsController controller=Get.put(notificationsController());
     var channel = WebSocketChannel.connect(
-      Uri.parse('ws://192.168.137.252:9000/ws/notifications/'),
+      Uri.parse('ws://$ip/ws/notifications/'),
     );
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -42,6 +41,10 @@ class notification_screen extends StatelessWidget {
           stream: channel.stream,
           builder: (context, snapshot) {
             final notifiy = snapshot.data;
+            controller.username=notifiy['text']['username'];
+            controller.Text=notifiy['text']['detail'];
+            controller.imageUrl=notifiy['text']['profile_image'];
+            controller.dateTime=notifiy['text']['created_at'];
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Shimmer.fromColors(
                   baseColor: Colors.grey.shade500,
@@ -102,8 +105,18 @@ class notification_screen extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: 10,
-                itemBuilder: (context, index) => Notifications(),
+                itemCount: notifiy,
+                itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 1400),
+                  child: SlideAnimation(
+                    horizontalOffset: 300,
+                    child: FadeInAnimation(
+                      duration: const Duration(seconds: 1),
+                      child: Notifications()
+                    ),
+                  ),
+                ),
               ),
             );
           }),

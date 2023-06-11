@@ -19,14 +19,15 @@ class Notifications extends StatelessWidget {
         style: ListTileStyle.drawer,
         enabled: true,
         onTap: (){
+
         },
         leading: Container(child:CircleAvatar(
             radius: 40,
-            backgroundImage: NetworkImage('https://www.shutterstock.com/image-vector/man-icon-vector-600w-1040084344.jpg')),
+            backgroundImage: NetworkImage(controller.imageUrl!)),
         ),
-        title: Text('Notifications',style: Theme.of(context).textTheme.bodyText1),
-        subtitle: Text('Notifications deatils',style:  Theme.of(context).textTheme.bodyText1,),
-        trailing: Padding(padding: EdgeInsets.fromLTRB(0, 30, 10, 0),child:Text('DateTime',style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        title: Text(controller.username!,style: Theme.of(context).textTheme.bodyText1),
+        subtitle: Text(controller.Text!,style:  Theme.of(context).textTheme.bodyText1,),
+        trailing: Padding(padding: EdgeInsets.fromLTRB(0, 30, 10, 0),child:Text(controller.dateTime!,style: Theme.of(context).textTheme.bodyText1!.copyWith(
           color: Get.isDarkMode?Colors.white30:Colors.black26
         ),) ),
       ),

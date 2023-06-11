@@ -15,7 +15,7 @@ forgetPasswordController controller =Get.find();
     print(username);
     controller.onLoading.value=true;
     final response = await http.post(
-      Uri.parse('http://$ip/accounts/forget-password/'),
+      Uri.parse('http://$ip/auth/forget-password/'),
       body: {'username': username,},
     );
     if (response.statusCode == 200) {
@@ -40,7 +40,7 @@ checkCode(int code,) async {
     print(code);
     controller.onLoadingDialog.value=true;
     final response = await http.post(
-      Uri.parse('http://192.168.43.231:9000/accounts/check-code/'),
+      Uri.parse('http://$ip/auth/check-code/'),
       body: {'code': '$code',},
     );
     if (response.statusCode == 200) {
@@ -64,7 +64,7 @@ resetPasswordApi(int id, String password)async{
     try{
       print("$id\n$password");
       resetController.onLoading(true);
-      final response=await http.post(Uri.parse('http://192.168.43.231:9000/accounts/reset-password/'),body: {
+      final response=await http.post(Uri.parse('http://$ip/auth/reset-password/'),body: {
         'id':id,
         'password':password,
       });

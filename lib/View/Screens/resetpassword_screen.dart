@@ -5,6 +5,7 @@ import '../../Controllers/resetpassword_ controller.dart';
 
 class resetPassword extends StatelessWidget {
   resetPassword({Key? key}) : super(key: key);
+  var _controller=Get.put(resetPasswordController(),permanent: true);
 
   @override
   Widget build(BuildContext context) {

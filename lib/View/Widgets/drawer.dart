@@ -12,39 +12,200 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      builder: (context,snapshot){
-        if(snapshot.connectionState==ConnectionState.waiting) {
-          return Scaffold(
+    return Obx(() {
+      if (controller.imageUrl.isNotEmpty && controller.userName.isNotEmpty) {
+        return ZoomDrawer(
+          menuScreen: DrawerScreen(),
+          mainScreen: GetX(
+              builder: (drawerController controller) => controller.currentScreen()),
+          slideWidth: 290.0,
+          borderRadius: 20,
+          shadowLayer1Color: Colors.black26,
+          shadowLayer2Color: Colors.deepPurple[200],
+          showShadow: true,
+          angle: 0.0,
+          menuBackgroundColor: Colors.deepPurple.shade400,
+        );
+      } else {
+        return Scaffold(
             body: Shimmer.fromColors(
                 baseColor: Colors.grey.shade500,
                 highlightColor: Colors.grey.shade700,
                 enabled: true,
                 child:ListView.builder(
-                  itemCount: 2,
+                    itemCount: 4,
                     itemBuilder: (context,index)=>Container(
-                  child: Image.asset('asset/image/post_.png'),
-                ))
-                )
-          );
-        } else {
-          return ZoomDrawer(
-        menuScreen: DrawerScreen(),
-        mainScreen: GetX(
-            builder: (drawerController controller) => controller.currentScreen()),
-        slideWidth: 290.0,
-        borderRadius: 20,
-        shadowLayer1Color: Colors.black26,
-        shadowLayer2Color: Colors.deepPurple[200],
-        showShadow: true,
-        angle: 0.0,
-        menuBackgroundColor: Colors.deepPurple.shade400,
-      );
-        }}
-    );
+                      child: Column(children: [
+                        Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+                          ),
+                          elevation: 2,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).backgroundColor,
+                                borderRadius: BorderRadius.circular(20),
+                                shape: BoxShape.rectangle,
+                              ),
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                //mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: Colors.grey,
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 80,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 60,
+                                              height: 80,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    SingleChildScrollView(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 15),
+                                        margin: EdgeInsets.all(5),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: 400,
+                                              height: 400,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 120,
+                                              height: 80,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.translate(
+                                      offset: Offset(0, 0),
+                                      child:Container(
+                                        width: 60,
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: Colors.black54,
+                                      thickness: 1,
+                                      indent: 10,
+                                      endIndent: 10,
+                                    ),
+                                    Transform.translate(
+                                      offset: Offset(0, 0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Container(
+                                            width: 60,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Container(
+                                            width: 60,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 60,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Container(
+                                            width: 60,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Container(
+                                            width: 60,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ])),
+                        ),
+                        SizedBox(height: 20,),
+                      ],)
+                    ))
+            )
+        );
+      }
+    });
   }
 }
-
 class DrawerScreen extends StatelessWidget {
   DrawerScreen({
     Key? key,
@@ -71,32 +232,35 @@ class DrawerScreen extends StatelessWidget {
                   InkWell(
                     splashFactory: NoSplash.splashFactory,
                     onTap:() => controller.setIndex(3),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              width: 80,
-                              height: 80,
-                              placeholder: (context, url) =>
-                                  Image.asset('asset/image/loading.png'),
-                              imageUrl: controller.imageUrl!),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          alignment: Alignment(-0.8,0),
-                          child: Text(
-                            controller.userName!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(color: Colors.white, fontSize: 16),
+                    child: GetX(
+                      builder: (drawerController controller)=>
+                          Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100.0),
+                                child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    width: 80,
+                                    height: 80,
+                                    placeholder: (context, url) =>
+                                        Image.asset('asset/image/loading.png'),
+                                    imageUrl: controller.imageUrl.value!),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                alignment: Alignment(-0.8,0),
+                                child: Text(
+                                  controller.userName.value,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(color: Colors.white, fontSize: 16),
+                                ),
+                              )
+                            ],
                           ),
-                        )
-                      ],
                     ),
                   ),
                   SizedBox(

@@ -6,12 +6,11 @@ import 'package:revista/Controllers/forget_password_controller.dart';
 import 'package:revista/Controllers/resetpassword_%20controller.dart';
 
 class forgetPassword extends StatelessWidget {
-  const forgetPassword({Key? key}) : super(key: key);
+   forgetPassword({Key? key}) : super(key: key);
+  var _controller=Get.put(forgetPasswordController(),);
 
   @override
   Widget build(BuildContext context) {
-    Get.put(forgetPasswordController(), permanent: true);
-    Get.put(resetPasswordController(),permanent: true);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -22,14 +21,12 @@ class forgetPassword extends StatelessWidget {
         ),
         titleTextStyle: Theme.of(context)
             .textTheme
-            .headline1!
-            .copyWith(fontSize: 25, color: Colors.black),
+            .headline1,
         centerTitle: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -43,7 +40,6 @@ class forgetPassword extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.all(15),
-                alignment: Alignment.topLeft,
                 child: Text('Trouble with logging in ?',
                     style: Theme.of(context)
                         .textTheme
@@ -75,7 +71,6 @@ class forgetPassword extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                 child: GetBuilder<forgetPasswordController>(
-                  init: forgetPasswordController(),
                   builder: (forgetPasswordController controller) => Form(
                     key: controller.formKey,
                     child: TextFormField(

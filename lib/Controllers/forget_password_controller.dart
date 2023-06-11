@@ -31,63 +31,71 @@ class forgetPasswordController extends GetxController {
         id=data['id'];
         email=data['email'];
         int code = 0;
-        Get.defaultDialog(
-            title: 'Enter confirmation code',
-            content: Column(
-              children: [
-                Text('Enter the 6-digit login code we sent to $email'),
-                Form(
-                  key: codeKey,
-                  child: TextFormField(
-                    cursorColor: Color(0xff705DF2),
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
-                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
+        showCupertinoDialog(
+            context: Get.context!,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: Text('Enter confirmation code',style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.black)),
+                content: Column(
+                  children: [
+                    Text('Enter the 6-digit login code we sent to $email',style: Theme.of(context).textTheme.headline1),
+                    Form(
+                      key: codeKey,
+                      child: TextFormField(
+                        cursorColor: Color(0xff705DF2),
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
+                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
+                        ),
+                        maxLength: 6,
+                        keyboardType: TextInputType.number,
+                        controller: codeController,
+                        validator: (val) {
+                          if (val!.length < 6) {
+                            return "code is too short";
+                          }
+                          return null;
+                        },
+                        onSaved: (val) {
+                          code = int.parse(val!);
+                        },
+                      ),
                     ),
-                    maxLength: 6,
-                    keyboardType: TextInputType.number,
-                    controller: codeController,
-                    validator: (val) {
-                      if (val!.length < 6) {
-                        return "code is too short";
-                      }
-                      return null;
-                    },
-                    onSaved: (val) {
-                      code = int.parse(val!);
-                    },
-                  ),
+                  ],
                 ),
-              ],
-            ),
-            actions: [
-              GetX<forgetPasswordController>(
-                builder: (forgetPasswordController controller) {
-                  return Container(
-                    width: double.infinity,
-                    child: controller.onLoadingDialog.value
-                        ? const CupertinoActivityIndicator()
-                        : ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff705DF2)),elevation: MaterialStateProperty.all(0)),
-                            onPressed: () async {
-                              try {
-                                final isValid =
-                                    codeKey.currentState!.validate();
-                                if (isValid) {
-                                  codeKey.currentState!.save();
-                                   await checkCode(code);
-                                  Get.offAllNamed('/resetpass');
-                                }
-                              } catch (e) {
-                                showSnackBar(e);
+                actions:[GetX<forgetPasswordController>(
+                  builder: (forgetPasswordController controller) {
+                    return Container(
+                      width: double.infinity,
+                      child: controller.onLoadingDialog.value
+                          ? const CupertinoActivityIndicator()
+                          : ElevatedButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff705DF2)),elevation: MaterialStateProperty.all(0)),
+                          onPressed: () async {
+                            try {
+                              final isValid =
+                              codeKey.currentState!.validate();
+                              if (isValid) {
+                                codeKey.currentState!.save();
+                                await checkCode(code);
+                                Get.offAllNamed('/resetpass');
                               }
-                            },
-                            child: Text('Next')),
-                  );
-                },
-              )
-            ]);
+                            } catch (e) {
+                              showSnackBar(e);
+                            }
+                          },
+                          child: Text('Next')),
+                    );
+                  },
+                ),
+                  TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text('cancel',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).primaryColor),))
+                ],
+              );});
         // await login(username, password);
       } catch (e) {
         showSnackBar(e);

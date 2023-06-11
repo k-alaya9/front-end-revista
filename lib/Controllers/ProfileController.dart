@@ -13,16 +13,18 @@ class ProfileController extends GetxController{
   RefreshController refreshController =
   RefreshController(initialRefresh: true);
   List Posts = List.generate(5, (index) => null);
+  var postView=true.obs;
+  var View=true.obs;
   int? id;
-  var profileImage;
-  var  CoverImage;
-  var  firstname;
-  var  lastName;
-  var  Username;
-  var  followers;
-  var  following;
-  var  numberOfPosts='0';
-  var  bio;
+  RxString profileImage=''.obs;
+  RxString  CoverImage=''.obs;
+  RxString  firstname=''.obs;
+  var  lastName=''.obs;
+  var  Username=''.obs;
+  var  followers=''.obs;
+  var  following=''.obs;
+  var  numberOfPosts='0'.obs;
+  RxString  bio=''.obs;
   var lastnameController=TextEditingController();
   var firstnameController=TextEditingController();
   var usernameController=TextEditingController();
@@ -30,6 +32,11 @@ class ProfileController extends GetxController{
   ScrollController scrollController = ScrollController();
   final formKey = GlobalKey<FormState>();
   final ListKey=GlobalKey();
+  @override
+  void onInit() {
+    onRefresh();
+    super.onInit();
+  }
   void onRefresh() async{
     fetchData();
     await Future.delayed(Duration(milliseconds: 1000));
@@ -44,7 +51,7 @@ class ProfileController extends GetxController{
           shape: BoxShape.rectangle,
           image: DecorationImage(
               image: NetworkImage(photo),
-              fit: BoxFit.cover),
+              fit: BoxFit.contain),
         ),
         child: IconButton(
             onPressed: () {
@@ -105,39 +112,74 @@ class ProfileController extends GetxController{
 
   void takePhoto(id) async {
     var pickedFile = await picker.getImage(source: ImageSource.camera);
+    var token = sharedPreferences!.getString('access_token');
     if (pickedFile != null) {
       if(id==1){
         fileImage!.value = File(pickedFile.path);
-
+        try{
+          editImage(token,profileImage: fileImage.value);
+          Get.back();
+        }catch(e){
+          showSnackBar(e);
+        }
+        finally{
+          fetchData();
+        }
       }
-
       else{
-
+        fileImage.value = File(pickedFile.path);
+        try{
+          editImageCover(token,coverImage:  fileImage.value);
+          Get.back();
+        }catch(e){
+          showSnackBar(e);
+        }
+        finally{
+          fetchData();
+        }
       }
+      onRefresh();
     }
   }
 
 
   void gitPhoto(id) async {
     var pickedFile = await picker.getImage(source: ImageSource.gallery);
+    var token = sharedPreferences!.getString('access_token');
     if (pickedFile != null) {
       if(id==1){
         fileImage!.value = File(pickedFile.path);
-
+        try{
+          editImage(token,profileImage: fileImage.value);
+          Get.back();
+        }catch(e){
+          showSnackBar(e);
+        }
+        finally{
+          fetchData();
+        }
       }
-
       else{
+        fileImage.value = File(pickedFile.path);
+        try{
+          editImageCover(token,coverImage:  fileImage.value);
+          Get.back();
+        }catch(e){
+          showSnackBar(e);
+        }
 
       }
     }
+    onRefresh();
   }
   deletePhoto(id){
     if(id==1){
       profileImage!.value='';
+      Get.back();
     }
     else{
       CoverImage!.value='';
-
+      Get.back();
     }
   }
 
@@ -146,19 +188,72 @@ class ProfileController extends GetxController{
     try {
       Profile profile= await getProfileinfo(token);
       User user=profile.user;
-      Username=user.username;
-      profileImage=user.profile_image;
-      firstname=user.first_name;
-      lastName=user.last_name;
-      CoverImage=profile.cover_image;
-      bio=profile.bio;
-      following=profile.following_count.toString();
-      followers=profile.followers_count.toString();
-
-
+      Username.value=user.username;
+      profileImage.value=user.profile_image;
+      firstname.value=user.first_name;
+      lastName.value=user.last_name;
+      CoverImage.value=profile.cover_image;
+      bio.value=profile.bio;
+      following.value=profile.following_count.toString();
+      followers.value=profile.followers_count.toString();
+      // Username!.value = 'k.alaya9';
+      // profileImage!.value =
+      //     'https://scontent.flca1-2.fna.fbcdn.net/v/t39.30808-6/263316426_1138060467020345_1597101672072243926_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=lGU8xlHy4n4AX_WoXM5&_nc_ht=scontent.flca1-2.fna&oh=00_AfCfXiwcCR9-E37u7xgfjMfHJcTBZBpEljbENFxm_QCq0A&oe=648505F8';
+      // firstname!.value = 'khaled';
+      // lastName!.value = 'alaya';
+      // CoverImage!.value = 'https://scontent-cph2-1.xx.fbcdn.net/v/t39.30808-6/352379080_585186983746695_5892930268755518858_n.jpg?stp=dst-jpg_p960x960&_nc_cat=104&ccb=1-7&_nc_sid=e3f864&_nc_ohc=p0LMLrYOx1wAX-WfmC4&_nc_ht=scontent-cph2-1.xx&oh=00_AfCRdRNMZm19CK9SewSjvbbqXPg46dVMcWkrae2gQ3fF8g&oe=64840E3C';
+      // bio!.value = 'lana del rey';
+      // following!.value = '2000';
+      // followers!.value = '2000';
+      // numberOfPosts!.value = '10';
     }
     catch(e){
-      print(e);
+      showSnackBar(e);
     }
+  }
+
+  editData()async {
+    var token = sharedPreferences!.getString('access_token');
+    final isValid = formKey.currentState!.validate();
+    if (isValid) {
+      formKey.currentState!.save();
+      try {
+        print(Username.value);
+        editbio(token,bio: bio.value);
+        editprofile(token,username: Username.value,firstname: firstname.value,lastname: lastName.value,);
+        Get.back();
+      }
+      catch (e) {
+        showSnackBar(e);
+      }
+    }
+  }
+  switchViewVertical(){
+    View.value=true;
+  }
+  switchViewHorizontal(){
+    View.value=false;
+  }
+  switchViewSavedPosts(){
+    postView.value=false;
+  }
+  switchViewPost(){
+    postView.value=true;
+  }
+  void showSnackBar(var e) {
+    Get.showSnackbar(GetSnackBar(
+      borderRadius: 20,
+      icon: const Icon(
+        Icons.warning_amber_rounded,
+        color: Colors.white,
+      ),
+      isDismissible: true,
+      snackStyle: SnackStyle.FLOATING,
+      backgroundColor: Colors.red,
+      duration: const Duration(seconds: 3),
+      padding: const EdgeInsets.all(18),
+      margin: const EdgeInsets.all(10),
+      messageText: Text(e.toString()),
+    ));
   }
 }

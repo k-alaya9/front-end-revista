@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:revista/Models/profile.dart';
 import 'package:revista/main.dart';
@@ -10,49 +11,57 @@ import '../View/Screens/profile_screen.dart';
 import 'ProfileController.dart';
 
 class drawerController extends GetxController with GetSingleTickerProviderStateMixin{
-  ProfileController controller=Get.put(ProfileController());
+  ProfileController controller=Get.put(ProfileController(),permanent: true);
    String darkMode = "asset/animations/47047-dark-mode-button.json";
    late AnimationController darkmodeController;
   var isLight = Get.isDarkMode.obs;
   var currentIndex=0.obs;
 
-   String? imageUrl;
- String? userName;
+   RxString imageUrl=''.obs;
+ RxString userName=''.obs;
    @override
   void onInit() async{
     super.onInit();
     darkmodeController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 50));
+    await fetchData();
 
-    fetchData();
-    await Future.delayed(Duration(seconds: 10));
   }
 
   fetchData()async{
     var token =sharedPreferences!.getString('access_token');
     try {
-   Profile profile= await getProfileinfo(token);
-   controller.id=profile.id;
-   User user=profile.user;
-   imageUrl=user.profile_image;
-   userName=user.username;
-   controller.Username=user.username;
-   controller.profileImage=user.profile_image;
-   controller.firstname=user.first_name;
-   controller.lastName=user.last_name;
-   controller.CoverImage=profile.cover_image;
-   controller.bio=profile.bio;
-   controller.following=profile.following_count.toString();
-   controller.followers=profile.followers_count.toString();
+   // Profile profile= await getProfileinfo(token);
+   // controller.id=profile.id;
+   // User user=profile.user;
+   // imageUrl.value=user.profile_image;
+   // userName.value=user.username;
+   // controller.Username.value=user.username;
+   // controller.profileImage.value=user.profile_image;
+   // controller.firstname.value=user.first_name;
+   // controller.lastName.value=user.last_name;
+   // controller.CoverImage.value=profile.cover_image;
+   // controller.bio.value=profile.bio;
+   // controller.following.value=profile.following_count.toString();
+   // controller.followers.value=profile.followers_count.toString();
 
-
+      userName.value = 'k.alaya9';
+      imageUrl.value =
+          'https://scontent.flca1-2.fna.fbcdn.net/v/t39.30808-6/263316426_1138060467020345_1597101672072243926_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=lGU8xlHy4n4AX_WoXM5&_nc_ht=scontent.flca1-2.fna&oh=00_AfCfXiwcCR9-E37u7xgfjMfHJcTBZBpEljbENFxm_QCq0A&oe=648505F8';
+      controller.firstname!.value = 'khaled';
+      controller.lastName!.value = 'alaya';
+      controller.CoverImage!.value = 'https://scontent-cph2-1.xx.fbcdn.net/v/t39.30808-6/352379080_585186983746695_5892930268755518858_n.jpg?stp=dst-jpg_p960x960&_nc_cat=104&ccb=1-7&_nc_sid=e3f864&_nc_ohc=p0LMLrYOx1wAX-WfmC4&_nc_ht=scontent-cph2-1.xx&oh=00_AfCRdRNMZm19CK9SewSjvbbqXPg46dVMcWkrae2gQ3fF8g&oe=64840E3C';
+      controller.bio!.value = 'lana del rey';
+      controller.following!.value = '2000';
+      controller.followers!.value = '2000';
+      controller.numberOfPosts!.value = '10';
     }
     catch(e){
       print(e);
     }
   }
   Widget currentScreen() {
-
+    // ZoomDrawer.of(Get.context!)!.toggle();
     switch(currentIndex.value){
       case 0:{
         return HomeScreen();

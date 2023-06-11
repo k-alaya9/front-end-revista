@@ -86,7 +86,7 @@ class register_Controller extends GetxController {
               email,
               phonenumber,
               SelectedDate.value==DateTime.now()?'':DateFormat('y-MM-dd').format(SelectedDate.value).toString(),
-              isMale.value?'M':'F',
+              isMale.value?'M':isFemale.value?'F':'',
               fileImage!.value
           );
         }

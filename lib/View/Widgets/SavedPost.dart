@@ -9,19 +9,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:revista/Controllers/ProfileController.dart';
 import 'package:revista/View/Widgets/showImage.dart';
 import 'package:url_launcher/url_launcher.dart';
-String? imageUrl='https://media.istockphoto.com/id/1263601084/vector/soccer-ball-symbol-football-ball-icon.jpg?s=612x612&w=0&k=20&c=2Y9kyn2vhU2luJtcj10IGySX4jtf41r_AraQxTT-5yM=';
-class Post extends StatefulWidget {
+class SavedPost extends StatefulWidget {
   @override
-  State<Post> createState() => _PostState();
+  State<SavedPost> createState() => _SavedPostState();
 }
 
-class _PostState extends State<Post> {
-  var nickName = 'data Base';
+class _SavedPostState extends State<SavedPost> {
+  var nickName = 'k.alaya9';
+  String? imageUrl;
 
-  var userName = 'ghazal Alnasr';
+  var userName = 'khaled alaya';
 
-  var post =
-      'ضروريبدي نصيحة عن تجربةانصحوني ب معهد منيح للغة الإنكليزية اقدر اوصل معو للنطق الصحيح ودرجة الاتقان متل العربية ب الشامواسم سلسلة جيدة للدراسة';
+  var post ='hello everyone this a test text for saved post';
 
   DateTime date = DateTime.now();
 
@@ -29,7 +28,7 @@ class _PostState extends State<Post> {
 
   var numberOfComments = '122';
 
-  String? url='https://poe.com/ChatGPT' ;
+  String? url ;
 
   format(ddate) {
     DateFormat newDate = DateFormat.yMd().add_jms();
@@ -42,16 +41,16 @@ class _PostState extends State<Post> {
     List Comments=List.generate(5, (index) => null);
     return  Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
+          borderRadius: BorderRadius.circular(20)
       ),
       elevation: 2,
       child: Container(
-          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.circular(20),
             shape: BoxShape.rectangle,
           ),
+          padding: EdgeInsets.all(10),
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -163,87 +162,89 @@ class _PostState extends State<Post> {
                   indent: 10,
                   endIndent: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    LikeButton(
-                      likeCount:controller.View.value? numberOfLikes:null,
-                      likeBuilder: (isTapped) {
-                        return Icon(
-                          Icons.favorite,
-                          color: isTapped ? Colors.deepPurple : Colors.grey,
-                          size: 30,
-                        );
-                      },
-                    ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            Get.bottomSheet(
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: Comments.length,
-                                      itemBuilder: (ctx, index) {
-                                        return CommentScreen();
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              elevation: 10,
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(40),
-                                      topLeft: Radius.circular(40))),
-                              backgroundColor: Theme.of(context).backgroundColor,
-                              enterBottomSheetDuration: const Duration(seconds: 1),
-                              exitBottomSheetDuration: const Duration(seconds: 1),
-                            );
-                          },
-                          child: Icon(
-                            Icons.speaker_notes_outlined,
-                            color: Colors.grey,
+                SafeArea(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      LikeButton(
+                        likeCount:controller.View.value? numberOfLikes:null,
+                        likeBuilder: (isTapped) {
+                          return Icon(
+                            Icons.favorite,
+                            color: isTapped ? Colors.deepPurple : Colors.grey,
                             size: 30,
+                          );
+                        },
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              Get.bottomSheet(
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: Comments.length,
+                                        itemBuilder: (ctx, index) {
+                                          return CommentScreen();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                elevation: 10,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(40),
+                                        topLeft: Radius.circular(40))),
+                                backgroundColor: Theme.of(context).backgroundColor,
+                                enterBottomSheetDuration: const Duration(seconds: 1),
+                                exitBottomSheetDuration: const Duration(seconds: 1),
+                              );
+                            },
+                            child: Icon(
+                              Icons.speaker_notes_outlined,
+                              color: Colors.grey,
+                              size: 30,
+                            ),
                           ),
-                        ),
-                        controller.View.value?
-                        Text(
-                          numberOfComments,
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ):Container(),
-                      ],
-                    ),
-                    InkWell(
+                          controller.View.value?
+                          Text(
+                            numberOfComments,
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ):Container(),
+                        ],
+                      ),
+                      InkWell(
 
-                      child: Container(
-                        height: 28,
-                        width: 28,
-                        child: SvgPicture.asset(
-                          'asset/image/instagram-share-icon.svg',
-                          color: Colors.grey,
-                          fit: BoxFit.contain,
+                        child: Container(
+                          height: 28,
+                          width: 28,
+                          child: SvgPicture.asset(
+                            'asset/image/instagram-share-icon.svg',
+                            color: Colors.grey,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-                    ),
-                    LikeButton(
-                      likeBuilder: (isTapped) {
-                        return Icon(
-                          Icons.bookmark,
-                          color: isTapped ? Colors.deepPurple : Colors.grey,
-                          size: 30,
-                        );
-                      },
-                    ),
-                  ],
+                      LikeButton(
+                        likeBuilder: (isTapped) {
+                          return Icon(
+                            Icons.bookmark,
+                            color: isTapped ? Colors.deepPurple : Colors.grey,
+                            size: 30,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ])),
     );
@@ -286,6 +287,7 @@ class CommentScreen extends StatelessWidget {
             ),
           ],
         ),
+
 
       ),
     );

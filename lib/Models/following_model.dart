@@ -1,34 +1,34 @@
-class follow {
+class following {
   int? id;
-  Followed? followed;
+  Followed1? followed;
 
-  follow({this.followed,this.id});
+  following({this.followed,this.id});
 
-  follow.fromJson(Map<String, dynamic> json) {
-    id =json['id'];
-    followed = json['follower'] != null
-        ?  Followed.fromJson(json['follower'])
+  following.fromJson(Map<String, dynamic> json) {
+    id=json['id'];
+    followed = json['followed'] != null
+        ? new Followed1.fromJson(json['followed'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.followed != null) {
-      data['follower'] = this.followed!.toJson();
+      data['followed'] = this.followed!.toJson();
     }
     return data;
   }
 }
 
-class Followed {
+class Followed1 {
   int? id;
-  User? user;
+  User1? user;
 
-  Followed({this.id, this.user});
+  Followed1({this.id, this.user});
 
-  Followed.fromJson(Map<String, dynamic> json) {
+  Followed1.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? new User1.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -41,15 +41,15 @@ class Followed {
   }
 }
 
-class User {
+class User1 {
   String? username;
   String? firstName;
   String? lastName;
   String? profileImage;
 
-  User({this.username, this.firstName, this.lastName, this.profileImage});
+  User1({this.username, this.firstName, this.lastName, this.profileImage});
 
-  User.fromJson(Map<String, dynamic> json) {
+  User1.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     firstName = json['first_name'];
     lastName = json['last_name'];

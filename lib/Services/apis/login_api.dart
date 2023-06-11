@@ -19,12 +19,16 @@ Future<void> login(String username, String password) async {
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      print(data);
       final accessToken = data['token'];
-      await saveTokens(accessToken); // Save the tokens to shared preferences
-      Get.toNamed('/home');
+      final accessid = data['id'];
+      print(accessid);
+      await saveTokens(accessToken);// Save the tokens to shared preferences
+      await saveid(accessid);
+      Get.offAllNamed('/home');
     } else {
       print(response.body);
-      throw Exception(response.body);
+      throw Exception(response.reasonPhrase);
     }
   }
   on SocketException catch (_) {
@@ -49,7 +53,7 @@ Future<String> authenticateWithGoogle(String googleAccessToken) async {
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
-    Get.offNamed('/home');
+    Get.offAllNamed('/home');
     return jsonResponse['token'];
   } else {
     print(response.body);
@@ -80,6 +84,10 @@ Future<String?> getAccessToken() async {
 Future<void> saveTokens(String accessToken) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('access_token', accessToken);
+}
+Future<void> saveid(int accessid) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('access_id', accessid);
 }
 
 Future<void> deleteTokens() async {

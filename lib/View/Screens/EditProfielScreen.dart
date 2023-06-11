@@ -12,6 +12,7 @@ class EditProfileScreen extends StatelessWidget {
     ProfileController controller = Get.find();
     return Scaffold(
       appBar: CupertinoNavigationBar(
+        backgroundColor: Theme.of(context).backgroundColor,
         leading: Material(
           color: Theme.of(context).backgroundColor,
           child: IconButton(
@@ -25,7 +26,7 @@ class EditProfileScreen extends StatelessWidget {
         trailing: Material(
           color: Theme.of(context).backgroundColor,
           child: TextButton(
-              onPressed: () {},
+              onPressed: controller.editData,
               child: Text(
                 'Done',
                 style: Theme.of(context)
@@ -42,138 +43,83 @@ class EditProfileScreen extends StatelessWidget {
         padding: EdgeInsets.all(15),
         child: Form(
           key: controller.formKey,
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100.0),
-                child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    width: 100,
-                    height: 100,
-                    placeholder: (context, url) =>
-                        Image.asset('asset/image/loading.png'),
-                    imageUrl: controller.profileImage!.value),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.bottomSheet(
-                    controller.bottomsheet(1),
-                    elevation: 10,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(40),
-                            topLeft: Radius.circular(40))),
-                    backgroundColor: Theme.of(context).backgroundColor,
-                    enterBottomSheetDuration: const Duration(milliseconds: 500),
-                    exitBottomSheetDuration: const Duration(milliseconds: 500),
-                  );
-                },
-                child: Text('Change'),
-                style: ButtonStyle(
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                GetX(
+                  builder: (ProfileController controller)=>ClipRRect(
+                    borderRadius: BorderRadius.circular(100.0),
+                    child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        width: 100,
+                        height: 100,
+                        placeholder: (context, url) =>
+                            Image.asset('asset/image/loading.png'),
+                        imageUrl: controller.profileImage.value),
                   ),
-                  elevation: MaterialStatePropertyAll(0),
-                  backgroundColor:
-                      MaterialStatePropertyAll(Theme.of(context).primaryColor),
                 ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: Text(
-                          "first name:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(fontSize: 18),
-                        ),
+                SizedBox(
+                  height: 5,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Get.bottomSheet(
+                      controller.bottomsheet(1),
+                      elevation: 10,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(40),
+                              topLeft: Radius.circular(40))),
+                      backgroundColor: Theme.of(context).backgroundColor,
+                      enterBottomSheetDuration: const Duration(milliseconds: 500),
+                      exitBottomSheetDuration: const Duration(milliseconds: 500),
+                    );
+                  },
+                  child: Text('Change'),
+                  style: ButtonStyle(
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        width: 150,
-                        child: TextFormField(
-                         initialValue: controller.firstname!.value,
-                          controller: controller.firstnameController,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            hintText: 'First Name',
-                            filled: true,
-                            fillColor: Colors.grey.shade100,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 1)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 1)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 1)),
-                            contentPadding: const EdgeInsets.all(10),
-                          ),
-                          validator: (val) {
-                            if (val!.isNum) {
-                              return 'Invalid Name';
-                            }
-                            if (val.isEmpty) {
-                              return 'Enter Your FirstName';
-                            }
-                          },
-                          onSaved: (val) {
-                            controller.firstname!.value = val!;
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
+                    elevation: MaterialStatePropertyAll(0),
+                    backgroundColor:
+                        MaterialStatePropertyAll(Theme.of(context).primaryColor),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: Text(
-                          "last name:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(fontSize: 18),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 5),
+                          child: Text(
+                            "first name:",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(fontSize: 18),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        width: 150,
-                        child: TextFormField(
-                          initialValue: controller.lastName!.value,
-                            controller: controller.lastnameController,
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: 150,
+                          child: TextFormField(
+                           // initialValue: controller.firstname,
+                            controller: controller.firstnameController,
+                            textAlign: TextAlign.start,
                             style: const TextStyle(color: Colors.black),
                             decoration: InputDecoration(
-                              hintText: 'Last Name',
+                              hintText: 'First Name',
                               filled: true,
                               fillColor: Colors.grey.shade100,
                               border: OutlineInputBorder(
@@ -195,130 +141,191 @@ class EditProfileScreen extends StatelessWidget {
                             ),
                             validator: (val) {
                               if (val!.isNum) {
-                                return "Invalid Name";
+                                return 'Invalid Name';
+                              }
+                              if (val.isEmpty) {
+                                return 'Enter Your FirstName';
                               }
                             },
                             onSaved: (val) {
-                              controller.lastName!.value = val!;
-                            }),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text(
-                      "user name:",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(fontSize: 18),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      child: TextFormField(
-                        initialValue: controller.Username!.value,
-                        controller: controller.usernameController,
-                        decoration: InputDecoration(
-                          hintText: 'Username',
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1)),
-                          contentPadding: const EdgeInsets.all(10),
+                              controller.firstname.value = val!;
+                            },
+                          ),
                         ),
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return 'This filed is required';
-                          }
-                        },
-                        onSaved: (val) {
-                          controller.Username!.value = val!;
-                        },
-                      ))
-                ],
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text(
-                      "Bio:",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(fontSize: 18),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      height: 100,
-                      child: TextFormField(
-                        initialValue: controller.bio!.value,
-                        controller: controller.bioController,
-                        expands: true,
-                        minLines: null,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: 'tell people about you',
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1)),
-                          contentPadding: const EdgeInsets.all(10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 5),
+                          child: Text(
+                            "last name:",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(fontSize: 18),
+                          ),
                         ),
-                        validator: (val) {},
-                        onSaved: (val) {
-                          controller.bio!.value = val!;
-                        },
-                      ))
-                ],
-              ),
-            ],
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: 150,
+                          child: TextFormField(
+                            // initialValue: controller.lastName,
+                              controller: controller.lastnameController,
+                              style: const TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                hintText: 'Last Name',
+                                filled: true,
+                                fillColor: Colors.grey.shade100,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 1)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 1)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 1)),
+                                contentPadding: const EdgeInsets.all(10),
+                              ),
+                              validator: (val) {
+                                if (val!.isNum) {
+                                  return "Invalid Name";
+                                }
+                              },
+                              onSaved: (val) {
+                                controller.lastName.value = val!;
+                              }),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Username:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 18),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        child: TextFormField(
+                          style: Theme.of(context).textTheme.bodyText1,
+                          // initialValue: controller.Username,
+                          controller: controller.usernameController,
+                          decoration: InputDecoration(
+                            hintText: 'Username',
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1)),
+                            contentPadding: const EdgeInsets.all(10),
+                          ),
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'This filed is required';
+                            }
+                          },
+                          onSaved: (val) {
+                            controller.Username.value = val!;
+                          },
+                        ))
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Bio:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 18),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        height: 40,
+                        child: TextFormField(
+                          style: Theme.of(context).textTheme.bodyText1,
+                          // initialValue: controller.bio,
+                          controller: controller.bioController,
+                          expands: true,
+                          minLines: null,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: 'tell people about you',
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1)),
+                            contentPadding: const EdgeInsets.all(10),
+                          ),
+                          validator: (val) {},
+                          onSaved: (val) {
+                            controller.bio.value = val!;
+                          },
+                        ))
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
