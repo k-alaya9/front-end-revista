@@ -23,47 +23,53 @@ class followerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey,width: 0.7),
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        enabled: true,
-        onTap: () {
-          Get.toNamed('/visitProfile', arguments: {
-            'id': id,
-            'followid': followId,
-          });
-        },
-        leading: Container(
-          child: CircleAvatar(
-              radius: 40,
-              backgroundImage:
-                  imageUrl == null ? null : NetworkImage(imageUrl)),
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+          width: MediaQuery.of(context).size.width,
+          // decoration: BoxDecoration(
+          //   border: Border.all(color: Colors.grey,width: 0.7),
+          //   shape: BoxShape.rectangle,
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+
+          child: ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+            enabled: true,
+            onTap: () {
+              Get.toNamed('/visitProfile', arguments: {
+                'id': id,
+                'followid': followId,
+              });
+            },
+            leading: Container(
+              child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage:
+                      imageUrl == null ? null : NetworkImage(imageUrl)),
+            ),
+            title: Text(name + ' ' + lastname,
+                style: Theme.of(context).textTheme.bodyText1),
+            subtitle: Text(
+              username,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(color: Colors.grey, fontSize: 13),
+            ),
+            // trailing: Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: ElevatedButton(
+            //       onPressed: () {}, child: Text('Follow',), style: ButtonStyle(
+            //     elevation: MaterialStatePropertyAll(0),
+            //     backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColor),
+            //   )),
+            // ),
+          ),
         ),
-        title: Text(name + ' ' + lastname,
-            style: Theme.of(context).textTheme.bodyText1),
-        subtitle: Text(
-          username,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1!
-              .copyWith(color: Colors.grey, fontSize: 13),
-        ),
-        trailing: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-              onPressed: () {}, child: Text('Follow',), style: ButtonStyle(
-            elevation: MaterialStatePropertyAll(0),
-            backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColor),
-          )),
-        ),
-      ),
+        Divider(),
+      ],
     );
   }
 }

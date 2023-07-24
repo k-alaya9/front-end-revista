@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/ProfileController.dart';
-import '../Widgets/SavedPost.dart';
 import '../Widgets/post.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -211,38 +210,38 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        color:
-                                        Theme.of(context).backgroundColor,
-                                        shape: BoxShape.rectangle,
-                                        borderRadius:
-                                        BorderRadius.circular(20)),
-                                    child: Column(
-                                      children: [
-                                        InkWell(
-                                          splashFactory: NoSplash.splashFactory,
-                                          onTap: () {
-                                            Get.toNamed('/following');
-                                          },
-                                          child: Text(
+                                  InkWell(
+                                    splashFactory: NoSplash.splashFactory,
+                                    onTap: () {
+                                      Get.toNamed('/following');
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          color:
+                                          Theme.of(context).backgroundColor,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                          BorderRadius.circular(20)),
+                                      child: Column(
+                                        children: [
+                                          Text(
                                             "Following",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          controller.following.value,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1,
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            controller.following.value,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -379,9 +378,12 @@ class ProfileScreen extends StatelessWidget {
                                       itemCount: controller.Posts.length,
                                       itemBuilder: (ctx, index) {
                                         return  AnimatedSwitcher(duration: Duration(milliseconds: 1000),
-                                          reverseDuration: Duration(milliseconds: 1000),child: controller.postView.value
-                                              ? Post()
-                                              : SavedPost(),);
+                                          reverseDuration: Duration(milliseconds: 1000),child:
+                                            //controller.postView.value
+                                              // ? Post()
+                                            //  : SavedPost(),
+                                            Container()
+                                        );
                                       },
                                     )
                                         : MasonryGridView.builder(
@@ -393,9 +395,13 @@ class ProfileScreen extends StatelessWidget {
                                           crossAxisCount: 2),
                                       itemBuilder: (context, index) =>
                                           AnimatedSwitcher(duration: Duration(milliseconds: 1000),
-                                            reverseDuration: Duration(milliseconds: 1000),child: controller.postView.value
-                                                ? Post()
-                                                : SavedPost(),),
+                                            reverseDuration: Duration(milliseconds: 1000),child:
+                                            // controller.postView.value
+                                            //     ? Container()
+                                            //     : SavedPost(),
+                                            //
+                                            Container()
+                                          ),
                                     ),
                                   ),
                                 ],

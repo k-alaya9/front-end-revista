@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:revista/Controllers/notifications_controller.dart';
 import 'package:revista/Controllers/onbordingcontroller.dart';
 import 'package:revista/Services/Thems/themes.dart';
 import 'package:revista/Services/Thems/themeservice.dart';
@@ -12,6 +13,7 @@ import 'package:revista/View/Screens/resetpassword_screen.dart';
 import 'package:revista/View/Widgets/drawer.dart';
 import 'package:revista/middleware/loginMIddleware.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'View/Screens/chatScreen.dart';
 import 'View/Screens/createPost.dart';
 import 'View/Screens/followingScreen.dart';
 import 'View/Screens/forgetpasswordscreen.dart';
@@ -26,7 +28,7 @@ void main() async{
   sharedPreferences=await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
-//ToDo AnimationConfiguration.staggeredList SlideAnimation FadeInAnimation flutter_staggered_animations: ^1.1.1
+
 //ToDo Hero animation
 
 
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
       builder: EasyLoading.init(),
-      initialRoute: '/home',
+      initialRoute: '/',
       defaultTransition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 500),
       getPages: [
@@ -61,7 +63,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/following', page: ()=>FollowingScreen()),
         GetPage(name: '/visitProfile', page: ()=>visiterProfileScreen()),
         GetPage(name: '/Profile', page: ()=>ProfileScreen()),
+        GetPage(name: '/chatScreen', page: ()=>ChatScreen())
       ],
     );
   }
 }
+
+
+

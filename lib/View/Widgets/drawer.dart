@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:revista/Services/apis/login_api.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/drawerController.dart';
+import '../../Controllers/notifications_controller.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(notificationsController(),permanent: true);
     return Obx(() {
       if (controller.imageUrl.isNotEmpty && controller.userName.isNotEmpty) {
         return ZoomDrawer(
@@ -286,7 +289,14 @@ class DrawerScreen extends StatelessWidget {
             drawerList(Icons.save_alt, "Saved_Post", 1),
             drawerList(Icons.settings, "Settings & Privacy", 2),
             GestureDetector(
-              onTap: () {},
+              onTap: ()async{
+                try{
+                  var token =await getAccessToken();
+                  await logout(token);
+                }catch(e){
+                  print(e);
+                }
+              },
               child: Container(
                 margin: EdgeInsets.only(left: 15, bottom: 20),
                 child: Row(

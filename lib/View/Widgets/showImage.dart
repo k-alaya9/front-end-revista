@@ -11,22 +11,12 @@ import 'package:http/http.dart' as http;
 import 'package:revista/View/Widgets/post.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 
-class ShowImage extends StatefulWidget {
-  const ShowImage({Key? key}) : super(key: key);
+import '../../Controllers/postController.dart';
 
-  @override
-  State<ShowImage> createState() => _ShowImageState();
-}
-
-class _ShowImageState extends State<ShowImage> {
-  var selected;
-
-  @override
-  void initState() {
-    requestStoragePermission();
-    super.initState();
-  }
-
+class ShowImage extends StatelessWidget {
+  viewPostController controller=Get.find();
+  String imageUrl;
+  ShowImage({super.key,required this.imageUrl});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,17 +33,17 @@ class _ShowImageState extends State<ShowImage> {
         trailing: Material(
           color: Theme.of(context).backgroundColor,
           child: DropdownButton(
-            icon: Icon(Icons.more_vert),
+              icon: Icon(Icons.more_vert),
               underline: Container(),
               items: [
-            DropdownMenuItem(child: Row(children: [
-              Icon(Icons.arrow_downward,),
-              SizedBox(width: 5,),
-              Text('Save'),
-            ],),value: 1,)
-          ], onChanged: (val){
+                DropdownMenuItem(child: Row(children: [
+                  Icon(Icons.arrow_downward,),
+                  SizedBox(width: 5,),
+                  Text('Save'),
+                ],),value: 1,)
+              ], onChanged: (val){
             if(val==1){
-              saveImage();
+              controller.saveImage(imageUrl);
             }
           }),
         ),
@@ -61,40 +51,9 @@ class _ShowImageState extends State<ShowImage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: Image.network(imageUrl!, fit: BoxFit.fitWidth),
+        child: Image.network(imageUrl, fit: BoxFit.fitWidth),
       ),
     );
   }
 
-  void requestStoragePermission() async {
-    print('hello world');
-    await Permission.storage.request();
-  }
-
-  void saveImage() async {
-    print('hi');
-    EasyLoading.show(dismissOnTap: false,indicator: CupertinoActivityIndicator(color: Colors.white,radius: 20,));
-    try {
-      var response = await http.get(Uri.parse(imageUrl!));
-
-      // Get temporary directory
-      final dir = await getTemporaryDirectory();
-
-      // Create an image name
-      var filename = '${dir.path}/image.png';
-
-      // Save to filesystem
-      final file = File(filename);
-      await file.writeAsBytes(response.bodyBytes);
-
-      // Ask the user to save it
-      final params = SaveFileDialogParams(sourceFilePath: file.path);
-      final finalPath = await FlutterFileDialog.saveFile(params: params);
-      EasyLoading.showSuccess('Saved');
-    }
-    catch(e){
-      EasyLoading.showError('Failed');
-    }
-
-  }
 }

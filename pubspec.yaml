@@ -66,6 +66,14 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   sliding_up_panel:
   rxdart: ^0.27.7
+  path_provider: ^2.0.15
+  audioplayers: ^4.1.0
+  jumping_dot: ^0.0.6
+  photo_manager: ^2.6.0
+  flutter_sound: ^9.2.13
+  audio_waveforms: ^1.0.4
+  flutter_feed_reaction: ^0.0.4
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:
@@ -118,7 +126,19 @@ flutter:
     - asset/image/loading.png
     - asset/image/instagram-share-icon.svg
     - asset/image/post_.png
-  # An image asset can refer to one or more resolution-specific "variants", see
+    - asset/animations/like.gif
+    - asset/animations/love.gif
+    - asset/animations/haha.gif
+    - asset/animations/wow.gif
+    - asset/animations/sad.gif
+    - asset/animations/angry.gif
+    - asset/animations/ic_like.png
+    - asset/animations/love2.png
+    - asset/animations/haha2.png
+    - asset/animations/wow2.png
+    - asset/animations/sad2.png
+    - asset/animations/angry2.png
+    # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see

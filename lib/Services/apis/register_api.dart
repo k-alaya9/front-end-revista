@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:revista/Controllers/register_controller.dart';
-import 'package:revista/Services/apis/forgetpassword_api.dart';
 import 'package:revista/Services/apis/linking.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 register_Controller controller=Get.find();

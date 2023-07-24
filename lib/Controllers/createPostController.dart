@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:revista/Controllers/ProfileController.dart';
+import 'package:revista/Services/apis/register_api.dart';
+import 'package:revista/Services/apis/topic_api.dart';
+import 'package:revista/main.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../Models/topic.dart';
+import '../Services/apis/post_api.dart';
 
 class CreatePostController extends GetxController{
   ProfileController controller=Get.find();
@@ -19,21 +23,7 @@ class CreatePostController extends GetxController{
   var isVisible=false.obs;
   late PickedFile imageFile;
   PanelController panelController=PanelController();
-  List<topicItem>items=[
-    topicItem(id: 0, name: 'General', imageUrl:'',pressed: false.obs),
-    topicItem(id: 1, name: 'news', imageUrl: 'asset/image/news.jpg',pressed: false.obs),
-    topicItem(id: 2, name: 'education', imageUrl: 'asset/image/education.jpg',pressed: false.obs),
-    topicItem(id: 3, name: 'entertainment', imageUrl: 'asset/image/entertainment.jpg',pressed: false.obs),
-    topicItem(id: 4, name: 'sports', imageUrl: 'asset/image/sports.jpg',pressed: false.obs),
-    topicItem(id: 5, name: 'food', imageUrl: 'asset/image/food.jpg',pressed: false.obs),
-    topicItem(id: 6, name: 'art & crafts', imageUrl: 'asset/image/art & crafts.jpg',pressed: false.obs),
-    topicItem(id: 7, name: 'animals & pets', imageUrl: 'asset/image/animals & pets.jpg',pressed: false.obs),
-    topicItem(id: 8, name: 'social life', imageUrl: 'asset/image/social life.jpg',pressed: false.obs),
-    topicItem(id: 9, name: 'gaming', imageUrl: 'asset/image/gaming.jpg',pressed: false.obs),
-    topicItem(id: 10, name: 'business', imageUrl: 'asset/image/business.jpg',pressed: false.obs),
-    topicItem(id: 11, name: 'fashion', imageUrl: 'asset/image/fashion.jpg',pressed: false.obs),
-    topicItem(id: 12, name: 'travel', imageUrl: 'asset/image/travel.jpg',pressed: false.obs),
-  ];
+  late List<topicItem>items;
   List<int?> selecteditems=[];
 @override
   void onInit() {
@@ -55,7 +45,6 @@ class CreatePostController extends GetxController{
       fileImage.value = File(pickedFile.path);
     }
     Get.back();
-
   }
   deletePhoto(){
     fileImage.value = File('');
@@ -114,7 +103,7 @@ class CreatePostController extends GetxController{
     }
     update();
   }
-  SubmitPost(){
+  SubmitPost()async{
     if (!UrlTextField.text.isURL &&UrlTextField.text.isNotEmpty) {
       showCupertinoDialog(
           context: Get.context!,
@@ -149,7 +138,14 @@ class CreatePostController extends GetxController{
           });
     }else  {
       // Validation passed
-      print('Hello world');
+      try{
+        var token=await getAccessToken();
+        var id=sharedPreferences!.getInt('access_id');
+        await createPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:fileImage.value.path,token: token);
+      }
+      catch(e){
+        print(e);
+      }
     }
   }
   switchBottomSheet(){
@@ -162,10 +158,22 @@ class CreatePostController extends GetxController{
     }
 
   }
-  fetchData(){
+  fetchData()async{
     profileImage.value=controller.profileImage.value;
     userName.value=controller.Username.value;
     Name.value=controller.firstname.value+" "+controller.lastName.value;
+    try{
+      var token =await getAccessToken();
+      final list=await getTopicsList(token);
+
+      if(items.isEmpty)
+        for(var i in list) {
+          items.add(i);
+          print(items);
+        }
+    }
+    catch(e){
+    }
   }
 
 }

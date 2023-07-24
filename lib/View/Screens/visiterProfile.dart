@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:revista/Services/apis/login_api.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/visitProfileController.dart';
+import '../../Services/apis/chat_api.dart';
 import '../Widgets/post.dart';
 
 class visiterProfileScreen extends StatelessWidget {
@@ -30,13 +32,12 @@ class visiterProfileScreen extends StatelessWidget {
         extendBody: true,
         body:
         Obx((){
-          if(controller.profileImage!.value.isNotEmpty&&controller.CoverImage!.value.isNotEmpty) {
+          if(controller.profileImage!.value.isNotEmpty) {
             return SmartRefresher(
-              onLoading: null,
               header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
-              footer: null,
               onRefresh: controller.onRefresh,
               enablePullUp: true,
+              enablePullDown: false,
               controller: controller.refreshController,
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(5),
@@ -86,7 +87,9 @@ class visiterProfileScreen extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         ElevatedButton(
-                                          onPressed: () {
+                                          onPressed: ()async{
+                                            var token= await getAccessToken();
+                                            var chatId=await newChat(token,controller.id.value);
                                           },
                                           child: Text('Message'),
                                           style: ButtonStyle(
@@ -315,7 +318,8 @@ class visiterProfileScreen extends StatelessWidget {
                                         itemBuilder: (ctx, index) {
                                           return  AnimatedSwitcher(duration: Duration(milliseconds: 1000),
                                             reverseDuration: Duration(milliseconds: 1000),child:
-                                                 Post()
+                                            Container()
+                                                 // Post()
                                                 ,);
                                         },
                                       )
@@ -329,7 +333,8 @@ class visiterProfileScreen extends StatelessWidget {
                                         itemBuilder: (context, index) =>
                                             AnimatedSwitcher(duration: Duration(milliseconds: 1000),
                                               reverseDuration: Duration(milliseconds: 1000),child:
-                                                   Post(),
+                                                Container()
+                                                   // Post(),
                                                   ),
                                       ),
                                     ),

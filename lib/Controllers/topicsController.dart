@@ -15,7 +15,6 @@ class TopicController extends GetxController{
    @override
   onInit()async{
      await fetchData();
-     sharedPreferences!.setBool('topicsSelected', topicsSelected.value);
     super.onInit();
    }
 

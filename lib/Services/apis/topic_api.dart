@@ -21,8 +21,7 @@ Future<List>getTopicsList(token) async {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       print(data);
-      var map=data.map((e)=>topicItem.fromJson(e)).toList();
-      return map;
+      return data.map((e)=>topicItem.fromJson(e)).toList();
     } else {
       print(response.body);
       throw Exception(response.body);
@@ -37,8 +36,30 @@ Future<List>getTopicsList(token) async {
     controller.onLoading.value=false;
   }
 }
+getYourTopic(token)async{
+  try{
+    final response = await http.get(
+        Uri.parse('http://$ip/topics-follow/'),
+        headers: {
+          'Authorization':'Token $token'
+        }
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print(data);
+      var map=data.map((e)=>topicItem.fromJson(e)).toList();
+      return map;
+    } else {
+      print(response.body);
+      throw Exception(response.body);
+    }
+  }
+  on SocketException catch (_) {
+    // make it explicit that a SocketException will be thrown if the network connection fails
+    rethrow;
+  }
 
-
+}
 sendTopicList(String token, List topicList)async{
   try{
     controller.onLoading.value=true;

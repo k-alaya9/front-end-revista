@@ -6,10 +6,10 @@ import '../Widgets/topicwidget.dart';
 
 class TopicScreen extends StatelessWidget {
   TopicScreen({Key? key}) : super(key: key);
+  TopicController controller = Get.put(TopicController());
 
   @override
   Widget build(BuildContext context) {
-    TopicController controller = Get.put(TopicController());
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(

@@ -25,8 +25,13 @@ class onBoradingMiddleWare extends GetMiddleware{
       sharedPreferences!.setBool('firstTimer',true);
     }
     if(sharedPreferences!.getBool('firstTimer')==false){
+      if(sharedPreferences!.getString('access_token')==null)
       return RouteSettings(name: '/login');
+      else{
+        return RouteSettings(name: '/home');
+      }
     }
+
 
   }
 }

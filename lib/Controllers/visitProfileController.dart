@@ -37,7 +37,7 @@ class visitProfileController extends GetxController {
     // monitor network fetch
 
     await Future.delayed(Duration(milliseconds: 1000));
-    onInit();
+    await fetchData();
     // if failed,use refreshFailed()
     refreshController.refreshCompleted();
   }
@@ -92,7 +92,7 @@ class visitProfileController extends GetxController {
       var token = sharedPreferences!.getString('access_token');
 
       print(id.value);
-      followId= await  followUser(token, id.value);
+      followId= await followUser(token, id.value);
     }
   }
 
@@ -145,7 +145,9 @@ class visitProfileController extends GetxController {
       // followers!.value = '2000';
       // followId.value = 0;
       // numberOfPosts!.value = '10';
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
   switchViewVertical(){
     View.value=true;

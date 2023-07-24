@@ -3,45 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:revista/Controllers/postController.dart';
 import '../../Controllers/drawerController.dart';
 import '../Widgets/drawer.dart';
 import '../Widgets/drawerWidget.dart';
 import '../Widgets/post.dart';
 
-class PostScreen extends StatefulWidget {
-  const PostScreen({Key? key}) : super(key: key);
-
-  @override
-  State<PostScreen> createState() => _PostScreenState();
-}
-
-class _PostScreenState extends State<PostScreen> {
-
-  List Posts=List.generate(5, (index) => null);
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
-  final Key linkKey = GlobalKey();
-drawerController controller=Get.find();
-  void _onRefresh() async{
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() async{
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    Posts.add((Posts.length+1).toString());
-    if(mounted)
-      setState(() {
-      });
-    _refreshController.loadComplete();
-  }
+class PostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    viewPostController controller=Get.find();
     return Scaffold(
       appBar: CupertinoNavigationBar(
         padding: EdgeInsetsDirectional.zero ,
@@ -54,37 +26,7 @@ drawerController controller=Get.find();
         trailing: Material(
           color: Theme.of(context).backgroundColor,
           child: IconButton(onPressed: (){
-            // Get.toNamed('/notification');
-            FlutterLocalNotificationsPlugin notifications =
-            new FlutterLocalNotificationsPlugin();
-            notifications
-                .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()!
-                .requestPermission();
-            var androidInit = AndroidInitializationSettings('@mipmap/ic_launcher',);
-            var init = InitializationSettings(android: androidInit);
-            notifications
-                .initialize(
-              init,
-            ).then((done) {
-                notifications.show(
-                    0,
-                    'revista',
-                   'hi',
-                    payload: 'Default_Sound',
-                    NotificationDetails(
-                        android: AndroidNotificationDetails(
-                          "revista app",
-                          "Revista App",
-                          groupKey: "com.example.revista",
-                          playSound: true,
-                          importance: Importance.max,
-                          ticker: 'ticker',
-                          priority: Priority.high,
-                        )));
-              });
-
-
+            Get.toNamed('/notification');
           }, icon: Icon(Icons.notifications,size: 28,)),
         ),
       ),
@@ -94,19 +36,33 @@ drawerController controller=Get.find();
           enablePullDown: true,
           enablePullUp: true,
           header:ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
+          controller: controller.refreshController,
+          onRefresh: controller.onRefresh,
           child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            itemCount: Posts.length,
+            itemCount: controller.Posts.length,
             itemBuilder:(ctx,index){
-              return Post();
+              var name=controller.Posts[index].author!.user!.firstName! +controller.Posts[index].author!.user!.lastName!;
+              return Post(
+                topics: controller.Posts[index].topics!,
+                id: controller.Posts[index].id,
+                imageUrl: controller.Posts[index].image,
+                username: controller.Posts[index].author!.user!.username,
+                date: controller.Posts[index].createdAt,
+                url: controller.Posts[index].link,
+                numberOfLikes: controller.Posts[index].likesCount,
+                textPost: controller.Posts[index].content,
+                nickName:name,
+                numberOfComments: controller.Posts[index].commentsCount,
+                userImage: controller.Posts[index].author!.user!.profileImage,
+                key: ValueKey(controller.Posts[index].id),
+              );
             } ,
           ),
         ),
       ),
     );
   }
+
 }

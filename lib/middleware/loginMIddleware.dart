@@ -12,6 +12,5 @@ class loginMiddleWare extends GetMiddleware{
     if(sharedPreferences!.getBool('topicsSelected')==true&&sharedPreferences!.getString('access_token')!=null){
       return RouteSettings(name: '/home');
     }
-
   }
 }

@@ -6,7 +6,6 @@ class Themes {
     primaryColor: Colors.deepPurple[400],
     accentColor: const Color(0xffF49741),
     backgroundColor: const Color(0xff1F1B21),
-    splashColor: const Color(0xf5f49745),
     textTheme: const TextTheme(
       headline1:  TextStyle(
         fontFamily: 'SF-Compact-Rounded',
@@ -29,7 +28,6 @@ class Themes {
     primaryColor:Colors.deepPurple[400],
     accentColor: const Color(0xffF4974a),
     backgroundColor:  Color(0xfff9f7fc),
-    splashColor: const Color(0xf5f49745),
     textTheme: const TextTheme(
       headline1:  TextStyle(
         fontFamily: 'SF-Compact-Rounded',

@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:revista/Controllers/logincontroller.dart';
+import 'package:revista/Services/apis/topic_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../main.dart';
 import 'GoogleSignInApi.dart';
 import 'linking.dart';
 
@@ -25,7 +27,15 @@ Future<void> login(String username, String password) async {
       print(accessid);
       await saveTokens(accessToken);// Save the tokens to shared preferences
       await saveid(accessid);
-      Get.offAllNamed('/home');
+      final list=await getYourTopic(accessToken);
+      if(list==null){
+        sharedPreferences!.setBool('topicsSelected',false);
+        Get.offAllNamed('/topics');
+      }
+      else{
+        sharedPreferences!.setBool('topicsSelected',true);
+        Get.offAllNamed('/home');
+      }
     } else {
       print(response.body);
       throw Exception(response.reasonPhrase);
@@ -40,47 +50,75 @@ Future<void> login(String username, String password) async {
     controller.onLoading.value=false;
   }
 }
-Future<String> authenticateWithGoogle(String googleAccessToken) async {
-  final response = await http.post(
-    Uri.parse('http://$ip/account/google/login/'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'id_token': googleAccessToken,
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    Get.offAllNamed('/home');
-    return jsonResponse['token'];
-  } else {
-    print(response.body);
-    controller.showSnackBar(Exception('Failed to authenticate with Google'));
-    throw Exception('Failed to authenticate with Google');
-  }
-}
 loginWithGoogle()async{
   final user= await GoogleSignInApi.login();
   if(user==null){
     controller.showSnackBar('Login Failed');
   }else{
-
-    final token =await user.authentication.then((value) => value.idToken);
-    print(token);
-    saveTokens(token!);
-    authenticateWithGoogle(token.toString());
-
+    await loginGoogle(user.displayName!, user.email, user.photoUrl!);
   }
 }
-Future<String?> getAccessToken() async {
-  final prefs = await SharedPreferences.getInstance();
-  final accessToken = prefs.getString('access_token');
-  return accessToken;
+Future<void> loginGoogle(String username, String email,String imageurl) async {
+  var body=jsonEncode({
+    'info':{'displayName': username, 'email': email,'photoUrl':imageurl
+    }
+  },);
+  try{
+    final response = await http.post(
+      Uri.parse('http://$ip/auth/google-login/'),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print(data);
+      final accessToken = data['token'];
+      final accessid = data['id'];
+      print(accessid);
+      await saveTokens(accessToken);// Save the tokens to shared preferences
+      await saveid(accessid);
+      final list=await getYourTopic(accessToken);
+      if(list==null){
+        sharedPreferences!.setBool('topicsSelected',false);
+        Get.offAllNamed('/topics');
+      }
+      else{
+        sharedPreferences!.setBool('topicsSelected',true);
+        Get.offAllNamed('/home');
+      }
+    } else {
+      print(response.body);
+      throw Exception(response.reasonPhrase);
+    }
+  }
+  on SocketException catch (_) {
+    // make it explicit that a SocketException will be thrown if the network connection fails
+    rethrow;
+  }
 }
-
-
+logout(token)async{
+  try{
+    print(token);
+    final response = await http.post(
+      Uri.parse('http://$ip/auth/logout/'),
+      headers: {'Authorization':"token $token"}
+    );
+    if (response.statusCode == 204) {
+      final data = jsonDecode(response.body);
+      print(data);
+      await deleteTokens();
+      Get.offAllNamed('/login');
+    } else {
+      print(response.body);
+      throw Exception(response.reasonPhrase);
+    }
+  }
+  catch(e){
+    throw Exception(e);
+  }
+}
 Future<void> saveTokens(String accessToken) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('access_token', accessToken);
@@ -89,7 +127,11 @@ Future<void> saveid(int accessid) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt('access_id', accessid);
 }
-
+Future<String?> getAccessToken() async {
+  final prefs = await SharedPreferences.getInstance();
+  final accessToken = prefs.getString('access_token');
+  return accessToken;
+}
 Future<void> deleteTokens() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove('access_token');
