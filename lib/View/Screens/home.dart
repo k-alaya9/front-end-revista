@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/postController.dart';
+import 'package:revista/Models/topic.dart';
 import '../../Controllers/drawerController.dart';
 import '../Widgets/drawer.dart';
 import '../Widgets/drawerWidget.dart';
@@ -13,6 +15,7 @@ class PostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var x = Get.put(viewPostController());
     viewPostController controller=Get.find();
     return Scaffold(
       appBar: CupertinoNavigationBar(
@@ -30,36 +33,36 @@ class PostScreen extends StatelessWidget {
           }, icon: Icon(Icons.notifications,size: 28,)),
         ),
       ),
-      body:  SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
-          header:ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
-          controller: controller.refreshController,
-          onRefresh: controller.onRefresh,
-          child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: controller.Posts.length,
-            itemBuilder:(ctx,index){
-              var name=controller.Posts[index].author!.user!.firstName! +controller.Posts[index].author!.user!.lastName!;
-              return Post(
-                topics: controller.Posts[index].topics!,
-                id: controller.Posts[index].id,
-                imageUrl: controller.Posts[index].image,
-                username: controller.Posts[index].author!.user!.username,
-                date: controller.Posts[index].createdAt,
-                url: controller.Posts[index].link,
-                numberOfLikes: controller.Posts[index].likesCount,
-                textPost: controller.Posts[index].content,
-                nickName:name,
-                numberOfComments: controller.Posts[index].commentsCount,
-                userImage: controller.Posts[index].author!.user!.profileImage,
-                key: ValueKey(controller.Posts[index].id),
-              );
-            } ,
-          ),
+      body:  SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header:ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
+        controller: controller.refreshController,
+        onRefresh: controller.onRefresh,
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: controller.Posts.length,
+          itemBuilder:(ctx,index){
+            var name=controller.Posts[index].author!.user!.firstName! +controller.Posts[index].author!.user!.lastName!;
+            var date=DateFormat('yyyy-mm-dd').parse(controller.Posts[index].createdAt!);
+            print(controller.Posts[index].topics);
+            return Post(
+              authorId: controller.Posts[index].author!.id!,
+              topics: controller.Posts[index].topics!,
+              id: controller.Posts[index].id,
+              imageUrl: controller.Posts[index].image,
+              username: controller.Posts[index].author!.user!.username,
+              date: date,
+              url: controller.Posts[index].link,
+              numberOfLikes: controller.Posts[index].likesCount.obs,
+              textPost: controller.Posts[index].content,
+              nickName:name,
+              numberOfComments: controller.Posts[index].commentsCount.toString().obs,
+              userImage: controller.Posts[index].author!.user!.profileImage,
+              key: ValueKey(controller.Posts[index].id),
+            );
+          } ,
         ),
       ),
     );

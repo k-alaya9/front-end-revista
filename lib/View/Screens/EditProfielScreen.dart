@@ -10,6 +10,10 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProfileController controller = Get.find();
+    var username=controller.Username.value;
+    var bio=controller.bio.value;
+    var firstname=controller.firstname.value;
+    var lastname=controller.lastName.value;
     return Scaffold(
       appBar: CupertinoNavigationBar(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -114,7 +118,7 @@ class EditProfileScreen extends StatelessWidget {
                         Container(
                           width: 150,
                           child: TextFormField(
-                           // initialValue: controller.firstname,
+                           // initialValue: firstname??'',
                             controller: controller.firstnameController,
                             textAlign: TextAlign.start,
                             style: const TextStyle(color: Colors.black),
@@ -173,7 +177,7 @@ class EditProfileScreen extends StatelessWidget {
                         Container(
                           width: 150,
                           child: TextFormField(
-                            // initialValue: controller.lastName,
+                            // initialValue:lastname??'',
                               controller: controller.lastnameController,
                               style: const TextStyle(color: Colors.black),
                               decoration: InputDecoration(
@@ -233,7 +237,7 @@ class EditProfileScreen extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: TextFormField(
                           style: Theme.of(context).textTheme.bodyText1,
-                          // initialValue: controller.Username,
+                          // initialValue:username ?? '',
                           controller: controller.usernameController,
                           decoration: InputDecoration(
                             hintText: 'Username',
@@ -291,7 +295,7 @@ class EditProfileScreen extends StatelessWidget {
                         height: 40,
                         child: TextFormField(
                           style: Theme.of(context).textTheme.bodyText1,
-                          // initialValue: controller.bio,
+                          // initialValue:bio ?? '',
                           controller: controller.bioController,
                           expands: true,
                           minLines: null,

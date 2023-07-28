@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class Themes {
   static final dark =ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.deepPurple[400],
-    accentColor: const Color(0xffF49741),
-    backgroundColor: const Color(0xff1F1B21),
+      primaryColor:Color(0xFF00BFAF),
+      accentColor: Colors.deepOrange[200],
+    backgroundColor: const Color(0xff121212),
     textTheme: const TextTheme(
       headline1:  TextStyle(
         fontFamily: 'SF-Compact-Rounded',
@@ -25,9 +25,9 @@ class Themes {
   );
   static final light =ThemeData(
     brightness: Brightness.light,
-    primaryColor:Colors.deepPurple[400],
-    accentColor: const Color(0xffF4974a),
-    backgroundColor:  Color(0xfff9f7fc),
+      primaryColor:Color(0xFF00BFAF),
+      accentColor: Colors.deepOrange[200],
+    backgroundColor:  Color(0xfff9f9f9),
     textTheme: const TextTheme(
       headline1:  TextStyle(
         fontFamily: 'SF-Compact-Rounded',

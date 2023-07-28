@@ -20,7 +20,7 @@ class login extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: const Color(0xff705DF2),
+          color: Theme.of(context).primaryColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

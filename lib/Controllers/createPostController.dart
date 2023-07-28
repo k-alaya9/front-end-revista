@@ -23,11 +23,11 @@ class CreatePostController extends GetxController{
   var isVisible=false.obs;
   late PickedFile imageFile;
   PanelController panelController=PanelController();
-  late List<topicItem>items;
+   List<topicItem>items=[];
   List<int?> selecteditems=[];
 @override
   void onInit() {
-  fetchData();
+    fetchData();
     super.onInit();
   }
   final ImagePicker picker = ImagePicker();
@@ -141,7 +141,7 @@ class CreatePostController extends GetxController{
       try{
         var token=await getAccessToken();
         var id=sharedPreferences!.getInt('access_id');
-        await createPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:fileImage.value.path,token: token);
+        await createPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:fileImage.value,token: token);
       }
       catch(e){
         print(e);
@@ -159,21 +159,23 @@ class CreatePostController extends GetxController{
 
   }
   fetchData()async{
-    profileImage.value=controller.profileImage.value;
-    userName.value=controller.Username.value;
-    Name.value=controller.firstname.value+" "+controller.lastName.value;
     try{
+      profileImage.value=controller.profileImage.value;
+      userName.value=controller.Username.value;
+      Name.value=controller.firstname.value+" "+controller.lastName.value;
       var token =await getAccessToken();
-      final list=await getTopicsList(token);
-
+      print(token);
+      print('hi');
+      final list=await getTopicsListPost(token);
+      print(list);
       if(items.isEmpty)
         for(var i in list) {
           items.add(i);
           print(items);
         }
+     update();
     }
     catch(e){
     }
   }
-
 }

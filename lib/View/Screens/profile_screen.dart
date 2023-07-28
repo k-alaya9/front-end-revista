@@ -149,7 +149,7 @@ class ProfileScreen extends StatelessWidget {
                                       padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                           color:
-                                          Theme.of(context).backgroundColor,
+                                          Colors.grey[300],
                                           shape: BoxShape.rectangle,
                                           borderRadius:
                                           BorderRadius.circular(20)),
@@ -159,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
                                             'Followers',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -168,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
                                             controller.followers.value,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                         ],
                                       ),
@@ -185,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
                                       padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                           color:
-                                          Theme.of(context).backgroundColor,
+                                          Colors.grey[300],
                                           shape: BoxShape.rectangle,
                                           borderRadius:
                                           BorderRadius.circular(20)),
@@ -195,7 +195,7 @@ class ProfileScreen extends StatelessWidget {
                                             'Posts',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -204,7 +204,7 @@ class ProfileScreen extends StatelessWidget {
                                             controller.numberOfPosts.value,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                         ],
                                       ),
@@ -219,7 +219,7 @@ class ProfileScreen extends StatelessWidget {
                                       padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                           color:
-                                          Theme.of(context).backgroundColor,
+                                          Colors.grey[300],
                                           shape: BoxShape.rectangle,
                                           borderRadius:
                                           BorderRadius.circular(20)),
@@ -229,7 +229,7 @@ class ProfileScreen extends StatelessWidget {
                                             "Following",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -238,7 +238,7 @@ class ProfileScreen extends StatelessWidget {
                                             controller.following.value,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                         ],
                                       ),

@@ -12,20 +12,24 @@ class Notifications extends StatelessWidget {
   Widget build(BuildContext context) {
     var date=DateFormat('yyyy-M-dd').parse(controller.dateTime);
     return Container(
+      margin: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height*0.13,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black12,width: 0.2)
-      ),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
         style: ListTileStyle.list,
         enabled: true,
         onTap: (){
         },
-        leading: Container(child:CircleAvatar(
-            radius: 40,
-            backgroundImage: NetworkImage(controller.imageUrl!)),
+        leading: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: NetworkImage(controller.imageUrl!)
+            )
+          ),
         ),
         title:Text(controller.Text!,style:  Theme.of(context).textTheme.bodyText1,),
         trailing: Padding(padding: EdgeInsets.fromLTRB(0, 30, 10, 0),child:Text("${DateFormat('yyyy-M-dd').format(date)}",style: Theme.of(context).textTheme.bodyText1!.copyWith(

@@ -18,7 +18,7 @@ class resetPassword extends StatelessWidget {
           titleTextStyle: Theme.of(context)
               .textTheme
               .headline1!
-              .copyWith(fontSize: 25, color: Colors.black),
+              .copyWith(fontSize: 25),
           elevation: 0,
           backgroundColor: Theme.of(context).backgroundColor),
       body: Form(
@@ -148,12 +148,12 @@ class resetPassword extends StatelessWidget {
             )
                 : ElevatedButton(
               onPressed: () {
-                controller.resetPasswordFunc(controller.newPassword,);
+                controller.resetPasswordFunc();
               },
               style: ButtonStyle(
                   elevation: MaterialStateProperty.all(0),
                   backgroundColor: MaterialStateProperty.all(
-                      const Color(0xff705DF2)),
+                      Theme.of(context).primaryColor),
                   shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)))),

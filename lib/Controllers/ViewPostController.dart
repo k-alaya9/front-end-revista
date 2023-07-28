@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:revista/Controllers/postController.dart';
 
 class PostController extends GetxController{
   List Comment=[];
   RxBool isAppBarVisible = true.obs;
+  var authorId;
   var id;
   var imageUrl;
   var username;
@@ -16,9 +18,13 @@ class PostController extends GetxController{
   var userImage;
   var topics;
   late final ScrollController scrollController;
-
+  viewPostController controller=Get.find();
   fetchData(){
+    try{
+    }
+    catch(e){
 
+    }
   }
   @override
   void onInit() {

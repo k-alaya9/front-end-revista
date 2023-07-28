@@ -71,6 +71,7 @@ resetPasswordApi(int id, String password)async{
       if(response.statusCode==200){
         final data=jsonDecode(response.body);
         print(data);
+        Get.offAllNamed('/login');
       }else{
         throw Exception(response.reasonPhrase);
       }

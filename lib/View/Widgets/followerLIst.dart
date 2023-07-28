@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:revista/Controllers/followingController.dart';
+import 'package:revista/Controllers/visitProfileController.dart';
+import '../../Services/apis/profile_api.dart';
+import '../../main.dart';
 
 class followerList extends StatelessWidget {
-  final followId;
+  var followId;
   final id;
   final username;
   final name;
@@ -23,6 +26,7 @@ class followerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(followId);
     return Column(
       children: [
         Container(
@@ -44,10 +48,12 @@ class followerList extends StatelessWidget {
               });
             },
             leading: Container(
-              child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage:
-                      imageUrl == null ? null : NetworkImage(imageUrl)),
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: NetworkImage(imageUrl)),
+              ),
             ),
             title: Text(name + ' ' + lastname,
                 style: Theme.of(context).textTheme.bodyText1),
@@ -58,17 +64,33 @@ class followerList extends StatelessWidget {
                   .bodyText1!
                   .copyWith(color: Colors.grey, fontSize: 13),
             ),
-            // trailing: Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: ElevatedButton(
-            //       onPressed: () {}, child: Text('Follow',), style: ButtonStyle(
-            //     elevation: MaterialStatePropertyAll(0),
-            //     backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColor),
-            //   )),
-            // ),
+            trailing: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    var token = sharedPreferences!.getString('access_token');
+                    Get.put(visitProfileController());
+                    visitProfileController controller = Get.find();
+                    if (followId== 0) {
+                      followId = await followUser(token, id);
+                    } else if (followId.value != 0) {
+                      await unfollowUser(token, followId);
+                      followId = 0;
+                    }
+                  },
+                  style: ButtonStyle(
+                    elevation: MaterialStatePropertyAll(0),
+                    backgroundColor: MaterialStatePropertyAll(
+                        Theme.of(context).primaryColor),
+                  ),
+                  child: GetBuilder(
+                    builder: (followingController controller) => Text(
+                      followId == 0 ? 'Follow' : 'Following',
+                    ),
+                  )),
+            ),
           ),
         ),
-        Divider(),
       ],
     );
   }

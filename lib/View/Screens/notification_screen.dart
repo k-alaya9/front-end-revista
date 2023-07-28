@@ -10,6 +10,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../Controllers/notifications_controller.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
+import '../../Models/notfications_model.dart';
 import '../../main.dart';
 
 class notification_screen extends StatelessWidget {
@@ -105,7 +106,7 @@ class notification_screen extends StatelessWidget {
                   ),
                 ),
               ));
-          final reversedNotifications = List.from(controller.notifications.reversed);
+          final  reversedNotifications = List.from(controller.notifications.reversed);
          return SmartRefresher(
             header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
             onRefresh: controller.onRefresh,

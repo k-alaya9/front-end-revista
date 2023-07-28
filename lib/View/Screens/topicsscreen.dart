@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +22,7 @@ class TopicScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Theme.of(context).backgroundColor),
       body: GetX(
-        builder: (TopicController controller) => controller.onLoading.value?Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),):SingleChildScrollView(
+        builder: (TopicController controller) => controller.onLoading.value?Center(child: CupertinoActivityIndicator(color: Theme.of(context).primaryColor,),):SingleChildScrollView(
           child: Column(children: [
             Container(
               alignment: Alignment.topLeft,

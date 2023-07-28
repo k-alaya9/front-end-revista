@@ -206,7 +206,7 @@ class bottomSheet extends StatelessWidget {
                     style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0),
                         backgroundColor: MaterialStateProperty.all(
-                            const Color(0xff705DF2)),
+                           Theme.of(context).primaryColor),
                         shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30)))),

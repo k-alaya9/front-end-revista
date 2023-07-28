@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -92,25 +93,43 @@ class visitProfileController extends GetxController {
       var token = sharedPreferences!.getString('access_token');
 
       print(id.value);
-      followId= await followUser(token, id.value);
+      followId= await followUser(token, id.value).obs;
     }
   }
 
   showImage(photo) {
     Get.dialog(
       Container(
-        alignment: Alignment.topLeft,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          shape: BoxShape.rectangle,
-          image: DecorationImage(image: NetworkImage(photo), fit: BoxFit.fitWidth),
-        ),
-        child: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(Icons.arrow_back_ios)),
-      ),
+          color: Colors.transparent,
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                          onPressed: () => Get.back(),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: 25,
+                          ))),
+                  InkWell(
+                      onTapCancel: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Colors.transparent),
+                        child: Image.network(photo),
+                      )),
+                ],
+              ),
+            ),
+          )),
       useSafeArea: true,
     );
   }
@@ -118,8 +137,9 @@ class visitProfileController extends GetxController {
   fetchData() async {
     var token = sharedPreferences!.getString('access_token');
     try {
-      followId.value=Get.arguments['followid'];
-      print(followId.value);
+
+        followId.value=Get.arguments['followid'];
+        print(followId.value);
       id!.value = Get.arguments['id'];
       print(id!.value);
       visitprofile profile= await fetchVisitorProfile(token,id!.value)!;
@@ -129,6 +149,7 @@ class visitProfileController extends GetxController {
       firstname!.value=user.firstName!;
       lastName!.value=user.lastName!;
       CoverImage!.value=profile.coverImage!;
+      if(profile.bio!=null)
       bio!.value=profile.bio!;
       following!.value=profile.followingCount.toString();
       followers!.value=profile.followersCount.toString();

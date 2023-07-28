@@ -106,8 +106,6 @@ logout(token)async{
       headers: {'Authorization':"token $token"}
     );
     if (response.statusCode == 204) {
-      final data = jsonDecode(response.body);
-      print(data);
       await deleteTokens();
       Get.offAllNamed('/login');
     } else {

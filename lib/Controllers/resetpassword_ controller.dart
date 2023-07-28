@@ -24,13 +24,13 @@ class resetPasswordController extends GetxController{
     visibilityconfirm.value=!visibilityconfirm.value;
     update();
   }
-  void resetPasswordFunc(String password) async{
+  void resetPasswordFunc() async{
     final isValid=formKey.currentState!.validate();
     if(isValid){
       formKey.currentState!.save();
       try{
         forgetPasswordController controller=Get.find();
-        resetPasswordApi(controller.id,password);
+        resetPasswordApi(controller.id,newPassword);
       } catch (e) {
         showSnackBar(e);
       }

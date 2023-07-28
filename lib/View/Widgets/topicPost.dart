@@ -17,6 +17,7 @@ class TopicWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    return GetX(
+     init: CreatePostController(),
      builder: (CreatePostController controller)=>InkWell(
        borderRadius: BorderRadius.circular(10),
        onTap: ()=>controller.onPressed(id),

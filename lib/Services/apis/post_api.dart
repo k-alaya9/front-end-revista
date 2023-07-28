@@ -1,28 +1,44 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:get/get.dart';
 import '../../Models/post.dart';
 import 'linking.dart';
 import 'package:http/http.dart' as http;
 
-createPost({id, topics, text, link, image, token}) async {
+createPost({id, topics, text, link,File? image, token}) async {
   try {
+    print(topics);
     Map<String, String> body = {
-      'author': id,
-      'content': text,
-      'topics': topics,
-      'link': link,
+      'author': "$id",
+      'content': "$text",
+      'topics': '$topics',
+      'link': "$link",
     };
-    var request =
-        http.MultipartRequest('POST', Uri.parse('http://$ip/posts/list-posts/'))
-          ..headers.addAll({
-            'Authorization': token,
-          })
-          ..fields.addAll(body)
-          ..files.add(await http.MultipartFile.fromPath('image', image));
+    print('hi');
+    var request;
+    if(image!.path!=''){
+      request=
+      http.MultipartRequest('POST', Uri.parse('http://$ip/posts/'))
+        ..headers.addAll({
+          'Authorization': 'Token $token',
+        })
+        ..fields.addAll(body)..
+      files.add(await http.MultipartFile.fromPath('image', image!.path));
+    }
+    else{
+       request =
+      http.MultipartRequest('POST', Uri.parse('http://$ip/posts/'))
+        ..headers.addAll({
+          'Authorization': 'Token $token',
+        })
+        ..fields.addAll(body);
+    }
     var response = await http.Response.fromStream(await request.send());
     if (response.statusCode == 201) {
       final data = jsonDecode(response.body);
       print(data);
+      Get.back();
+
     } else {
       print(response.body);
       throw Exception(response.reasonPhrase);
@@ -34,7 +50,7 @@ createPost({id, topics, text, link, image, token}) async {
 
 getPostsList(token) async {
   try {
-    final response = await http.get(Uri.parse('http://$ip/posts/list-posts/'),
+    final response = await http.get(Uri.parse('http://$ip/posts/'),
         headers: {'Authorization': 'Token $token'});
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -51,4 +67,53 @@ getPostsList(token) async {
     print(e);
   }
 }
+likePost(token,id) async {
+  final url = 'http://$ip/like/$id';
 
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 201) {
+      // Follow successful
+      print('User liked post successfully');
+      var data=jsonDecode(response.body);
+      print(data);
+      return data['id'];
+    } else {
+      // Follow failed
+      print('Failed to like post');
+    }
+  } catch (error) {
+    // Handle error
+    print('Error: $error');
+  }
+}
+Future<void> unlikePost(token, Id) async {
+  final url = 'http://$ip/unfollow/$Id';
+
+  try {
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Token $token',
+      },
+    );
+
+    if (response.statusCode == 204) {
+      // Unfollow successful
+      print(' unlike successfully');
+    } else {
+      // Unfollow failed
+      print('Failed to unlike post');
+    }
+  } catch (error) {
+    // Handle error
+    print('Error: $error');
+  }
+}

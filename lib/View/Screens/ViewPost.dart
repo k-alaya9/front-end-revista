@@ -11,6 +11,7 @@ class ViewPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var v=Get.put(PostController(),permanent: true);
     PostController controller=Get.find();
     return SafeArea(
       child: Scaffold(
@@ -44,6 +45,7 @@ class ViewPost extends StatelessWidget {
               child: Column(
                 children: [
                   Post(
+                    authorId: controller.authorId,
                     topics: controller.topics,
                     id: controller.id,
                     username: controller.username,

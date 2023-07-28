@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
+import 'package:revista/Controllers/homeController.dart';
+import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Models/profile.dart';
 import 'package:revista/main.dart';
 
@@ -9,9 +11,11 @@ import '../Services/apis/profile_api.dart';
 import '../View/Screens/homescreen.dart';
 import '../View/Screens/profile_screen.dart';
 import 'ProfileController.dart';
+import 'ViewPostController.dart';
 
 class drawerController extends GetxController with GetSingleTickerProviderStateMixin{
-  ProfileController controller=Get.put(ProfileController(),permanent: true);
+  ProfileController controller=Get.put(ProfileController(),);
+  homeController _controller=Get.put(homeController());
    String darkMode = "asset/animations/47047-dark-mode-button.json";
    late AnimationController darkmodeController;
   var isLight = Get.isDarkMode.obs;
@@ -47,7 +51,7 @@ class drawerController extends GetxController with GetSingleTickerProviderStateM
 
       // userName.value = 'k.alaya9';
       // imageUrl.value =
-      //     'https://scontent.flca1-2.fna.fbcdn.net/v/t39.30808-6/263316426_1138060467020345_1597101672072243926_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=lGU8xlHy4n4AX_WoXM5&_nc_ht=scontent.flca1-2.fna&oh=00_AfCfXiwcCR9-E37u7xgfjMfHJcTBZBpEljbENFxm_QCq0A&oe=648505F8';
+      //     'https://yt3.ggpht.com/nwHdCPYKiRwHXyPWesblZAuJ2ybHTnu7wM_wInj6LHJrobXP62f9NRDW_lTqu4wXKf_aY7ZKS-E=s88-c-k-c0x00ffffff-no-nd-rj';
       // controller.firstname!.value = 'khaled';
       // controller.lastName!.value = 'alaya';
       // controller.CoverImage!.value = 'https://scontent-cph2-1.xx.fbcdn.net/v/t39.30808-6/352379080_585186983746695_5892930268755518858_n.jpg?stp=dst-jpg_p960x960&_nc_cat=104&ccb=1-7&_nc_sid=e3f864&_nc_ohc=p0LMLrYOx1wAX-WfmC4&_nc_ht=scontent-cph2-1.xx&oh=00_AfCRdRNMZm19CK9SewSjvbbqXPg46dVMcWkrae2gQ3fF8g&oe=64840E3C';

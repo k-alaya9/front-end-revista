@@ -153,7 +153,7 @@ class visiterProfileScreen extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                          color: Theme.of(context).backgroundColor,
+                                          color:Colors.grey[300],
                                           shape: BoxShape.rectangle,
                                           borderRadius: BorderRadius.circular(20)),
                                       child: Column(
@@ -162,7 +162,7 @@ class visiterProfileScreen extends StatelessWidget {
                                             'Followers',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -171,7 +171,7 @@ class visiterProfileScreen extends StatelessWidget {
                                             controller.followers!.value,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                         ],
                                       ),
@@ -184,16 +184,16 @@ class visiterProfileScreen extends StatelessWidget {
                                       child: Container(
                                         padding: EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                            color: Theme.of(context).backgroundColor,
+                                            color: Colors.grey[300],
                                             shape: BoxShape.rectangle,
                                             borderRadius: BorderRadius.circular(20)),
                                         child: Column(
                                           children: [
                                             Text(
                                               'Posts',
-                                              style: Theme.of(context)
+                                              style:Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1,
+                                                  .bodyText1!.copyWith(color: Colors.black),
                                             ),
                                             SizedBox(
                                               height: 10,
@@ -202,7 +202,7 @@ class visiterProfileScreen extends StatelessWidget {
                                               controller.numberOfPosts!.value,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1,
+                                                  .bodyText1!.copyWith(color: Colors.black),
                                             ),
                                           ],
                                         ),
@@ -211,7 +211,7 @@ class visiterProfileScreen extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                          color: Theme.of(context).backgroundColor,
+                                          color:Colors.grey[300],
                                           shape: BoxShape.rectangle,
                                           borderRadius: BorderRadius.circular(20)),
                                       child: Column(
@@ -220,7 +220,8 @@ class visiterProfileScreen extends StatelessWidget {
                                             "Following",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black
+                                            ),
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -229,7 +230,7 @@ class visiterProfileScreen extends StatelessWidget {
                                             controller.following!.value,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText1!.copyWith(color: Colors.black),
                                           ),
                                         ],
                                       ),

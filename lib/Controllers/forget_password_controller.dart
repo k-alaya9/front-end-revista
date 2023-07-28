@@ -22,7 +22,7 @@ class forgetPasswordController extends GetxController {
     update();
   }
 
-  void submitFunc(String username) async {
+  void submitFunc() async {
     final isValid = formKey.currentState!.validate();
     if (isValid) {
       formKey.currentState!.save();
@@ -35,18 +35,18 @@ class forgetPasswordController extends GetxController {
             context: Get.context!,
             builder: (context) {
               return CupertinoAlertDialog(
-                title: Text('Enter confirmation code',style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.black)),
+                title: Text('Enter confirmation code',style: Theme.of(context).textTheme.headline1 ),
                 content: Column(
                   children: [
                     Text('Enter the 6-digit login code we sent to $email',style: Theme.of(context).textTheme.headline1),
                     Form(
                       key: codeKey,
                       child: TextFormField(
-                        cursorColor: Color(0xff705DF2),
+                        cursorColor: Theme.of(context).accentColor,
                         decoration: InputDecoration(
-                          border: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
-                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff705DF2))),
+                          border: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
                         ),
                         maxLength: 6,
                         keyboardType: TextInputType.number,
@@ -71,7 +71,7 @@ class forgetPasswordController extends GetxController {
                       child: controller.onLoadingDialog.value
                           ? const CupertinoActivityIndicator()
                           : ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff705DF2)),elevation: MaterialStateProperty.all(0)),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),elevation: MaterialStateProperty.all(0)),
                           onPressed: () async {
                             try {
                               final isValid =
@@ -93,7 +93,7 @@ class forgetPasswordController extends GetxController {
                       onPressed: () {
                         Get.back();
                       },
-                      child: Text('cancel',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).primaryColor),))
+                      child: Text('cancel',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).accentColor),))
                 ],
               );});
         // await login(username, password);

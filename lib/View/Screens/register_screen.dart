@@ -126,7 +126,7 @@ class Register extends StatelessWidget {
                           height: 60,
                           width: 60,
                           decoration: BoxDecoration(
-                            color: Colors.orange,
+                            color: Theme.of(context).accentColor,
                             shape: BoxShape.circle,
                             border: controller.isFemale.value
                                 ? Border.all(

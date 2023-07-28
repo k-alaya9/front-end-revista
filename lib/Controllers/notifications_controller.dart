@@ -16,7 +16,7 @@ class notificationsController extends GetxController {
   var username = '';
   var dateTime;
   // TODO: make the notifications reused
-  List<notification> notifications = [];
+  List notifications = [];
   RefreshController refreshController = RefreshController(initialRefresh: true);
   var channel;
   var sub;
@@ -100,7 +100,7 @@ class notificationsController extends GetxController {
         // notification(id: 1,user: 1,type: 'follow',detail: 'khaled alaya followed u',image: 'https://scontent.flca1-2.fna.fbcdn.net/v/t39.30808-6/263316426_1138060467020345_1597101672072243926_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=lGU8xlHy4n4AX_WoXM5&_nc_ht=scontent.flca1-2.fna&oh=00_AfCfXiwcCR9-E37u7xgfjMfHJcTBZBpEljbENFxm_QCq0A&oe=648505F8',createdAt: DateTime(2023,2,3)),
       // ];
       notifiy = await notificationList(token!);
-      if (notifications.isEmpty) notifications.assignAll(notifiy);
+      if (notifications!=notifiy) notifications.assignAll(notifiy);
     } catch (e) {
       print(e);
     }

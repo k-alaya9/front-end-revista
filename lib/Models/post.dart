@@ -1,9 +1,11 @@
+import 'package:revista/Models/topic.dart';
+
 class post {
   int? id;
   Author? author;
   String? content;
   String? link;
-  List? topics;
+  List<topicItem>? topics;
   String? image;
   int? likesCount;
   int? commentsCount;

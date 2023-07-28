@@ -22,7 +22,6 @@ class messageBubbleController extends GetxController {
   final MessageKey = GlobalKey();
   List selectedMessages = [];
 //ToDo add the repiled view
-  // var reaction=Reaction.none.obs;
   var reactionView = false.obs;
   var visible = true.obs;
   List<ReactionModel> reactions = [
@@ -62,17 +61,13 @@ class messageBubbleController extends GetxController {
       lottie: Image.asset('asset/animations/angry.gif', fit: BoxFit.fitWidth),
     ),
   ];
-  OverlayEntry? overlayEntry;
+   OverlayEntry? overlayEntry;
   ChatController controller = Get.find();
   late final PlayerController playerController;
-
-  // final audioPlayer=AudioPlayer();
   var isPlayed = false.obs;
   var duration = Duration.zero;
   var position = Duration.zero;
 
-  // String? path;
-  // late Directory directory;
   @override
   void onInit() async {
     super.onInit();
@@ -96,7 +91,6 @@ class messageBubbleController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    // audioPlayer.dispose();
   }
 
   void onCloseOverlay() {
@@ -113,20 +107,10 @@ class messageBubbleController extends GetxController {
     widget,
   }) {
     selected.value = true;
-    // final screenWidth = MediaQuery.of(context).size.width;
-    // double left = tapPosition.dx;
-    // var x = screenWidth - left;
-    // print(x);
-    // if (x < 200) {
-    //   left = left - 200;
-    // } else {
-    //   left = left - 40;
-    // }
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        // left: left,
-        right: !isMe?0:null,
-        left: isMe?0:null,
+        right: !isMe?5:null,
+        left: isMe?5:null,
         top: 60,
         child: GestureDetector(
           onTap: () => onCloseOverlay(),
@@ -136,6 +120,7 @@ class messageBubbleController extends GetxController {
               filter: ImageFilter.blur(
                   sigmaY: 10, sigmaX: 10, tileMode: TileMode.mirror),
               child: Column(
+                crossAxisAlignment: isMe?CrossAxisAlignment.start:CrossAxisAlignment.end,
                 children: [
                   Card(
                     color: Colors.transparent,
@@ -194,6 +179,7 @@ class messageBubbleController extends GetxController {
                     ),
                   ),
                   widget,
+                  SizedBox(height: 10,),
                   Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).backgroundColor,
@@ -205,7 +191,7 @@ class messageBubbleController extends GetxController {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(DateFormat.jm()
-                              .format(controller.messages[id].TimeSent),style: Theme.of(context).textTheme.bodyText1),
+                              .format(DateTime.parse(controller.messages[id].createdAt!)),style: Theme.of(context).textTheme.bodyText1),
                         ),
                         Divider(color: Get.isDarkMode?Colors.white:Colors.black,),
                         TextButton(

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,16 +26,16 @@ class ProfileController extends GetxController{
   var  following=''.obs;
   var  numberOfPosts='0'.obs;
   RxString  bio=''.obs;
-  var lastnameController=TextEditingController();
-  var firstnameController=TextEditingController();
-  var usernameController=TextEditingController();
-  var bioController=TextEditingController();
+  var lastnameController;
+  var firstnameController;
+  var usernameController;
+  var bioController;
   ScrollController scrollController = ScrollController();
   final formKey = GlobalKey<FormState>();
   final ListKey=GlobalKey();
   @override
   void onInit() {
-    onRefresh();
+    fetchData();
     super.onInit();
   }
   void onRefresh() async{
@@ -45,20 +46,36 @@ class ProfileController extends GetxController{
   showImage(photo){
     Get.dialog(
       Container(
-        alignment: Alignment.topLeft,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          shape: BoxShape.rectangle,
-          image: DecorationImage(
-              image: NetworkImage(photo),
-              fit: BoxFit.contain),
-        ),
-        child: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(Icons.arrow_back_ios)),
-      ),
+          color: Colors.transparent,
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Column(
+               mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                          onPressed: () => Get.back(),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: 25,
+                          ))),
+                  InkWell(
+                      onTapCancel: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Colors.transparent),
+                        child: Image.network(photo),
+                      )),
+                ],
+              ),
+            ),
+          )),
       useSafeArea: true,
     );
   }
@@ -193,9 +210,14 @@ class ProfileController extends GetxController{
       firstname.value=user.first_name;
       lastName.value=user.last_name;
       CoverImage.value=profile.cover_image;
+      if(profile.bio!=null)
       bio.value=profile.bio;
       following.value=profile.following_count.toString();
       followers.value=profile.followers_count.toString();
+      lastnameController=TextEditingController(text: lastName.value);
+      firstnameController=TextEditingController(text: firstname.value);
+      usernameController=TextEditingController(text: Username.value);
+      bioController=TextEditingController(text: bio.value);
       // Username!.value = 'k.alaya9';
       // profileImage!.value =
       //     'https://scontent.flca1-2.fna.fbcdn.net/v/t39.30808-6/263316426_1138060467020345_1597101672072243926_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=lGU8xlHy4n4AX_WoXM5&_nc_ht=scontent.flca1-2.fna&oh=00_AfCfXiwcCR9-E37u7xgfjMfHJcTBZBpEljbENFxm_QCq0A&oe=648505F8';

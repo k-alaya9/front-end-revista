@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:revista/Controllers/postController.dart';
 
 import '../View/Screens/DiscoverScreen.dart';
 import '../View/Screens/MessageScreen.dart';
 import '../View/Screens/home.dart';
+import 'ViewPostController.dart';
 
 class homeController extends GetxController{
+
   final ScrollController scrollController = ScrollController();
   RxBool isNavBarHidden = false.obs;
   onNotification(notification) {
