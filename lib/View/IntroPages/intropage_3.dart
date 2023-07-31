@@ -27,11 +27,11 @@ class IntroPage_3 extends StatelessWidget {
               child:Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-              Text('Welcome to revista app',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text('Strike conversations with people',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
               SizedBox(height: 5,),
-              Text('Where you can find all the topics',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+              Text('On common topics',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
               SizedBox(height: 5,),
-              Text('that peak your interest and many more!',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+              Text('And share relevant posts in chats',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
       ],
       ),
 

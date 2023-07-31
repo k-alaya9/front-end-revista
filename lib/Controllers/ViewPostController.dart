@@ -1,9 +1,16 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:revista/Controllers/postController.dart';
+import 'package:revista/Services/apis/comment_api.dart';
+import 'package:revista/main.dart';
+
+import '../Models/comment_model.dart';
+import '../View/Widgets/post.dart';
 
 class PostController extends GetxController{
-  List Comment=[];
+  List Comment=[
+
+  ];
   RxBool isAppBarVisible = true.obs;
   var authorId;
   var id;
@@ -19,11 +26,31 @@ class PostController extends GetxController{
   var topics;
   late final ScrollController scrollController;
   viewPostController controller=Get.find();
-  fetchData(){
+  fetchData()async{
     try{
+      final token=sharedPreferences!.getString('access token');
+      id=Get.arguments['postId'];
+      final Post post=await getPost(token, id);
+      authorId=post.authorId;
+      imageUrl=post.imageUrl;
+      username=post.username;
+      date=post.date;
+      nickName=post.nickName;
+      numberOfLikes=post.numberOfLikes;
+      numberOfComments=post.numberOfComments;
+      url=post.url;
+      textPost=post.textPost;
+      userImage=post.userImage;
+      topics=post.topics;
+      final List <comment> data;
+      data =await getCommentsList(token,id);
+      if(Comment != data && data != null)
+        {
+          Comment.assignAll(data);
+        }
     }
     catch(e){
-
+     print (e);
     }
   }
   @override

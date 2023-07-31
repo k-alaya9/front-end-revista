@@ -73,36 +73,71 @@ class Post extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        textAlign: TextAlign.start,
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: '${nickName} \n',
-                            style: Theme.of(context).textTheme.bodyText1,
+                      Row(
+                        children: [
+                          RichText(
+                            textAlign: TextAlign.start,
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: '${nickName} \n',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              TextSpan(
+                                  text: username,
+                                  style: TextStyle(color: Colors.grey)),
+                            ]),
                           ),
-                          TextSpan(
-                              text: username,
-                              style: TextStyle(color: Colors.grey)),
-                        ]),
+                          PopupMenuButton(
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                PopupMenuItem(
+                                  child: Text('Copy Link'),
+                                  value: 1,
+                                  onTap: (){},
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Delete Post'),
+                                  value: 2,
+                                  onTap: (){},
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Report Post'),
+                                  value: 3,
+                                  onTap: (){},
+
+                                ),
+                              ];
+                            },
+                            icon: Icon(Icons.more_vert),
+                          )
+                        ],
                       ),
                       SizedBox(
                         height: 5,
                       ),
-                      Container(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width - 20,
-                        child: ListView.builder(
-                            itemCount: topics.length,
-                            shrinkWrap: true,
-                            physics: ScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              print(topics);
-                              return Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 10),
-                                  child: TopicWidget(id: topics[index].id,name: topics[index].name,pressed: false.obs,)
-                                );}),
+                      SingleChildScrollView(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 40,
+                            //  padding: EdgeInsets.only(right: 20),
+                              width: MediaQuery.of(context).size.width - 20,
+                              child: ListView.builder(
+                                  itemCount: topics.length,
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    print(topics);
+                                    return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5, vertical: 10),
+                                        child: TopicWidget(id: topics[index].id,name: topics[index].name,pressed: false.obs,)
+                                      );}),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -174,17 +209,14 @@ class Post extends StatelessWidget {
                 ),
               ),
             ),
-            Transform.translate(
-              offset: Offset(0, 0),
-              child: Container(
-                alignment: Alignment.bottomRight,
-                child: Transform.translate(
-                    offset: Offset(-10, 0),
-                    child: Text(
-                      controller.format(date),
-                      style: TextStyle(color: Colors.black54, fontSize: 12),
-                    )),
-              ),
+            Container(
+              alignment: Alignment.bottomRight,
+              child: Transform.translate(
+                  offset: Offset(-10, 0),
+                  child: Text(
+                    controller.format(date),
+                    style: TextStyle(color: Colors.black54, fontSize: 12),
+                  )),
             ),
             Divider(
               color: Colors.black54,
@@ -219,7 +251,9 @@ class Post extends StatelessWidget {
                     InkWell(
 
                       onTap: () {
-                        Get.to(ViewPost());
+                        Get.to(ViewPost(),arguments: {
+                          'postId':id
+                        });
                       },
                       child: Icon(
                         Icons.speaker_notes_outlined,
@@ -247,6 +281,15 @@ class Post extends StatelessWidget {
                   ),
                 ),
                 LikeButton(
+                  onTap: (save)async{
+                    save=!save;
+                    var token=getAccessToken();
+                    if(save){
+                      await savePost(token,id);
+                    }else{
+                      await unSavedPost(token, id);
+                    }
+                  },
                   likeBuilder: (isTapped) {
                     return Icon(
                       Icons.bookmark,

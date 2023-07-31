@@ -117,3 +117,50 @@ Future<void> unlikePost(token, Id) async {
     print('Error: $error');
   }
 }
+
+savePost(token,id)async{
+  final url = 'http://$ip/save/$id';
+  try{
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },
+    );
+    if(response.statusCode == 200){
+      print('User saved post successfully');
+      var data=jsonDecode(response.body);
+      print(data);
+      return data['id'];
+    } else {
+      // Follow failed
+      print('Failed to like post');
+    }
+
+  }catch(e){
+    print(e);
+  }
+
+}
+
+Future<void> unSavedPost(token,id) async{
+  final url='http://$ip/unsave/$id';
+  try{
+    final response=await http.post(Uri.parse(url),
+      headers: {
+        'Authorization': 'Token $token',
+      },
+    );
+    if(response.statusCode == 200)
+      {
+        print('Unsaved Successfully');
+      }else{
+      print('Failed to unsaved post');
+    }
+
+  }catch(e){
+    print(e);
+  }
+
+}

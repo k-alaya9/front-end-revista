@@ -103,7 +103,7 @@ class ViewPost extends StatelessWidget {
                     ),
                   ),
                   //newComment
-                  comment_Screen(),
+                  comment_Screen(id:controller.id),
                 ],
               ),
             ),

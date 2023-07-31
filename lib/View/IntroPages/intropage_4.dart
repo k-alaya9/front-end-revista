@@ -33,11 +33,11 @@ class IntroPage_4 extends StatelessWidget {
                   child:Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                  Text('Welcome to revista app',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+                  Text('This is just the start',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
                   SizedBox(height: 5,),
-                  Text('Where you can find all the topics',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+                  Text('explore the app, find many more features',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
                   SizedBox(height: 5,),
-                  Text('that peak your interest and many more!',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+                  Text('that will make your experience much better',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
       ],
       ),
 

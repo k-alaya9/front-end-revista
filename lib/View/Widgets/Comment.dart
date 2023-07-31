@@ -18,7 +18,12 @@ class CommentScreen extends StatelessWidget {
   var x=Get.put(CommentController());
   CommentController controller =Get.find();
 
-  CommentScreen({super.key, required this.comment,required this.username,required this.date,required this.numberOfLikesOfComments,required this.userImage});
+  CommentScreen({super.key,
+    required this.comment,
+    required this.username,
+    required this.date,
+    required this.numberOfLikesOfComments,
+    required this.userImage});
   @override
   Widget build(BuildContext context) {
     return Container(
