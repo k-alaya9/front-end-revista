@@ -51,9 +51,13 @@ createPost({id, topics, text, link,File? image, token}) async {
 getPostsList(token) async {
   try {
     final response = await http.get(Uri.parse('http://$ip/posts/'),
-        headers: {'Authorization': 'Token $token'});
+        headers: {
+          'Authorization': 'Token $token',
+          'Content-Type': 'application/json',
+        },);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      print(data);
       final posts = data.map<post>((e) {
         return post.fromJson(e);
       }).toList();
@@ -68,7 +72,7 @@ getPostsList(token) async {
   }
 }
 likePost(token,id) async {
-  final url = 'http://$ip/like/$id';
+  final url = 'http://$ip/posts/like/$id/';
 
   try {
     final response = await http.post(
@@ -93,9 +97,8 @@ likePost(token,id) async {
     // Handle error
     print('Error: $error');
   }
-}
-Future<void> unlikePost(token, Id) async {
-  final url = 'http://$ip/unfollow/$Id';
+} unlikePost(token, Id) async {
+  final url = 'http://$ip/posts/unlike/$Id/';
 
   try {
     final response = await http.delete(
@@ -108,9 +111,11 @@ Future<void> unlikePost(token, Id) async {
     if (response.statusCode == 204) {
       // Unfollow successful
       print(' unlike successfully');
+      return false;
     } else {
       // Unfollow failed
       print('Failed to unlike post');
+      return true;
     }
   } catch (error) {
     // Handle error

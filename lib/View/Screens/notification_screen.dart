@@ -117,17 +117,19 @@ class notification_screen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: reversedNotifications.length,
                 itemBuilder: (context, index) {
-                  controller.Text = reversedNotifications[index].detail!;
-                  controller.dateTime = reversedNotifications[index].createdAt!;
-                  controller.imageUrl = reversedNotifications[index].image!;
                   return AnimationConfiguration.staggeredList(
                     position: index,
-                    duration: const Duration(milliseconds: 1400),
+                    duration: const Duration(milliseconds: 500),
                     child: SlideAnimation(
                       horizontalOffset: 300,
                       child: FadeInAnimation(
                           duration: const Duration(milliseconds: 500),
-                          child: Notifications()
+                          child: Notifications(id: reversedNotifications[index].id,
+                            type:reversedNotifications[index].type ,
+                            imageUrl:reversedNotifications[index].image! ,
+                            dateTime:reversedNotifications[index].createdAt! ,
+                            text:  reversedNotifications[index].detail!,
+                          )
                       ),
                     ),
                   );}

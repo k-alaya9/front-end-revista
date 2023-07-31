@@ -30,7 +30,7 @@ class post {
     json['author'] != null ? new Author.fromJson(json['author']) : null;
     content = json['content'];
     link = json['link'];
-    topics = json['topics'].cast<int>();
+    // topics = json['topics'];
     image = json['image'];
     likesCount = json['likes_count'];
     commentsCount = json['comments_count'];

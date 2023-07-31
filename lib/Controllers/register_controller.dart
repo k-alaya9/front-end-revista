@@ -49,6 +49,24 @@ class register_Controller extends GetxController {
       initialDate: SelectedDate.value,
       firstDate: DateTime(1900),
       lastDate: DateTime(2500),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(context).primaryColor, // <-- SEE HERE
+              onPrimary: Colors.white,
+              surface: Get.isDarkMode?Colors.white:Colors.black// <-- SEE HERE
+               // <-- SEE HERE
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary:Theme.of(context).accentColor, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (datepicked != null && SelectedDate.value != datepicked) {
       SelectedDate.value = datepicked;

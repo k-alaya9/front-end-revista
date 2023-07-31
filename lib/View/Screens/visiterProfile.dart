@@ -19,6 +19,7 @@ class visiterProfileScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: CupertinoNavigationBar(
+          backgroundColor: Theme.of(context).backgroundColor,
           leading: Material(
             color: Theme.of(context).backgroundColor,
             child: IconButton(onPressed: (){
@@ -36,8 +37,8 @@ class visiterProfileScreen extends StatelessWidget {
             return SmartRefresher(
               header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
               onRefresh: controller.onRefresh,
-              enablePullUp: true,
-              enablePullDown: false,
+              enablePullUp: false,
+              enablePullDown: true,
               controller: controller.refreshController,
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(5),
@@ -68,14 +69,16 @@ class visiterProfileScreen extends StatelessWidget {
                           ),
                           child: SingleChildScrollView(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Column(
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(top: 60),
+                                      margin: EdgeInsets.only(top: 60,left:15),
+                                      alignment: Alignment.center,
                                       child: Text(
-                                        controller.firstname!.value+controller.lastName!.value,
+                                        controller.firstname!.value+" "+controller.lastName!.value,
                                         style:
                                         Theme.of(context).textTheme.headline1,
                                       ),
@@ -85,6 +88,7 @@ class visiterProfileScreen extends StatelessWidget {
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         ElevatedButton(
                                           onPressed: ()async{
@@ -106,6 +110,7 @@ class visiterProfileScreen extends StatelessWidget {
                                         Container(
                                           child: Text(
                                             controller.Username!.value,
+                                            textAlign: TextAlign.center,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1!
@@ -140,6 +145,7 @@ class visiterProfileScreen extends StatelessWidget {
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.all(20),
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     controller.bio!.value,
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
@@ -348,12 +354,12 @@ class visiterProfileScreen extends StatelessWidget {
                       ],
                     ),
                     Positioned(
-                      top: MediaQuery.of(context).size.height / 9,
-                      right: MediaQuery.of(context).size.width * 0.28,
+                      top: MediaQuery.of(context).size.height / 6,
+                      right: MediaQuery.of(context).size.width * 0.29,
                       child: GestureDetector(
                         onTap:()=>controller.showImage(controller.profileImage!.value),
                         child: Container(
-                          height: MediaQuery.of(context).size.height * 0.3,
+                          height: 150,
                           width: 150,
                           decoration: BoxDecoration(
                             border: Border.all(color: Theme.of(context).backgroundColor,width: 5),

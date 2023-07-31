@@ -19,7 +19,7 @@ import '../Widgets/photoMessage.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
-  var x = Get.put(ChatController());
+  var x = Get.put(ChatController(),);
   var y = Get.put(messageBubbleController());
   var replied = false.obs;
 
@@ -43,15 +43,16 @@ class ChatScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_ios)),
         ),
         middle: Material(
-            child: Text(controller.username),
-            color: Theme.of(context).backgroundColor),
+            color: Theme.of(context).backgroundColor,
+            child: GetX(builder: (ChatController controller) =>Text(controller.username.value),)),
         trailing: Material(
           color: Theme.of(context).backgroundColor,
           child: InkWell(
             onTap: () {},
-            child: CircleAvatar(
+            child: GetX(builder: (ChatController controller)=>CircleAvatar(
               radius: 20,
-              backgroundImage: NetworkImage(controller.imageUrl!),
+              backgroundImage: NetworkImage(controller.imageUrl.value),
+            ),
             ),
           ),
         ),
@@ -123,7 +124,7 @@ class ChatScreen extends StatelessWidget {
                             id: controller.messages[index].id,
                             message: controller.messages[index].text,
                             userName: '',
-                            userImage: isMe ? '' : controller.imageUrl,
+                            userImage: isMe ? '' : controller.imageUrl.value,
                             urlImage: controller.messages[index].image,
                             isMe: isMe,
                             TimeSent: controller.messages[index].createdAt,
@@ -150,6 +151,7 @@ class ChatScreen extends StatelessWidget {
                                 ? Reaction.angry.obs
                                 : Reaction.none.obs,
                             isReplied: false,
+                              isSending: false.obs,
                           ),
                         ),
                       ),
@@ -513,28 +515,48 @@ class ChatScreen extends StatelessWidget {
                                               ),
                                               IconButton(
                                                   onPressed: () {
+                                                    var isScrolled=false.obs;
                                                     FocusScope.of(context)
                                                         .unfocus();
                                                     controller.fetchPhotos();
                                                     Get.bottomSheet(
-                                                      MediaQuery(
-                                                        data: MediaQueryData
-                                                            .fromWindow(
-                                                                WidgetsBinding
-                                                                    .instance
-                                                                    .window),
-                                                        child: SafeArea(
+                                                      SafeArea(
+                                                        child: Container(
+                                                          height: isScrolled.value?MediaQuery.of(context).size.height/2:MediaQuery.of(context).size.height-40,
                                                           child: Column(
                                                             children: [
-                                                              Container(
-                                                                width: 60,
-                                                                height: 5,
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    borderRadius:
-                                                                        BorderRadius.all(
-                                                                            Radius.circular(12.0))),
+                                                              GestureDetector(
+                                                                onVerticalDragStart: (val){
+                                                                  isScrolled.value=true;
+                                                                },
+                                                                onVerticalDragEnd: (val){
+                                                                  isScrolled.value=false;
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    Container(
+                                                                      width: 60,
+                                                                      height: 5,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          borderRadius:
+                                                                              BorderRadius.all(
+                                                                                  Radius.circular(12.0))),
+                                                                    ),
+                                                                    Container(
+                                                                        padding:
+                                                                        const EdgeInsets
+                                                                            .all(10),
+                                                                        child: Text(
+                                                                          'Gallery',
+                                                                          style: Theme.of(
+                                                                              context)
+                                                                              .textTheme
+                                                                              .headline1,
+                                                                        )),
+                                                                  ],
+                                                                ),
                                                               ),
                                                               Container(
                                                                   padding:

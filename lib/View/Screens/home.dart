@@ -12,60 +12,86 @@ import '../Widgets/drawerWidget.dart';
 import '../Widgets/post.dart';
 
 class PostScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     var x = Get.put(viewPostController());
-    viewPostController controller=Get.find();
+    viewPostController controller = Get.find();
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        padding: EdgeInsetsDirectional.zero ,
+        padding: EdgeInsetsDirectional.zero,
         leading: Material(
           color: Theme.of(context).backgroundColor,
           child: DrawerWidget(),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
-        middle: Text('Home',style: Theme.of(context).textTheme.headline1),
+        middle: Text('Home', style: Theme.of(context).textTheme.headline1),
         trailing: Material(
           color: Theme.of(context).backgroundColor,
-          child: IconButton(onPressed: (){
-            Get.toNamed('/notification');
-          }, icon: Icon(Icons.notifications,size: 28,)),
+          child: IconButton(
+              onPressed: () {
+                Get.toNamed('/notification');
+              },
+              icon: Icon(
+                Icons.notifications,
+                size: 28,
+              )),
         ),
       ),
-      body:  SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: true,
-        header:ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
-        controller: controller.refreshController,
-        onRefresh: controller.onRefresh,
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemCount: controller.Posts.length,
-          itemBuilder:(ctx,index){
-            var name=controller.Posts[index].author!.user!.firstName! +controller.Posts[index].author!.user!.lastName!;
-            var date=DateFormat('yyyy-mm-dd').parse(controller.Posts[index].createdAt!);
-            print(controller.Posts[index].topics);
-            return Post(
-              authorId: controller.Posts[index].author!.id!,
-              topics: controller.Posts[index].topics!,
-              id: controller.Posts[index].id,
-              imageUrl: controller.Posts[index].image,
-              username: controller.Posts[index].author!.user!.username,
-              date: date,
-              url: controller.Posts[index].link,
-              numberOfLikes: controller.Posts[index].likesCount.obs,
-              textPost: controller.Posts[index].content,
-              nickName:name,
-              numberOfComments: controller.Posts[index].commentsCount.toString().obs,
-              userImage: controller.Posts[index].author!.user!.profileImage,
-              key: ValueKey(controller.Posts[index].id),
-            );
-          } ,
-        ),
-      ),
+      body: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
+          header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
+          controller: controller.refreshController,
+          onRefresh: controller.onRefresh,
+          child: GetX(
+            builder: (viewPostController controller) => ListView.builder(
+              physics: const ScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: controller.Posts.length,
+              itemBuilder: (ctx, index) {
+                var name = controller.Posts[index].author!.user!.firstName! +
+                    controller.Posts[index].author!.user!.lastName!;
+                var date = DateFormat('yyyy-mm-dd')
+                    .parse(controller.Posts[index].createdAt!);
+                print(controller.Posts[index].topics);
+                if (controller.Posts.isNotEmpty) {
+                  return Column(
+                    children: [
+                      Post(
+                        authorId: controller.Posts[index].author!.id!,
+                        topics: [],
+                        id: controller.Posts[index].id,
+                        imageUrl: controller.Posts[index].image,
+                        username:
+                            controller.Posts[index].author!.user!.username,
+                        date: date,
+                        url: controller.Posts[index].link,
+                        numberOfLikes: controller.Posts[index].likesCount.obs,
+                        textPost: controller.Posts[index].content,
+                        nickName: name,
+                        numberOfComments: controller.Posts[index].commentsCount
+                            .toString()
+                            .obs,
+                        userImage:
+                            controller.Posts[index].author!.user!.profileImage,
+                        key: ValueKey(controller.Posts[index].id),
+                      ),
+                      Container(
+                        color: Theme.of(context).backgroundColor,
+                          child: Divider(
+                        color: Get.isDarkMode ? Colors.white : Colors.black,
+                      )),
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: Text('u dont ahve any posts'),
+                  );
+                }
+              },
+            ),
+          )),
     );
   }
-
 }

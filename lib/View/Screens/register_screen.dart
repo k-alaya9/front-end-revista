@@ -13,176 +13,178 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20.0),
-      child: Form(
-        key: controller.formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            Container(
-              alignment: Alignment.topLeft,
-              child: Text("Register",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline1!
-                      .copyWith(fontSize: 35)),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            ImageProfile(),
-            const SizedBox(
-              height: 40,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildfirstname(context),
-                const Spacer(),
-                buildlastname(context),
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            buildusername(context),
-            const SizedBox(
-              height: 15,
-            ),
-            buildemail(context),
-            const SizedBox(
-              height: 15,
-            ),
-            buildpassword(context),
-            const SizedBox(
-              height: 15,
-            ),
-            buildconfpassword(context),
-            const SizedBox(
-              height: 15,
-            ),
-            buildphonenumber(context),
-            const SizedBox(
-              height: 15,
-            ),
-            buildbirthdate(context),
-            const SizedBox(
-              height: 15,
-            ),
-            Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Gender:',
+    return SizedBox(
+      height: MediaQuery.of(context).size.height-40,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: controller.formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                child: Text("Register",
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1!
-                        .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GetX<register_Controller>(
-                      builder: (register_Controller controller) => InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        onTap: () => controller.switchGenderMale(),
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            shape: BoxShape.circle,
-                            border: controller.isMale.value
-                                ? Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 5)
-                                : null,
-                          ),
-                          child: const Icon(
-                            Icons.male,
-                            size: 40,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    GetX<register_Controller>(
-                      builder: (register_Controller controller) => InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        onTap: () => controller.switchGenderFemale(),
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            shape: BoxShape.circle,
-                            border: controller.isFemale.value
-                                ? Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 5)
-                                : null,
-                          ),
-                          child: const Icon(
-                            Icons.female,
-                            size: 40,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            termAndCondaoitions(context),
-            const SizedBox(
-              height: 15,
-            ),
-            buildRegisterButton(context),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                        .headline1!
+                        .copyWith(fontSize: 35)),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ImageProfile(),
+              const SizedBox(
+                height: 40,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Expanded(
-                      child: Divider(
-                    color: Colors.black,
-                    indent: 80,
-                  )),
-                  Text(
-                    'OR',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const Expanded(
-                      child: Divider(
-                    color: Colors.black,
-                    endIndent: 80,
-                  )),
+                  buildfirstname(context),
+                  const Spacer(),
+                  buildlastname(context),
                 ],
               ),
-            ),
-            SizedBox(height: 15,),
-            buildRegisterWithGoogleButton(context),
-            const SizedBox(
-              height: 15,
-            ),
-          ],
+              const SizedBox(
+                height: 15,
+              ),
+              buildusername(context),
+              const SizedBox(
+                height: 15,
+              ),
+              buildemail(context),
+              const SizedBox(
+                height: 15,
+              ),
+              buildpassword(context),
+              const SizedBox(
+                height: 15,
+              ),
+              buildconfpassword(context),
+              const SizedBox(
+                height: 15,
+              ),
+              buildphonenumber(context),
+              const SizedBox(
+                height: 15,
+              ),
+              buildbirthdate(context),
+              const SizedBox(
+                height: 15,
+              ),
+              Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Gender:',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GetX<register_Controller>(
+                        builder: (register_Controller controller) => InkWell(
+                          borderRadius: BorderRadius.circular(50),
+                          onTap: () => controller.switchGenderMale(),
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                              shape: BoxShape.circle,
+                              border: controller.isMale.value
+                                  ? Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 5)
+                                  : null,
+                            ),
+                            child: const Icon(
+                              Icons.male,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      GetX<register_Controller>(
+                        builder: (register_Controller controller) => InkWell(
+                          borderRadius: BorderRadius.circular(50),
+                          onTap: () => controller.switchGenderFemale(),
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                              shape: BoxShape.circle,
+                              border: controller.isFemale.value
+                                  ? Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 5)
+                                  : null,
+                            ),
+                            child: const Icon(
+                              Icons.female,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              termAndCondaoitions(context),
+              const SizedBox(
+                height: 15,
+              ),
+              buildRegisterButton(context),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Expanded(
+                        child: Divider(
+                      color: Colors.black,
+                      indent: 80,
+                    )),
+                    Text(
+                      'OR',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    const Expanded(
+                        child: Divider(
+                      color: Colors.black,
+                      endIndent: 80,
+                    )),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15,),
+              buildRegisterWithGoogleButton(context),
+              const SizedBox(
+                height: 15,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -664,7 +666,7 @@ Widget ImageProfile() {
         children: <Widget>[
           GetX(
             builder: (register_Controller controller) => CircleAvatar(
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.grey,
               radius: 85.0,
               backgroundImage: controller.fileImage!.value != null
                   ? FileImage(controller.fileImage!.value)

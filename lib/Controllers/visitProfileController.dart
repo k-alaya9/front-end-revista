@@ -93,7 +93,7 @@ class visitProfileController extends GetxController {
       var token = sharedPreferences!.getString('access_token');
 
       print(id.value);
-      followId= await followUser(token, id.value).obs;
+      followId= await followUser(token, id.value);
     }
   }
 
@@ -137,8 +137,8 @@ class visitProfileController extends GetxController {
   fetchData() async {
     var token = sharedPreferences!.getString('access_token');
     try {
-
-        followId.value=Get.arguments['followid'];
+      // if(Get.arguments['followid'])
+      //   followId.value=Get.arguments['followid'];
         print(followId.value);
       id!.value = Get.arguments['id'];
       print(id!.value);
