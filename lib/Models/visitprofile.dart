@@ -60,7 +60,7 @@ class User {
   String? firstName;
   String? lastName;
   String? profileImage;
-  DateTime? birthDate;
+  String? birthDate;
   String? phoneNumber;
   String? gender;
 

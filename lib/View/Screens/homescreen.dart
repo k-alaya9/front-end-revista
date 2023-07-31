@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
           bottomNavigationBar: GetX(builder: (homeController controller)=> controller.isNavBarHidden.value
               ? SizedBox.shrink()
               : CurvedNavigationBar(
-            height: 70,
+            height: 50,
             color:Theme.of(context).primaryColor,
             backgroundColor: Colors.transparent,
             index: controller.pageindex.value,

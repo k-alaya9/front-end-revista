@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 
 class topicItem{
   int id;
-  String name;
-  String imageUrl;
+  var name;
+  var imageUrl;
   RxBool pressed;
   topicItem({required this.id,required this.name,required this.imageUrl,required this.pressed});
 

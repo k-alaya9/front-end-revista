@@ -10,8 +10,8 @@ class notification {
       {required this.id, required this.image, required this.type, required this.detail, required this.createdAt, required this.user});
 
   notification.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    image = json['image'];
+    id = json['forward_id'];
+    image = json['profile_image'];
     type = json['type'];
     detail = json['detail'];
     createdAt = json['created_at'];

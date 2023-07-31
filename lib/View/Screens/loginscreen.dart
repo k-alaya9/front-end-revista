@@ -53,7 +53,7 @@ class login extends StatelessWidget {
                 animationDuration: const Duration(seconds: 1),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
-                color: const Color(0xffF49741),
+                color: Theme.of(context).accentColor,
                 height: 40,
                 padding: const EdgeInsets.all(15),
                 child: Text(
@@ -122,6 +122,7 @@ class login extends StatelessWidget {
                       onPressed: () {
                         Get.bottomSheet(
                           Register(),
+
                           backgroundColor: Theme.of(context).backgroundColor,
                           elevation: 10,
                           isScrollControlled: true,

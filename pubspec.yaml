@@ -74,6 +74,9 @@ dependencies:
   audio_waveforms: ^1.0.4
   flutter_feed_reaction: ^0.0.4
   visibility_detector: ^0.4.0+2
+  flutter_background_service: ^3.0.1
+  workmanager: ^0.5.1
+  cron: ^0.5.1
 
 dev_dependencies:
   flutter_test:
@@ -138,6 +141,11 @@ flutter:
     - asset/animations/wow2.png
     - asset/animations/sad2.png
     - asset/animations/angry2.png
+    - asset/animations/logo.mp4.lottie.json
+    - asset/animations/logoscreen.mp4.lottie.json
+    - asset/animations/logoscreen.mp4.lottie (2).json
+    - asset/animations/logoscreen.mp4.lottie (3).json
+    - asset/animations/logo.mp4.lottie (1).json
     # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

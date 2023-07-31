@@ -28,6 +28,7 @@ Future<void> login(String username, String password) async {
       await saveTokens(accessToken);// Save the tokens to shared preferences
       await saveid(accessid);
       final list=await getYourTopic(accessToken);
+      print(list);
       if(list==null){
         sharedPreferences!.setBool('topicsSelected',false);
         Get.offAllNamed('/topics');

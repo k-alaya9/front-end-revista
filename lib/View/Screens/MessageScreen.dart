@@ -9,6 +9,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/messageScreenController.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../Controllers/notifications_controller.dart';
 import '../Widgets/drawerWidget.dart';
 
 class MessageScreen extends StatelessWidget {
@@ -31,7 +32,7 @@ class MessageScreen extends StatelessWidget {
         body:FutureBuilder(
             future: controller.fetchData(),
             builder: (context,snapshot){
-              if(snapshot.connectionState == ConnectionState.waiting)
+              if(snapshot.connectionState == ConnectionState.waiting) {
                 return Shimmer.fromColors(
                     baseColor: Colors.grey.shade500,
                     highlightColor: Colors.grey.shade700,
@@ -81,6 +82,7 @@ class MessageScreen extends StatelessWidget {
                         ),
                       ),
                     ));
+              }
               // final reversedNotifications =List.generate(10, (index) => print(index));
               // var date=DateTime.now();
               return SmartRefresher(
@@ -95,11 +97,13 @@ class MessageScreen extends StatelessWidget {
                     itemCount: controller.chats.length,
                     itemBuilder: (context, index) {
                       var date;
-                    if(controller.chats[index].createdAt!=null)
-                   date =DateFormat('yyyy-mm-dd').add_Hm().parse(controller.chats[index].createdAt!);
-                   else
-                     date=DateTime.now();
-                      return AnimationConfiguration.staggeredList(
+                    if(controller.chats[index].lastMessage!.createdAt!=null) {
+                      date =DateFormat('yyyy-mm-dd').add_Hm().parse(controller.chats[index].lastMessage!.createdAt!.replaceAll('T',' '));
+                    } else {
+                      date=DateTime.now();
+                    }
+                   if(controller.chats.isNotEmpty) {
+                     return AnimationConfiguration.staggeredList(
                         position: index,
                         duration: const Duration(milliseconds:500),
                         child: SlideAnimation(
@@ -112,6 +116,8 @@ class MessageScreen extends StatelessWidget {
                                 child: ListTile(
                                   contentPadding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
                                   onTap: (){
+                                    print(controller.chats[index].id!);
+
                                     Get.toNamed('/chatScreen',arguments: {
                                       'chat_id': controller.chats[index].id!,
                                       'username':controller.chats[index].user!.username,
@@ -119,14 +125,32 @@ class MessageScreen extends StatelessWidget {
                                     });
                                   },
                                   style: ListTileStyle.list,
-                                  leading: Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(image: NetworkImage(controller.chats[index].user!.profileImage!)),
-                                    ),
-                                    margin: EdgeInsets.all(5),
+                                  leading: Stack(
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(image: NetworkImage(controller.chats[index].user!.profileImage!)),
+                                        ),
+                                        margin: EdgeInsets.all(5),
+                                      ),
+                                      Positioned(
+                                          left: 35,
+                                          bottom: 5,
+                                          child: GetX(
+                                            builder: (notificationsController controller) =>
+                                                Container(
+                                                  width: 12,
+                                                  height: 12,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: controller.isOnline.value==true?Colors.green:Colors.grey,
+                                                  ),
+                                                ),
+                                          )),
+                                    ],
                                   ),
                                   title: Text(controller.chats[index].user!.username!,style: Theme.of(context).textTheme.bodyText1,),
                                   subtitle: controller.chats[index].lastMessage!=null?Text(controller.chats[index].lastMessage!.type=='text'?controller.chats[index].lastMessage!.text!:
@@ -157,7 +181,10 @@ class MessageScreen extends StatelessWidget {
                           ),
                         ),
                       );
-
+                   }
+                   else{
+                     return Center(child: Text('You Dont have any chat yet'),);
+                   }
                   }
 
                 )

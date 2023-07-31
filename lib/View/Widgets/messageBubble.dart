@@ -25,10 +25,10 @@ class MessageBubble extends StatelessWidget {
   final selected;
   final reaction;
   final isReplied;
-
+  final isSending;
   MessageBubble({this.message, this.userName, this.userImage, this.urlImage,
        this.isMe, this.TimeSent, this.urlVoice,
-      this.key, this.isTyping,required this.id, this.selected, this.reaction,this.isReplied});
+      this.key, this.isTyping,required this.id, this.selected, this.reaction,this.isReplied,this.isSending});
   messageBubbleController controller = Get.find();
   ChatController chatController=Get.find();
   var index;
@@ -47,6 +47,15 @@ class MessageBubble extends StatelessWidget {
                     mainAxisAlignment:
                         !isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                     children: [
+                      if(isMe&&chatController.isSending.value&&chatController.messages[chatController.messages.value.length-1].id==id)
+                        Container(
+                          height: 7,
+                          width: 7,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            shape: BoxShape.circle
+                          ),
+                        ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -320,7 +329,7 @@ class MessageBubble extends StatelessWidget {
                         ],
                       ),
                       // user image
-                      if(!isMe)
+                      if(!isMe &&!selected.value)
                         Container(
                           alignment: Alignment.bottomRight,
                           child: CircleAvatar(

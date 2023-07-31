@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Services/apis/login_api.dart';
+import 'package:revista/main.dart';
 
 import '../Models/post.dart';
 import '../Models/topic.dart';
@@ -20,11 +21,47 @@ import '../Services/apis/post_api.dart';
 import 'drawerController.dart';
 
 class viewPostController extends GetxController {
-  List<post> Posts = [
-
-  ];
+  RxList<post> Posts = <post>[
+    // post(
+    //     id: 1,
+    //     image:
+    //         'https://hips.hearstapps.com/hmg-prod/images/singer-lana-del-rey-poses-for-a-portrait-during-a-visit-to-news-photo-1590067847.jpg',
+    //     createdAt: DateTime.now().toString(),
+    //     content: 'Hello',
+    //     likesCount: 0,
+    //     commentsCount: 0,
+    //     topics:[
+    //       topicItem(
+    //         id: 1,
+    //         name: 'Art',
+    //         imageUrl: '',
+    //         pressed: false.obs
+    //       ),
+    //       topicItem(
+    //           id: 1,
+    //           name: 'Art',
+    //           imageUrl: '',
+    //           pressed: false.obs
+    //       ),
+    //       topicItem(
+    //           id: 1,
+    //           name: 'Art',
+    //           imageUrl: '',
+    //           pressed: false.obs
+    //       ),
+    //     ],
+    //     author: Author(
+    //         id: 1,
+    //         user: User(
+    //             id: 1,
+    //             username: 'HoneyMoon',
+    //             firstName: 'Lana',
+    //             lastName: 'Del Rey',
+    //             profileImage:
+    //                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAhbQ9LJrgUwPDcf2NEJ3C1tMUVPGEmDIJ5Q0JVbFed6vLoRQcGMZvdH6hGeFJwSqjGvw&usqp=CAU'))),
+  ].obs;
   RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: true);
   final Key linkKey = GlobalKey();
   drawerController controller = Get.find();
 
@@ -39,7 +76,7 @@ class viewPostController extends GetxController {
   fetchData() async {
     try {
       final List<post> data;
-      final token = getAccessToken();
+      final token =sharedPreferences!.getString('access_token');
       data = await getPostsList(token);
       if (Posts != data) {
         Posts.assignAll(data);

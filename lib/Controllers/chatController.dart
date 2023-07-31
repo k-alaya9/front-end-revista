@@ -16,15 +16,17 @@ import 'package:revista/Models/message.dart';
 import 'package:revista/Services/apis/forgetpassword_api.dart';
 import 'package:web_socket_channel/io.dart';
 
+import '../Services/apis/chat_api.dart';
 import '../Services/apis/linking.dart';
 import '../main.dart';
 
-class ChatController extends GetxController {
+class ChatController extends GetxController  {
   // messageBubbleController controller=Get.find();
   RxList <Messages> messages=<Messages>[].obs;
   late RecorderController RecordController; // Initialise
   final recorder = FlutterSoundRecorder();
   List photos = [];
+  var isSending=false.obs;
   List<AssetEntity> selectedPhotos = [];
   RxString? message=''.obs;
   RxBool isRecorder = false.obs;
@@ -35,24 +37,36 @@ class ChatController extends GetxController {
   final TextEditingController Textcontroller = TextEditingController();
   var isTyping = false.obs;
   var picked = false.obs;
-  var username;
-  var imageUrl='';
+   var username=''.obs;
+   var imageUrl=''.obs;
   var chatId;
   var stream;
   late IOWebSocketChannel  channel;
   @override
-  void onInit() {
+  void onInit()async {
+
     Get.put(visitProfileController());
     visitProfileController visitcontroller=Get.find();
-    if(visitcontroller.Username!.value!=''){
-      username = visitcontroller.Username!.value;
-      imageUrl=visitcontroller.profileImage!.value;
-    }else{
-      username=Get.arguments['username'];
-      imageUrl=Get.arguments['imageUrl'];
-    }
 
     var chatId=Get.arguments['chat_id'];
+
+    if(visitcontroller.Username!.value!=''){
+      username.value = visitcontroller.Username!.value;
+      imageUrl.value=visitcontroller.profileImage!.value;
+    }else if(Get.arguments['username']!=null){
+      username.value=Get.arguments['username'];
+      imageUrl.value =Get.arguments['imageUrl'];
+    }else{
+      print('done');
+      List chats= await getChats(sharedPreferences!.getString('access_token'));
+      for(int i=0;i<chats.length;i++){
+        if(chats[i].id==chatId){
+          username.value=chats[i].user!.username;
+          imageUrl.value=chats[i].user!.profileImage;
+        }
+      }
+    }
+
     this.chatId=chatId;
     var token = sharedPreferences!.getInt('access_id');
     channel = IOWebSocketChannel.connect(
@@ -72,6 +86,8 @@ class ChatController extends GetxController {
             print('hi');
             messages.assignAll(data.messages!);
           }
+          if(messages.length==data.messages!.length)
+            isSending.value=false;
     });
     // stream =channel.stream;
     initRecorder();
@@ -232,6 +248,7 @@ class ChatController extends GetxController {
         authorId: id,
         voiceRecord: null,
         chat: chatId,
+        selected: false,
       ),
     );
     // messages.add(Messages(
@@ -247,6 +264,7 @@ class ChatController extends GetxController {
     //     urlVoice: '',
     //   isReplied: replied.value,
     // ));
+    isSending.value=true;
     var map={
       "command" : "new_message",
       "message_type" : "text",
@@ -259,4 +277,5 @@ class ChatController extends GetxController {
     isTyping.value=false;
     replied.value=false;
   }
+
 }

@@ -66,6 +66,7 @@ Future<List>getTopicsListPost(token) async {
 }
 getYourTopic(token)async{
   try{
+    print('hi');
     final response = await http.get(
         Uri.parse('http://$ip/topics-follow/'),
         headers: {
@@ -76,8 +77,10 @@ getYourTopic(token)async{
       final data = jsonDecode(response.body);
       print(data);
       var map=data.map((e)=>topicItem.fromJson(e)).toList();
+      print(map);
       return map;
     } else {
+      print('hi');
       print(response.body);
       throw Exception(response.body);
     }
