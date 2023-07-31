@@ -122,7 +122,6 @@ class login extends StatelessWidget {
                       onPressed: () {
                         Get.bottomSheet(
                           Register(),
-
                           backgroundColor: Theme.of(context).backgroundColor,
                           elevation: 10,
                           isScrollControlled: true,

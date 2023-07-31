@@ -65,7 +65,7 @@ class CommentScreen extends StatelessWidget {
                             ),
                             Container(
                               alignment: Alignment.centerLeft,
-                              child: Text(controller.format(date),style: TextStyle(fontSize:10,color: Colors.black54 ),),
+                              child: Text(date,style: TextStyle(fontSize:10,color: Colors.black54 ),),
                             ),
                           ],
                         ),
@@ -108,7 +108,7 @@ class CommentScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment:MainAxisAlignment.center,
                             children: [
-                              Text('Likes '+numberOfLikesOfComments.value,style: TextStyle(color: Colors.grey),),
+                              Text('Likes $numberOfLikesOfComments',style: TextStyle(color: Colors.grey),),
                               SizedBox(
                                 width: 40,
                               ),

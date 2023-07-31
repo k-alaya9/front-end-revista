@@ -21,7 +21,7 @@ class CommentController extends GetxController{
   var commentController=TextEditingController();
 
   fetchData() async {
-    try {
+   /* try {
       final List<comment> data;
       final token = getAccessToken();
       data = await getCommentsList(token);
@@ -31,6 +31,6 @@ class CommentController extends GetxController{
       }
     } catch (e) {
       print(e);
-    }
+    }*/
   }
 }

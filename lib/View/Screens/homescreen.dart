@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -19,32 +18,61 @@ import '../../Controllers/homeController.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    homeController controller=Get.find();
+    homeController controller = Get.find();
     return SafeArea(
       child: Scaffold(
-          body: NotificationListener<ScrollNotification>(
-            onNotification: (value)=>controller.onNotification(value) ,
-            child: GetX(builder: (homeController controller)=>controller.Homepages[controller.pageindex.value],)
+        body: NotificationListener<ScrollNotification>(
+            onNotification: (value) => controller.onNotification(value),
+            child: GetX(
+              builder: (homeController controller) =>
+                  controller.Homepages[controller.pageindex.value],
+            )),
+        extendBody: true,
+        bottomNavigationBar: GetX(
+          builder: (homeController controller) =>
+              controller.isNavBarHidden.value
+                  ? SizedBox.shrink()
+                  : TabBar(
+                      onTap: (val) => controller.pageindx(val),
+                      controller: controller.TapController,
+                      unselectedLabelColor: Colors.grey,
+                      indicatorColor: Theme.of(context).primaryColor,
+                      indicator: BoxDecoration(
+                          border: Border(
+                        top: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 2),
+                      )),
+                      labelColor: Theme.of(context).primaryColor,
+                      labelPadding: EdgeInsets.all(10),
+                      automaticIndicatorColorAdjustment: true,
+                      isScrollable: false,
+                      tabs: [
+                        Icon(
+                          Icons.home,
+                        ),
+                        Icon(
+                          Icons.search,
+                        ),
+                        Icon(Icons.messenger_outline),
+                        Icon(Icons.notifications_active_outlined)
+                      ],
+                    ),
+        ),
+        floatingActionButton: Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            shape: BoxShape.circle
           ),
-          extendBody: true,
-          bottomNavigationBar: GetX(builder: (homeController controller)=> controller.isNavBarHidden.value
-              ? SizedBox.shrink()
-              : CurvedNavigationBar(
-            height: 50,
-            color:Theme.of(context).primaryColor,
-            backgroundColor: Colors.transparent,
-            index: controller.pageindex.value,
-            onTap: (val)=>controller.pageindx(val),
-            animationDuration: Duration(milliseconds: 1),
-            items: [
-              Icon(Icons.home,color: Colors.white,),
-              Icon(Icons.search,color: Colors.white,),
-              IconButton(icon:  Icon(Icons.add,color: Colors.white,),onPressed: (){
-                Get.to(()=>CreatePost());
-              }),
-              Icon(Icons.chat,color: Colors.white,),
-            ],
-          ),)
+            child: FloatingActionButton(
+          onPressed: () => Get.toNamed('/CreatePost'),
+          child: Icon(Icons.add),
+          backgroundColor: Theme.of(context).primaryColor,
+              elevation: 0,
+              isExtended: true,
+        )),
+        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

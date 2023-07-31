@@ -5,12 +5,13 @@ class post {
   Author? author;
   String? content;
   String? link;
-  List<topicItem>? topics;
+  List? topics;
   String? image;
   int? likesCount;
   int? commentsCount;
   String? createdAt;
   String? updatedAt;
+  var likeId;
 
   post(
       {this.id,
@@ -21,7 +22,7 @@ class post {
         this.image,
         this.likesCount,
         this.commentsCount,
-        this.createdAt,
+        this.createdAt,this.likeId,
         this.updatedAt});
 
   post.fromJson(Map<String, dynamic> json) {
@@ -30,11 +31,12 @@ class post {
     json['author'] != null ? new Author.fromJson(json['author']) : null;
     content = json['content'];
     link = json['link'];
-    // topics = json['topics'];
+     topics = json['topics_details'];
     image = json['image'];
     likesCount = json['likes_count'];
     commentsCount = json['comments_count'];
     createdAt = json['created_at'];
+    likeId=json['like_id'];
     updatedAt = json['updated_at'];
   }
 
@@ -46,12 +48,13 @@ class post {
     }
     data['content'] = this.content;
     data['link'] = this.link;
-    data['topics'] = this.topics;
+    data['topics_details'] = this.topics;
     data['image'] = this.image;
     data['likes_count'] = this.likesCount;
     data['comments_count'] = this.commentsCount;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['like_id']=this.likeId;
     return data;
   }
 }

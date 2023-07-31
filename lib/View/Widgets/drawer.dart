@@ -37,15 +37,16 @@ class Home extends StatelessWidget {
         return Scaffold(
           body: SafeArea(
             child: Container(
+              height: MediaQuery.of(context).size.height,
               alignment: Alignment.center,
               color: Theme.of(context).backgroundColor,
               child: Lottie.asset('asset/animations/logo.mp4.lottie (1).json',
+                  alignment: Alignment.center,
                   repeat: true,
                   animate: true,
                   reverse: true,
                   frameRate: FrameRate.max,
                   fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height),
             ),
           ),

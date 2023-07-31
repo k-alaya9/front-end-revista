@@ -30,8 +30,9 @@ class Post extends StatelessWidget {
   final url;
   final textPost;
   final userImage;
-  final List<topicItem>topics;
+  final topics;
   final authorId;
+  var likeId;
   Post(
       {super.key,
         required this.authorId,
@@ -42,12 +43,13 @@ class Post extends StatelessWidget {
       required this.numberOfLikes,
       required this.numberOfComments,
       required this.url,
-        required this.textPost, this.userImage,required this.id,required this.topics});
+        required this.textPost, this.userImage,required this.id,required this.topics, this.likeId});
 
   @override
   Widget build(BuildContext context) {
     viewPostController controller = Get.find();
     var id;
+    print(topics);
     return Container(
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
@@ -88,22 +90,30 @@ class Post extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
-                    // Container(
-                    //   height: 40,
-                    //   width: MediaQuery.of(context).size.width - 20,
-                    //   child: ListView.builder(
-                    //       itemCount: topics.length,
-                    //       shrinkWrap: true,
-                    //       physics: ScrollPhysics(),
-                    //       scrollDirection: Axis.horizontal,
-                    //       itemBuilder: (context, index) {
-                    //         print(topics);
-                    //         return Padding(
-                    //             padding: EdgeInsets.symmetric(
-                    //                 horizontal: 5, vertical: 10),
-                    //             child: TopicWidget(id: topics[index].id,name: topics[index].name,pressed: false.obs,)
-                    //           );}),
-                    // ),
+                    Container(
+                      height: 40,
+                      child: ListView.builder(
+                          itemCount: topics.length,
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            print(topics);
+                            return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 10),
+                                child: Container(
+                                    width: 80,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                    child: Center(child: Text(topics[index]!['name'],style: Theme.of(context).textTheme.bodyText1),)
+                                ),
+                              );}),
+                    ),
                   ],
                 ),
               ],
@@ -196,18 +206,20 @@ class Post extends StatelessWidget {
             children: [
               GetBuilder(
                 builder: (viewPostController controller) => LikeButton(
-                  likeCount: numberOfLikes.value,
+                  likeCount:numberOfLikes.value,
+                  isLiked: likeId!=0?true:false,
                   onTap: (like)async{
-                    like!=like;
+                    print(likeId);
                     var token=sharedPreferences!.getString('access_token');
-
-                    if(!like){
-                      like =(id=await likePost(token,this.id))!=null?true:false;
-                      print(id);
-                    }else{
-                      print(id);
-                    like = await unlikePost(token, id);
+                    if(!like&&likeId==0){
+                      like =(likeId=await likePost(token,this.id))!=null?true:false;
+                      print(likeId);
+                    }else if(like&&likeId!=0){
+                      print(likeId);
+                    like = await unlikePost(token, likeId);
+                    likeId=0;
                     }
+                    // like=!like;
                     return like;
                   },
                   likeBuilder: (isTapped) {
@@ -223,10 +235,9 @@ class Post extends StatelessWidget {
               Row(
                 children: [
                   InkWell(
-
                       onTap: () {
                         Get.to(ViewPost(),arguments: {
-                          'postId':id
+                          'postId':this.id
                         });
                       },
                       child: Icon(

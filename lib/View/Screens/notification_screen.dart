@@ -28,16 +28,16 @@ class notification_screen extends StatelessWidget {
         appBar: CupertinoNavigationBar(
           padding: EdgeInsetsDirectional.zero,
           border: null,
-          leading: Material(
-              color: Theme
-                  .of(context)
-                  .backgroundColor,
-              child: IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(Icons.arrow_back_ios),
-                  splashRadius: 1)),
+          // leading: Material(
+          //     color: Theme
+          //         .of(context)
+          //         .backgroundColor,
+          //     child: IconButton(
+          //         onPressed: () {
+          //           Get.back();
+          //         },
+          //         icon: Icon(Icons.arrow_back_ios),
+          //         splashRadius: 1)),
           middle: Text('Notifications  ',
               style:
               Theme

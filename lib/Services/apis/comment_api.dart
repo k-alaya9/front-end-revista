@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 getPost(token, postId) async {
   try {
+    print('hi');
     final response = await http.get(
       Uri.parse('http://$ip/posts/post/$postId/'),
       headers: {'Authorization': 'Token $token'},
@@ -15,6 +16,7 @@ getPost(token, postId) async {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      print(data);
       final Post = post.fromJson(data);
       return Post;
     } else {
@@ -29,10 +31,11 @@ getPost(token, postId) async {
 getCommentsList(token,postId)async{
 
   try {
-    final response = await http.get(Uri.parse('http://$ip/post/comments/$postId'),
+    final response = await http.get(Uri.parse('http://$ip/posts/comments/$postId'),
         headers: {'Authorization': 'Token $token'});
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      print(data);
       final comments = data.map<comment>((e) {
         return comment.fromJson(e);
       }).toList();
@@ -48,9 +51,10 @@ getCommentsList(token,postId)async{
 }
 
 newComment(int postId, String content, String token,  ) async{
-  final data = {'comment': content};
+  final data = {'content': content};
+  print(content);
   try {
-    final response = await http.post(Uri.parse('http://$ip/comments/'),
+    final response = await http.post(Uri.parse('http://$ip/posts/comments/$postId/'),
         headers: {
       'Authorization': 'Token $token',
           'Content-Type': 'application/json',},

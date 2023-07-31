@@ -7,6 +7,8 @@ import '../../Controllers/commentController.dart';
 import '../../Services/apis/comment_api.dart';
 
 class comment_Screen extends StatelessWidget {
+  var x=Get.put(CommentController());
+
   CommentController controller = Get.find();
   final id;
 
@@ -52,15 +54,17 @@ class comment_Screen extends StatelessWidget {
               ),
             ),
           ),
-          GetX(builder: (CommentController controller)=>IconButton(
+          GetBuilder(builder: (CommentController controller)=>IconButton(
             disabledColor: Colors.grey,
             onPressed: controller.commentController.text.isNotEmpty? () async {
               final content = controller.commentController.text.trim();
               final token = sharedPreferences!.getString(
                   'access_token'); // Replace with the user's authentication token
               final postId = id; // Replace with the ID of the post
+              print(postId);
               await newComment(postId, content, token!);
               controller.commentController.clear();
+
             }:null,
             icon: Icon(
               Icons.send,

@@ -5,12 +5,18 @@ import 'package:revista/Controllers/postController.dart';
 import '../View/Screens/DiscoverScreen.dart';
 import '../View/Screens/MessageScreen.dart';
 import '../View/Screens/home.dart';
+import '../View/Screens/notification_screen.dart';
 import 'ViewPostController.dart';
 
-class homeController extends GetxController{
-
+class homeController extends GetxController with GetSingleTickerProviderStateMixin {
   final ScrollController scrollController = ScrollController();
   RxBool isNavBarHidden = false.obs;
+  late final TapController;
+  @override
+  onInit(){
+    TapController=  TabController(length:Homepages.length , vsync: this,initialIndex: pageindex.value,animationDuration: Duration(milliseconds: 500));
+
+  }
   onNotification(notification) {
     if (notification is ScrollUpdateNotification) {
       if (!isNavBarHidden.value) {
@@ -29,8 +35,8 @@ class homeController extends GetxController{
   List Homepages = [
     PostScreen(),
     DiscoverScreen(),
-    Container(),
     MessageScreen(),
+    notification_screen(),
   ];
 
 
