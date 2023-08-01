@@ -32,45 +32,48 @@ class HomeScreen extends StatelessWidget {
           builder: (homeController controller) =>
               controller.isNavBarHidden.value
                   ? SizedBox.shrink()
-                  : TabBar(
-                      onTap: (val) => controller.pageindx(val),
-                      controller: controller.TapController,
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: Theme.of(context).primaryColor,
-                      indicator: BoxDecoration(
-                          border: Border(
+                  : Container(
+                color: Theme.of(context).backgroundColor,
+                child: TabBar(
+                  onTap: (val) => controller.pageindx(val),
+                  controller: controller.TapController,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: Theme.of(context).primaryColor,
+                  indicator: BoxDecoration(
+                      border: Border(
                         top: BorderSide(
                             color: Theme.of(context).primaryColor, width: 2),
                       )),
-                      labelColor: Theme.of(context).primaryColor,
-                      labelPadding: EdgeInsets.all(10),
-                      automaticIndicatorColorAdjustment: true,
-                      isScrollable: false,
-                      tabs: [
-                        Icon(
-                          Icons.home,
-                        ),
-                        Icon(
-                          Icons.search,
-                        ),
-                        Icon(Icons.messenger_outline),
-                        Icon(Icons.notifications_active_outlined)
-                      ],
+                  labelColor: Theme.of(context).primaryColor,
+                  labelPadding: EdgeInsets.all(10),
+                  automaticIndicatorColorAdjustment: true,
+                  isScrollable: false,
+                  tabs: [
+                    Icon(
+                      Icons.home,
                     ),
+                    Icon(
+                      Icons.search,
+                    ),
+                    Icon(Icons.messenger_outline),
+                    Icon(Icons.notifications_active_outlined)
+                  ],
+                ),
+              )
         ),
-        floatingActionButton: Container(
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-            shape: BoxShape.circle
-          ),
+        floatingActionButton: GetX(builder: (homeController controller)=> controller.isNavBarHidden.value?SizedBox.shrink():Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                shape: BoxShape.circle
+            ),
             child: FloatingActionButton(
-          onPressed: () => Get.toNamed('/CreatePost'),
-          child: Icon(Icons.add),
-          backgroundColor: Theme.of(context).primaryColor,
+              onPressed: () => Get.toNamed('/CreatePost'),
+              child: Icon(Icons.add),
+              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0,
               isExtended: true,
-        )),
+            )),),
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),

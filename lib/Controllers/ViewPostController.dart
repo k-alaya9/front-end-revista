@@ -9,6 +9,8 @@ import '../Models/comment_model.dart';
 class PostController extends GetxController{
   List<comment> Comment=[
     ];
+  var savedId=0.obs;
+  var likeId=0.obs;
   RxBool isAppBarVisible = true.obs;
   var authorId=0.obs;
   var id=0.obs;
@@ -16,7 +18,7 @@ class PostController extends GetxController{
   var username=''.obs;
   var date;
   var nickName=''.obs;
-  var numberOfLikes=''.obs;
+  var numberOfLikes=0.obs;
   var numberOfComments=''.obs;
   var url=''.obs;
   var textPost=''.obs;
@@ -81,8 +83,10 @@ class PostController extends GetxController{
       imageUrl.value=Post.image!;
       username.value=Post.author!.user!.username!;
       date=Post.createdAt!;
+      savedId.value=Post.saveId;
+      likeId.value=Post.likeId;
       nickName.value=Post.author!.user!.firstName!+' '+Post.author!.user!.lastName!;
-      numberOfLikes.value=Post.likesCount.toString();
+      numberOfLikes.value=Post.likesCount!;
       numberOfComments.value=Post.commentsCount.toString();
       url.value=Post.link!;
       textPost.value=Post.content!;

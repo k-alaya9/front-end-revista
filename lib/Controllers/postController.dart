@@ -15,12 +15,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Services/apis/login_api.dart';
 import 'package:revista/main.dart';
 
+import '../Models/chatModel.dart';
 import '../Models/post.dart';
 import '../Models/topic.dart';
 import '../Services/apis/post_api.dart';
 import 'drawerController.dart';
 
 class viewPostController extends GetxController {
+  RxList<chat> chats=<chat>[].obs;
   RxList<post> Posts = <post>[
     // post(
     //     id: 1,
@@ -60,11 +62,12 @@ class viewPostController extends GetxController {
     //             profileImage:
     //                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAhbQ9LJrgUwPDcf2NEJ3C1tMUVPGEmDIJ5Q0JVbFed6vLoRQcGMZvdH6hGeFJwSqjGvw&usqp=CAU'))),
   ].obs;
+  List selectedChats=[].obs;
   RefreshController refreshController =
       RefreshController(initialRefresh: true);
   final Key linkKey = GlobalKey();
   drawerController controller = Get.find();
-
+  var picked=false.obs;
   void onRefresh() async {
     // monitor network fetch
     await fetchData();
@@ -132,4 +135,11 @@ class viewPostController extends GetxController {
       EasyLoading.showError('Failed');
     }
   }
+
+  send(){
+    selectedChats.clear();
+    picked.value=selectedChats.isNotEmpty;
+  }
+
+
 }

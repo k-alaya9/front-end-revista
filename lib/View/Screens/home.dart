@@ -59,6 +59,7 @@ class PostScreen extends StatelessWidget {
                   return Column(
                     children: [
                       Post(
+                        saveId: controller.Posts[index].saveId,
                         likeId: controller.Posts[index].likeId,
                         authorId: controller.Posts[index].author!.id!,
                         topics:controller.Posts[index].topics!,

@@ -124,7 +124,7 @@ likePost(token,id) async {
 }
 
 savePost(token,id)async{
-  final url = 'http://$ip/save/$id';
+  final url = 'http://$ip/posts/save-post/$id/';
   try{
     final response = await http.post(
       Uri.parse(url),
@@ -133,14 +133,15 @@ savePost(token,id)async{
         'Content-Type': 'application/json',
       },
     );
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
       print('User saved post successfully');
       var data=jsonDecode(response.body);
       print(data);
       return data['id'];
     } else {
       // Follow failed
-      print('Failed to like post');
+      print(jsonDecode(response.body));
+      print('Failed to save post');
     }
 
   }catch(e){
@@ -149,19 +150,21 @@ savePost(token,id)async{
 
 }
 
-Future<void> unSavedPost(token,id) async{
-  final url='http://$ip/unsave/$id';
+ unSavedPost(token,id) async{
+  final url='http://$ip/posts/saved-post/$id/';
   try{
-    final response=await http.post(Uri.parse(url),
+    final response=await http.delete(Uri.parse(url),
       headers: {
         'Authorization': 'Token $token',
       },
     );
-    if(response.statusCode == 200)
+    if(response.statusCode == 204)
       {
         print('Unsaved Successfully');
+        return false;
       }else{
       print('Failed to unsaved post');
+      return true;
     }
 
   }catch(e){

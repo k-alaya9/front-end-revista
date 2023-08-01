@@ -12,6 +12,7 @@ class post {
   String? createdAt;
   String? updatedAt;
   var likeId;
+  var saveId;
 
   post(
       {this.id,
@@ -23,6 +24,7 @@ class post {
         this.likesCount,
         this.commentsCount,
         this.createdAt,this.likeId,
+        this.saveId,
         this.updatedAt});
 
   post.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class post {
     createdAt = json['created_at'];
     likeId=json['like_id'];
     updatedAt = json['updated_at'];
+    saveId=json['saved_post_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +58,7 @@ class post {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['like_id']=this.likeId;
+    data['saved_post_id']=this.saveId;
     return data;
   }
 }

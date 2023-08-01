@@ -42,7 +42,7 @@ class ViewPost extends StatelessWidget {
           ),
         ),
         body: GetX(
-          builder: (PostController controller) => controller.username.value.isEmpty
+          builder: (PostController controller) => controller.username.value.isEmpty &&controller.Comment.isEmpty
               ? Center(
                   child: CupertinoActivityIndicator(),
                 )
@@ -56,6 +56,8 @@ class ViewPost extends StatelessWidget {
                       child: Column(
                         children: [
                           Post(
+                            saveId: controller.savedId.value,
+                            likeId: controller.likeId.value,
                             authorId: controller.authorId.value,
                             topics: controller.topics.value,
                             id: controller.id.value,
@@ -65,7 +67,7 @@ class ViewPost extends StatelessWidget {
                             nickName: controller.nickName.value,
                             numberOfComments: controller.numberOfComments,
                             textPost: controller.textPost.value,
-                            numberOfLikes: int.parse(controller.numberOfLikes.value).obs,
+                            numberOfLikes:controller.numberOfLikes,
                             url: controller.url.value,
                             userImage: controller.userImage.value,
                           ),

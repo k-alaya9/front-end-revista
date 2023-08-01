@@ -36,7 +36,21 @@ class CommentScreen extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  padding: EdgeInsets.all(15),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        width: 45,
+                        height: 45,
+                        placeholder: (context, url) =>
+                            Image.asset('asset/image/loading.png'),
+                        imageUrl: userImage),
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.symmetric(vertical: 0,horizontal: 5),
@@ -44,35 +58,24 @@ class CommentScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:MainAxisAlignment.spaceAround,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(30.0),
-                              child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  width: 45,
-                                  height: 45,
-                                  placeholder: (context, url) =>
-                                      Image.asset('asset/image/loading.png'),
-                                  imageUrl: userImage),
-                            ),
-                            SizedBox(width: 20,),
                             Container(
-                              width: MediaQuery.of(context).size.width-225,
                               child: Text(username,style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
+                            SizedBox(width: 50,),
                             Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(date,style: TextStyle(fontSize:10,color: Colors.black54 ),),
+                              child: Text(DateFormat('yyyy-mm-dd').add_Hm().parse(date.replaceAll('T',' ')).toString(),style: TextStyle(fontSize:10,color: Colors.black54 ),overflow: TextOverflow.fade),
                             ),
                           ],
                         ),
                         SizedBox(width: 5,),
                         Container(
-                          padding: EdgeInsets.only(left: 20),
-                          width: MediaQuery.of(context).size.width-200,
+                          padding: EdgeInsets.only(left:0),
+                          width: MediaQuery.of(context).size.width/2,
                           child: ReadMoreText(
                             comment!,
                             trimLines: 3,
@@ -98,7 +101,7 @@ class CommentScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 10,),
                         Container(
-                          margin: EdgeInsets.only(left: 20),
+                          margin: EdgeInsets.only(left: 0),
                           height: 1,
                           width: 220,
                           color: Colors.grey[500],
@@ -124,15 +127,15 @@ class CommentScreen extends StatelessWidget {
                       ]
                   ),
                 ),
-                LikeButton(
-                  likeBuilder: (isTapped) {
-                    return Icon(
-                      Icons.favorite,
-                      color: isTapped ? Colors.deepPurple : Colors.grey,
-                      size: 33,
-                    );
-                  },
-                ),
+                // LikeButton(
+                //   likeBuilder: (isTapped) {
+                //     return Icon(
+                //       Icons.favorite,
+                //       color: isTapped ? Colors.deepPurple : Colors.grey,
+                //       size: 33,
+                //     );
+                //   },
+                // ),
               ],
             ),
           ],
