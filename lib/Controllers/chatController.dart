@@ -73,11 +73,12 @@ class ChatController extends GetxController  {
         Uri.parse('ws://$ip/ws/chat/$chatId/',),
         headers: {'Authorization':token }
     );
-    var map = {"command": "fetch_messages"};
+    var page=1;
+    var map = {"command": "fetch_messages", "page_number": page};
     var body = jsonEncode(map);
     channel.sink.add(body);
     channel.stream.listen((event) {
-      var map = {"command": "fetch_messages"};
+      var map = {"command": "fetch_messages", "page_number": page};
       var body = jsonEncode(map);
       channel.sink.add(body);
           var json=jsonDecode(event);
@@ -238,19 +239,19 @@ class ChatController extends GetxController  {
 
   sendMessage(messagex, username,replied){
     var id=sharedPreferences!.getInt('access_id');
-    messages.add(
-      Messages(
-        reaction: null,
-        id: messages[messages.value.length-1].id!+1,
-        createdAt: DateTime.now().toString(),
-        image: null,
-        text: messagex,
-        authorId: id,
-        voiceRecord: null,
-        chat: chatId,
-        selected: false,
-      ),
-    );
+    // messages.add(
+    //   Messages(
+    //     reaction: null,
+    //     id: messages[messages.value.length==0?0:messages.value.length-1].id!+1,
+    //     createdAt: DateTime.now().toString(),
+    //     image: null,
+    //     text: messagex,
+    //     authorId: id,
+    //     voiceRecord: null,
+    //     chat: chatId,
+    //     selected: false,
+    //   ),
+    // );
     // messages.add(Messages(
     //   selected: false,
     //   id: messages.length,

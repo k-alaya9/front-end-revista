@@ -8,6 +8,7 @@ import 'package:readmore/readmore.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:revista/Controllers/ProfileController.dart';
 import 'package:revista/Services/apis/login_api.dart';
 import 'package:revista/View/Widgets/showImage.dart';
 import 'package:revista/View/Widgets/topicPost.dart';
@@ -55,6 +56,7 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProfileController profileController=Get.find();
     viewPostController controller = Get.find();
     var id;
     print(saveId);
@@ -67,6 +69,7 @@ class Post extends StatelessWidget {
       child: Column(children: [
         InkWell(
           onTap: () {
+            print(authorId);
             Get.toNamed('/visitProfile', arguments: {
               'id': authorId,
             });
@@ -169,14 +172,14 @@ class Post extends StatelessWidget {
                         },
                         child: Container(
                           padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50)
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                                fit: BoxFit.fitWidth,
+                                placeholder: (context, url) =>
+                                    Image.asset('asset/image/loading.png'),
+                                imageUrl: imageUrl!),
                           ),
-                          child: CachedNetworkImage(
-                              fit: BoxFit.fitWidth,
-                              placeholder: (context, url) =>
-                                  Image.asset('asset/image/loading.png'),
-                              imageUrl: imageUrl!),
                         ),
                       ),
                 url == null
@@ -199,9 +202,6 @@ class Post extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
-          height: 10,
-        ),
         Transform.translate(
           offset: Offset(0, 0),
           child: Container(
@@ -219,11 +219,11 @@ class Post extends StatelessWidget {
         Divider(
           color: Get.isDarkMode ? Colors.white : Colors.black54,
           thickness: 1,
-          indent: 70,
+          indent: profileController.View.value?70:10,
           endIndent: 10,
         ),
         Container(
-          margin: EdgeInsets.only(left: 60),
+          margin: EdgeInsets.only(left:profileController.View.value? 60:0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:revista/Services/apis/reply_api.dart';
 import 'package:revista/main.dart';
 
 import '../../Controllers/commentController.dart';
@@ -11,8 +12,8 @@ class comment_Screen extends StatelessWidget {
 
   CommentController controller = Get.find();
   final id;
-
-  comment_Screen({super.key, this.id});
+  final isComment;
+  comment_Screen({super.key, this.id,required this.isComment,});
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +45,22 @@ class comment_Screen extends StatelessWidget {
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                     fillColor: Colors.white,
-                    hintText: 'Enter your comment !',
-                    border: OutlineInputBorder(
+                    hintText: isComment? 'Enter your comment !':'Enter your Reply',
+                  contentPadding: const EdgeInsets.all(10),
+                  focusColor: Theme.of(context).primaryColor,
+                  focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                    )),
+                          color: Theme.of(context).primaryColor, width: 1),
+                      borderRadius: BorderRadius.circular(30)
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 1),
+                      borderRadius: BorderRadius.circular(30)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 1),
+                      borderRadius: BorderRadius.circular(30)),),
               ),
             ),
           ),
@@ -60,9 +70,7 @@ class comment_Screen extends StatelessWidget {
               final content = controller.commentController.text.trim();
               final token = sharedPreferences!.getString(
                   'access_token'); // Replace with the user's authentication token
-              final postId = id; // Replace with the ID of the post
-              print(postId);
-              await newComment(postId, content, token!);
+              isComment?await newComment(id, content, token!):await newReply(id, content, token!);
               controller.commentController.clear();
 
             }:null,

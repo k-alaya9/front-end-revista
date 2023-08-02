@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
+import 'package:revista/Models/savedPost.dart';
 import '../../Models/post.dart';
 import 'linking.dart';
 import 'package:http/http.dart' as http;
@@ -47,7 +48,53 @@ createPost({id, topics, text, link,File? image, token}) async {
     print(e);
   }
 }
+getMyPosts(token)async{
+  try {
+  final response = await http.get(Uri.parse('http://$ip/posts/timeline/'),
+    headers: {
+      'Authorization': 'Token $token',
+      'Content-Type': 'application/json',
+    },);
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    print(data);
+    final posts = data.map<post>((e) {
+      return post.fromJson(e);
+    }).toList();
+    return posts;
+  } else {
+    final data = jsonDecode(response.body);
+    print(data);
+    throw Exception(response.reasonPhrase);
+  }
+} catch (e) {
+  print(e);
+}
 
+}
+getMySavedPosts(token)async{
+  try {
+    final response = await http.get(Uri.parse('http://$ip/posts/saved-posts/'),
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final posts = data.map<savedPost>((e) {
+        return savedPost.fromJson(e);
+      }).toList();
+      return posts;
+    } else {
+      final data = jsonDecode(response.body);
+      print(data);
+      throw Exception(response.reasonPhrase);
+    }
+  } catch (e) {
+    print(e);
+  }
+
+}
 getPostsList(token) async {
   try {
     final response = await http.get(Uri.parse('http://$ip/posts/'),

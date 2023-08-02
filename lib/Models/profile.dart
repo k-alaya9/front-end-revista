@@ -5,10 +5,11 @@ class Profile {
   final bio;
   final followers_count;
   final following_count;
+  int? postsCount;
   final created_at;
   final updated_at;
 
-  Profile({this.id, required this.user, this.cover_image, this.bio, this.followers_count,
+  Profile({this.postsCount,this.id, required this.user, this.cover_image, this.bio, this.followers_count,
       this.following_count, this.created_at, this.updated_at});
 
   factory Profile.fromJson(Map<dynamic, dynamic> json) {
@@ -16,6 +17,7 @@ class Profile {
         id: json['id'],
         user: User.fromJson(json['user']),
         cover_image: json['cover_image'],
+      postsCount :json['posts_count'],
       bio: json['bio'],
       followers_count: json['followers_count'],
       following_count: json['following_count'],

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/ProfileController.dart';
@@ -415,30 +416,80 @@ class ProfileScreen extends StatelessWidget {
                                                 shrinkWrap: true,
                                                 scrollDirection: Axis.vertical,
                                                 itemCount:
-                                                    controller.Posts.length,
+                                                controller.postView.value? controller.Posts.length:controller.SavedPost.length,
                                                 itemBuilder: (ctx, index) {
+                                                  var name = controller.Posts[index].author!.user!.firstName! +
+                                                      controller.Posts[index].author!.user!.lastName!;
+                                                  var date = DateFormat('yyyy-mm-dd')
+                                                      .parse(controller.Posts[index].createdAt!);
+                                                  print(controller.SavedPost.length);
                                                   return AnimatedSwitcher(
                                                       duration: Duration(
                                                           milliseconds: 1000),
                                                       reverseDuration: Duration(
                                                           milliseconds: 1000),
                                                       child:
-                                                          //controller.postView.value
-                                                          // ? Post()
-                                                          //  : SavedPost(),
-                                                          Container());
+                                                      controller.postView.value?Post(
+                                                        saveId: controller.Posts[index].saveId,
+                                                        likeId: controller.Posts[index].likeId,
+                                                        authorId: controller.Posts[index].author!.id!,
+                                                        topics:controller.Posts[index].topics!,
+                                                        id: controller.Posts[index].id,
+                                                        imageUrl: controller.Posts[index].image,
+                                                        username:
+                                                        controller.Posts[index].author!.user!.username,
+                                                        date: date,
+                                                        url: controller.Posts[index].link,
+                                                        numberOfLikes: controller.Posts[index].likesCount.obs,
+                                                        textPost: controller.Posts[index].content,
+                                                        nickName: name,
+                                                        numberOfComments: controller.Posts[index].commentsCount
+                                                            .toString()
+                                                            .obs,
+                                                        userImage:
+                                                        controller.Posts[index].author!.user!.profileImage,
+                                                        key: ValueKey(controller.Posts[index].id),
+                                                      ):Post(
+                                                        saveId: controller.SavedPost[index].post!.savedPostId!,
+                                                        likeId: controller.SavedPost[index].post!.likeId!,
+                                                        authorId: controller.SavedPost[index].post!.author!,
+                                                        topics:controller.SavedPost[index].post!.topicsDetails,
+                                                        id: controller.SavedPost[index].post!.id,
+                                                        imageUrl: controller.SavedPost[index].post!.image,
+                                                        username:
+                                                        controller.SavedPost[index].post!.author!.user!.username,
+                                                        date:DateFormat('yyyy-mm-dd')
+                                                            .parse(controller.SavedPost[index].post!.createdAt!) ,
+                                                        url: controller.SavedPost[index].post!.link,
+                                                        numberOfLikes: controller.SavedPost[index].post!.likesCount.obs,
+                                                        textPost: controller.SavedPost[index].post!.content,
+                                                        nickName: controller.SavedPost[index].post!.author!.user!.firstName!+
+                                                        ' '+
+                                                        controller.SavedPost[index].post!.author!.user!.lastName!,
+                                                        numberOfComments: controller.SavedPost[index].post!.commentsCount
+                                                            .toString()
+                                                            .obs,
+                                                        userImage:
+                                                        controller.SavedPost[index].post!.author!.user!.profileImage,
+                                                        key: ValueKey(controller.SavedPost[index].id),
+                                                      )
+                                                         );
                                                 },
                                               )
                                             : MasonryGridView.builder(
                                                 shrinkWrap: true,
                                                 physics: ScrollPhysics(),
                                                 itemCount:
-                                                    controller.Posts.length,
+                                                 controller.postView.value? controller.Posts.length:controller.SavedPost.length,
                                                 gridDelegate:
                                                     SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount: 2),
-                                                itemBuilder: (context, index) =>
-                                                    AnimatedSwitcher(
+                                                itemBuilder: (context, index) {
+                                                  var name = controller.Posts[index].author!.user!.firstName! +
+                                                      controller.Posts[index].author!.user!.lastName!;
+                                                  var date = DateFormat('yyyy-mm-dd')
+                                                      .parse(controller.Posts[index].createdAt!);
+                                                  return AnimatedSwitcher(
                                                         duration: Duration(
                                                             milliseconds: 1000),
                                                         reverseDuration:
@@ -446,11 +497,53 @@ class ProfileScreen extends StatelessWidget {
                                                                 milliseconds:
                                                                     1000),
                                                         child:
-                                                            // controller.postView.value
-                                                            //     ? Container()
-                                                            //     : SavedPost(),
-                                                            //
-                                                            Container()),
+                                                        !controller.postView.value
+                                                                ? Post(
+                                                          saveId: controller.SavedPost[index].post!.savedPostId!,
+                                                          likeId: controller.SavedPost[index].post!.likeId!,
+                                                          authorId: controller.SavedPost[index].post!.author!,
+                                                          topics:controller.SavedPost[index].post!.topicsDetails,
+                                                          id: controller.SavedPost[index].post!.id,
+                                                          imageUrl: controller.SavedPost[index].post!.image,
+                                                          username:
+                                                          controller.SavedPost[index].post!.author!.user!.username,
+                                                          date:DateFormat('yyyy-mm-dd')
+                                                              .parse(controller.SavedPost[index].post!.createdAt!) ,
+                                                          url: controller.SavedPost[index].post!.link,
+                                                          numberOfLikes: controller.SavedPost[index].post!.likesCount.obs,
+                                                          textPost: controller.SavedPost[index].post!.content,
+                                                          nickName: controller.SavedPost[index].post!.author!.user!.firstName!+
+                                                              ' '+
+                                                              controller.SavedPost[index].post!.author!.user!.lastName!,
+                                                          numberOfComments: controller.SavedPost[index].post!.commentsCount
+                                                              .toString()
+                                                              .obs,
+                                                          userImage:
+                                                          controller.SavedPost[index].post!.author!.user!.profileImage,
+                                                          key: ValueKey(controller.SavedPost[index].id),
+                                                        ):
+                                                            Post(
+                                                            saveId: controller.Posts[index].saveId,
+                                                            likeId: controller.Posts[index].likeId,
+                                                            authorId: controller.Posts[index].author!.id!,
+                                                            topics:controller.Posts[index].topics!,
+                                                            id: controller.Posts[index].id,
+                                                            imageUrl: controller.Posts[index].image,
+                                                            username:
+                                                            controller.Posts[index].author!.user!.username,
+                                                            date: date,
+                                                            url: controller.Posts[index].link,
+                                                  numberOfLikes: controller.Posts[index].likesCount.obs,
+                                                  textPost: controller.Posts[index].content,
+                                                  nickName: name,
+                                                  numberOfComments: controller.Posts[index].commentsCount
+                                                      .toString()
+                                                      .obs,
+                                                  userImage:
+                                                  controller.Posts[index].author!.user!.profileImage,
+                                                  key: ValueKey(controller.Posts[index].id
+                                                            )));
+                                                },
                                               ),
                                       ),
                                     ],

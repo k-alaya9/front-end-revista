@@ -33,7 +33,7 @@ class ViewPost extends StatelessWidget {
                               },
                               icon: Icon(Icons.arrow_back_ios)),
                         ),
-                        middle: Text('Post'),
+                        middle: Text('Post',style: Theme.of(context).textTheme.headline1,),
                       )
                     : PreferredSize(
                         child: SizedBox.shrink(),
@@ -84,10 +84,7 @@ class ViewPost extends StatelessWidget {
                                     alignment: Alignment.topLeft,
                                     child: Text(
                                       "Comments",
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30)
                                     ),
                                   ),
                                   SizedBox(
@@ -101,6 +98,7 @@ class ViewPost extends StatelessWidget {
                                       itemCount: controller.Comment.length,
                                       itemBuilder: (ctx, index) {
                                         return CommentScreen(
+                                          id: controller.Comment[index].id,
                                           userImage: controller.Comment[index]
                                               .author!.user!.profileImage,
                                           date: controller
@@ -119,7 +117,7 @@ class ViewPost extends StatelessWidget {
                             ),
                           ),
                           //newComment
-                          comment_Screen(id: controller.id.value),
+                          comment_Screen(id: controller.id.value,isComment: true),
                         ],
                       ),
                     ),

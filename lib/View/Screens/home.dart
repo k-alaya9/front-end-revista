@@ -10,6 +10,7 @@ import '../../Controllers/drawerController.dart';
 import '../Widgets/drawer.dart';
 import '../Widgets/drawerWidget.dart';
 import '../Widgets/post.dart';
+import '../Widgets/searchBar.dart';
 
 class PostScreen extends StatelessWidget {
   @override
@@ -25,17 +26,20 @@ class PostScreen extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         middle: Text('Home', style: Theme.of(context).textTheme.headline1),
-        // trailing: Material(
-        //   color: Theme.of(context).backgroundColor,
-        //   child: IconButton(
-        //       onPressed: () {
-        //         Get.toNamed('/notification');
-        //       },
-        //       icon: Icon(
-        //         Icons.notifications,
-        //         size: 28,
-        //       )),
-        // ),
+        trailing: Material(
+          color: Theme.of(context).backgroundColor,
+          child: IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearch(),
+                );
+              },
+              icon: Icon(
+                Icons.notifications,
+                size: 28,
+              )),
+        ),
       ),
       body: SmartRefresher(
           enablePullDown: true,

@@ -20,17 +20,17 @@ class CommentController extends GetxController{
 
   var commentController=TextEditingController();
 
-  fetchData() async {
-   /* try {
-      final List<comment> data;
-      final token = getAccessToken();
-      data = await getCommentsList(token);
-      if (comments != data) {
-        comments.assignAll(data);
-        print(comments);
-      }
-    } catch (e) {
-      print(e);
-    }*/
-  }
+  // fetchData() async {
+  //   try {
+  //     final List<comment> data;
+  //     final token = getAccessToken();
+  //     data = await getCommentsList(token);
+  //     if (comments != data) {
+  //       comments.assignAll(data);
+  //       print(comments);
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }

@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:revista/Models/savedPost.dart';
+import 'package:revista/Services/apis/post_api.dart';
 
+import '../Models/post.dart';
 import '../Models/profile.dart';
 import '../Services/apis/profile_api.dart';
 import '../main.dart';
@@ -13,7 +16,8 @@ import '../main.dart';
 class ProfileController extends GetxController{
   RefreshController refreshController =
   RefreshController(initialRefresh: true);
-  List Posts = List.generate(5, (index) => null);
+  RxList <post>Posts =<post>[].obs;
+  RxList<savedPost>SavedPost=<savedPost>[].obs;
   var postView=true.obs;
   var View=true.obs;
   int? id;
@@ -24,7 +28,7 @@ class ProfileController extends GetxController{
   var  Username=''.obs;
   var  followers=''.obs;
   var  following=''.obs;
-  var  numberOfPosts='0'.obs;
+  var  numberOfPosts=''.obs;
   RxString  bio=''.obs;
   var lastnameController;
   var firstnameController;
@@ -204,7 +208,7 @@ class ProfileController extends GetxController{
     var token =sharedPreferences!.getString('access_token');
     try {
       Profile profile= await getProfileinfo(token);
-      User user=profile.user;
+      var user=profile.user;
       Username.value=user.username;
       profileImage.value=user.profile_image;
       firstname.value=user.first_name;
@@ -212,12 +216,24 @@ class ProfileController extends GetxController{
       CoverImage.value=profile.cover_image;
       if(profile.bio!=null)
       bio.value=profile.bio;
+      numberOfPosts.value=profile.postsCount.toString();
       following.value=profile.following_count.toString();
       followers.value=profile.followers_count.toString();
+
       lastnameController=TextEditingController(text: lastName.value);
       firstnameController=TextEditingController(text: firstname.value);
       usernameController=TextEditingController(text: Username.value);
       bioController=TextEditingController(text: bio.value);
+
+      final data=await getMyPosts(token);
+      if(Posts!=data){
+        Posts.assignAll(data);
+      }
+      final dataSaved=await getMySavedPosts(token);
+      if(SavedPost!=dataSaved){
+        SavedPost.assignAll(dataSaved);
+        print(SavedPost);
+      }
       // Username!.value = 'k.alaya9';
       // profileImage!.value =
       //     'https://scontent.flca1-2.fna.fbcdn.net/v/t39.30808-6/263316426_1138060467020345_1597101672072243926_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=lGU8xlHy4n4AX_WoXM5&_nc_ht=scontent.flca1-2.fna&oh=00_AfCfXiwcCR9-E37u7xgfjMfHJcTBZBpEljbENFxm_QCq0A&oe=648505F8';

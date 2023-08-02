@@ -9,7 +9,7 @@ import '../../Controllers/commentController.dart';
 import '../Screens/ReplyScreen.dart';
 
 class CommentScreen extends StatelessWidget {
-
+  final id;
   final comment;
   final username;
   final  date ;
@@ -23,7 +23,7 @@ class CommentScreen extends StatelessWidget {
     required this.username,
     required this.date,
     required this.numberOfLikesOfComments,
-    required this.userImage});
+    required this.userImage, required this.id});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,9 +66,9 @@ class CommentScreen extends StatelessWidget {
                             Container(
                               child: Text(username,style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
-                            SizedBox(width: 50,),
+                            SizedBox(width:10,),
                             Container(
-                              child: Text(DateFormat('yyyy-mm-dd').add_Hm().parse(date.replaceAll('T',' ')).toString(),style: TextStyle(fontSize:10,color: Colors.black54 ),overflow: TextOverflow.fade),
+                              child: Text(DateFormat('yyyy-mm-dd').add_Hms().parse(date.replaceAll('T',' ')).toString(),style: TextStyle(fontSize:10,color: Colors.black54 ),overflow: TextOverflow.clip),
                             ),
                           ],
                         ),
@@ -117,7 +117,10 @@ class CommentScreen extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: (){
-                                  Get.to(ReplyScreen());
+                                  print(id);
+                                  Get.to(()=>ReplyScreen(),arguments: {
+                                    'replyId':id,
+                                  });
                                 },
                                 child: Text('Reply',style: TextStyle(color: Colors.grey[400]),),
                               ),
