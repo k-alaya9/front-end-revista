@@ -24,43 +24,6 @@ import 'drawerController.dart';
 class viewPostController extends GetxController {
   RxList<chat> chats=<chat>[].obs;
   RxList<post> Posts = <post>[
-    // post(
-    //     id: 1,
-    //     image:
-    //         'https://hips.hearstapps.com/hmg-prod/images/singer-lana-del-rey-poses-for-a-portrait-during-a-visit-to-news-photo-1590067847.jpg',
-    //     createdAt: DateTime.now().toString(),
-    //     content: 'Hello',
-    //     likesCount: 0,
-    //     commentsCount: 0,
-    //     topics:[
-    //       topicItem(
-    //         id: 1,
-    //         name: 'Art',
-    //         imageUrl: '',
-    //         pressed: false.obs
-    //       ),
-    //       topicItem(
-    //           id: 1,
-    //           name: 'Art',
-    //           imageUrl: '',
-    //           pressed: false.obs
-    //       ),
-    //       topicItem(
-    //           id: 1,
-    //           name: 'Art',
-    //           imageUrl: '',
-    //           pressed: false.obs
-    //       ),
-    //     ],
-    //     author: Author(
-    //         id: 1,
-    //         user: User(
-    //             id: 1,
-    //             username: 'HoneyMoon',
-    //             firstName: 'Lana',
-    //             lastName: 'Del Rey',
-    //             profileImage:
-    //                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAhbQ9LJrgUwPDcf2NEJ3C1tMUVPGEmDIJ5Q0JVbFed6vLoRQcGMZvdH6hGeFJwSqjGvw&usqp=CAU'))),
   ].obs;
   List selectedChats=[].obs;
   RefreshController refreshController =

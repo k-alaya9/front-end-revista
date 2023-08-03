@@ -5,14 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:revista/Services/apis/post_api.dart';
 
+import '../Models/post.dart';
 import '../Models/visitprofile.dart';
 import '../Services/apis/profile_api.dart';
 import '../main.dart';
 
 class visitProfileController extends GetxController {
   RefreshController refreshController = RefreshController(initialRefresh: true);
-  List Posts = List.generate(5, (index) => null);
+  RxList <post>Posts =<post>[].obs;
   var id = 0.obs;
   var followId=0.obs;
   var View=true.obs;
@@ -143,7 +145,7 @@ class visitProfileController extends GetxController {
       id!.value = Get.arguments['id'];
       print(id!.value);
       visitprofile profile= await fetchVisitorProfile(token,id!.value)!;
-      User user=profile.user!;
+      var user=profile.user!;
       Username!.value=user.username!;
       profileImage!.value=user.profileImage!;
       firstname!.value=user.firstName!;
@@ -166,6 +168,11 @@ class visitProfileController extends GetxController {
       // followers!.value = '2000';
       // followId.value = 0;
       // numberOfPosts!.value = '10';
+
+        final data=await getUserPosts(token,id);
+        if(Posts!=data){
+          Posts.assignAll(data);
+        }
     } catch (e) {
       print(e);
     }

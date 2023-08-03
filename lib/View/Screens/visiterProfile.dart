@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Services/apis/login_api.dart';
 import 'package:shimmer/shimmer.dart';
@@ -311,6 +312,7 @@ class visiterProfileScreen extends StatelessWidget {
                                       duration: Duration(milliseconds: 1000),
                                       reverseDuration: Duration(milliseconds: 1000),
                                       transitionBuilder: (child,animation){
+
                                         return SlideTransition(
                                           position: animation.drive(Tween(begin: Offset(1.0, 0.0),end: Offset(0, 0))),
                                           child: child,
@@ -323,9 +325,33 @@ class visiterProfileScreen extends StatelessWidget {
                                         scrollDirection: Axis.vertical,
                                         itemCount: controller.Posts.length,
                                         itemBuilder: (ctx, index) {
+                                          var name = controller.Posts[index].author!.user!.firstName! +
+                                              controller.Posts[index].author!.user!.lastName!;
+                                          var date = DateFormat('yyyy-mm-dd')
+                                              .parse(controller.Posts[index].createdAt!);
                                           return  AnimatedSwitcher(duration: Duration(milliseconds: 1000),
                                             reverseDuration: Duration(milliseconds: 1000),child:
-                                            Container()
+                                            Post(
+                                              saveId: controller.Posts[index].saveId,
+                                              likeId: controller.Posts[index].likeId,
+                                              authorId: controller.Posts[index].author!.id!,
+                                              topics:controller.Posts[index].topics!,
+                                              id: controller.Posts[index].id,
+                                              imageUrl: controller.Posts[index].image,
+                                              username:
+                                              controller.Posts[index].author!.user!.username,
+                                              date: date,
+                                              url: controller.Posts[index].link,
+                                              numberOfLikes: controller.Posts[index].likesCount.obs,
+                                              textPost: controller.Posts[index].content,
+                                              nickName: name,
+                                              numberOfComments: controller.Posts[index].commentsCount
+                                                  .toString()
+                                                  .obs,
+                                              userImage:
+                                              controller.Posts[index].author!.user!.profileImage,
+                                              key: ValueKey(controller.Posts[index].id),
+                                            )
                                                  // Post()
                                                 ,);
                                         },
@@ -337,12 +363,37 @@ class visiterProfileScreen extends StatelessWidget {
                                         gridDelegate:
                                         SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2),
-                                        itemBuilder: (context, index) =>
-                                            AnimatedSwitcher(duration: Duration(milliseconds: 1000),
+                                        itemBuilder: (context, index) {
+                                          var name = controller.Posts[index].author!.user!.firstName! +
+                                              controller.Posts[index].author!.user!.lastName!;
+                                          var date = DateFormat('yyyy-mm-dd')
+                                              .parse(controller.Posts[index].createdAt!);
+                                          return AnimatedSwitcher(duration: Duration(milliseconds: 1000),
                                               reverseDuration: Duration(milliseconds: 1000),child:
-                                                Container()
+                                                Post(
+                                                  saveId: controller.Posts[index].saveId,
+                                                  likeId: controller.Posts[index].likeId,
+                                                  authorId: controller.Posts[index].author!.id!,
+                                                  topics:controller.Posts[index].topics!,
+                                                  id: controller.Posts[index].id,
+                                                  imageUrl: controller.Posts[index].image,
+                                                  username:
+                                                  controller.Posts[index].author!.user!.username,
+                                                  date: date,
+                                                  url: controller.Posts[index].link,
+                                                  numberOfLikes: controller.Posts[index].likesCount.obs,
+                                                  textPost: controller.Posts[index].content,
+                                                  nickName: name,
+                                                  numberOfComments: controller.Posts[index].commentsCount
+                                                      .toString()
+                                                      .obs,
+                                                  userImage:
+                                                  controller.Posts[index].author!.user!.profileImage,
+                                                  key: ValueKey(controller.Posts[index].id),
+                                                )
                                                    // Post(),
-                                                  ),
+                                                  );
+                                        },
                                       ),
                                     ),
                                   ],

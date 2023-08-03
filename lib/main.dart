@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -18,7 +16,6 @@ import 'package:revista/View/Widgets/drawer.dart';
 import 'package:revista/middleware/loginMIddleware.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
-import 'package:workmanager/workmanager.dart';
 import 'Services/Notifications/notifications.dart';
 import 'Services/apis/linking.dart';
 import 'View/Screens/chatScreen.dart';

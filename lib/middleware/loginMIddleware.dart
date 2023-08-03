@@ -7,9 +7,11 @@ class loginMiddleWare extends GetMiddleware{
   @override
   RouteSettings? redirect(String? route) {
     if(sharedPreferences!.getString('access_token')!=null&&sharedPreferences!.getBool('topicsSelected')==false){
+      print('hi from R');
       return RouteSettings(name: '/topic');
     }
-    if(sharedPreferences!.getBool('topicsSelected')==true&&sharedPreferences!.getString('access_token')!=null){
+    else if(sharedPreferences!.getBool('topicsSelected')==true&&sharedPreferences!.getString('access_token')!=null){
+      print('bye from R');
       return RouteSettings(name: '/home');
     }
   }

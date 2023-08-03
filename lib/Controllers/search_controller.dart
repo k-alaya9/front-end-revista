@@ -1,15 +1,22 @@
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Models/hestoryModel.dart';
+import 'package:revista/Models/post.dart';
+import 'package:revista/Services/apis/post_api.dart';
 import 'package:revista/Services/apis/search_api.dart';
 
 import '../Models/searchModel.dart';
+import '../Models/topic.dart';
+import '../Services/apis/topic_api.dart';
 import '../main.dart';
 
 class SearchController extends GetxController{
-  List <hestory>allData=[];
-  List <search> searchResults=[];
+  RxList <hestory>allData=<hestory>[].obs;
+  RxList <search> searchResults=<search>[].obs;
   RefreshController refreshController = RefreshController();
+  RxList<post>data=<post>[].obs;
+  RxList<topicItem> topics=<topicItem>[].obs;
+  var selected=true.obs;
 
   onRefresh() async {
     // monitor network fetch
@@ -28,7 +35,31 @@ class SearchController extends GetxController{
         allData.assignAll(data);
         print(allData);
       }
+      print(token);
+      print('hi');
+      final list=await getTopicsListPost(token);
+      print(list);
+      if(topics.isEmpty)
+        for(var i in list) {
+          topics.add(i);
+          print(topics);
+        }
+      getlist(0);
     } catch (e) {
+      print(e);
+    }
+  }
+  getlist(id)async{
+    try{
+      final  listt;
+      final token =sharedPreferences!.getString('access_token');
+      listt = await getDiscoverList(token,id);
+      print(listt);
+      if (listt!= data){
+        data.assignAll(listt);
+        print(data);
+      }
+    }catch(e){
       print(e);
     }
 

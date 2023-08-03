@@ -48,6 +48,30 @@ createPost({id, topics, text, link,File? image, token}) async {
     print(e);
   }
 }
+getUserPosts(token,id)async{
+  try {
+    final response = await http.get(Uri.parse('http://$ip/posts/timeline/$id/'),
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print(data);
+      final posts = data.map<post>((e) {
+        return post.fromJson(e);
+      }).toList();
+      return posts;
+    } else {
+      final data = jsonDecode(response.body);
+      print(data);
+      throw Exception(response.reasonPhrase);
+    }
+  } catch (e) {
+    print(e);
+  }
+
+}
 getMyPosts(token)async{
   try {
   final response = await http.get(Uri.parse('http://$ip/posts/timeline/'),
@@ -218,4 +242,27 @@ savePost(token,id)async{
     print(e);
   }
 
+}
+getDiscoverList(token,id)async{
+  try {
+    final response = await http.get(Uri.parse("http://$ip/posts/discover/$id/"),
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print(data);
+      final posts = data.map<post>((e) {
+        return post.fromJson(e);
+      }).toList();
+      return posts;
+    } else {
+      final data = jsonDecode(response.body);
+      print(data);
+      throw Exception(response.reasonPhrase);
+    }
+  } catch (e) {
+    print(e);
+  }
 }

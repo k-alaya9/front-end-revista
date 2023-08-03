@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 class Themes {
   static final dark =ThemeData(
     brightness: Brightness.dark,
-      primaryColor:Color(0xFF00BFAF),
-      accentColor: Colors.deepOrange[200],
+      primaryColor:Color(0xFFaa333d),
+      accentColor: Colors.grey,
     backgroundColor: const Color(0xff212121),
     textTheme: const TextTheme(
       headline1:  TextStyle(
@@ -27,8 +27,8 @@ class Themes {
   );
   static final light =ThemeData(
     brightness: Brightness.light,
-      primaryColor:Color(0xFF00BFAF),
-      accentColor: Colors.deepOrange[200],
+      primaryColor:Color(0xFFaa333d),
+      accentColor: Colors.grey,
     backgroundColor:  Color(0xfff9f9f9),
     textTheme: const TextTheme(
       headline1:  TextStyle(

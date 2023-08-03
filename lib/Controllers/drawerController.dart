@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:revista/Controllers/homeController.dart';
 import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Models/profile.dart';
+import 'package:revista/View/Screens/SavedPost.dart';
 import 'package:revista/main.dart';
 
 import '../Services/Thems/themeservice.dart';
@@ -72,9 +73,7 @@ class drawerController extends GetxController with GetSingleTickerProviderStateM
       }
 
       case 1:
-        return Scaffold(
-          backgroundColor: Colors.green,
-        );
+        return SavedPost();
         case 2:
         return Scaffold(
           backgroundColor: Colors.yellow,

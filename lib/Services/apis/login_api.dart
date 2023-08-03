@@ -27,13 +27,15 @@ Future<void> login(String username, String password) async {
       print(accessid);
       await saveTokens(accessToken);// Save the tokens to shared preferences
       await saveid(accessid);
-      final list=await getYourTopic(accessToken);
+      final List  list=await getYourTopic(accessToken);
       print(list);
-      if(list==null){
+      if(list.isEmpty){
+        print('hi');
         sharedPreferences!.setBool('topicsSelected',false);
-        Get.offAllNamed('/topics');
+        Get.offAllNamed('/topic');
       }
       else{
+        print('bye');
         sharedPreferences!.setBool('topicsSelected',true);
         Get.offAllNamed('/home');
       }
@@ -83,7 +85,7 @@ Future<void> loginGoogle(String username, String email,String imageurl) async {
       final list=await getYourTopic(accessToken);
       if(list==null){
         sharedPreferences!.setBool('topicsSelected',false);
-        Get.offAllNamed('/topics');
+        Get.offAllNamed('/topic');
       }
       else{
         sharedPreferences!.setBool('topicsSelected',true);

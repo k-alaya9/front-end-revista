@@ -26,20 +26,6 @@ class PostScreen extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         middle: Text('Home', style: Theme.of(context).textTheme.headline1),
-        trailing: Material(
-          color: Theme.of(context).backgroundColor,
-          child: IconButton(
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: CustomSearch(),
-                );
-              },
-              icon: Icon(
-                Icons.notifications,
-                size: 28,
-              )),
-        ),
       ),
       body: SmartRefresher(
           enablePullDown: true,

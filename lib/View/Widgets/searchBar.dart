@@ -31,8 +31,6 @@ import '../../Controllers/search_controller.dart';
 //   }
 // }
 class CustomSearch extends SearchDelegate{
-
-  var x= Get.put(SearchController());
   SearchController controller=Get.find();
 
   @override
