@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
               )
         ),
         floatingActionButton: GetX(builder: (homeController controller)=> controller.isNavBarHidden.value?SizedBox.shrink():Container(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Theme.of(context).backgroundColor,
                 shape: BoxShape.circle
@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () => Get.toNamed('/CreatePost'),
               child: Icon(Icons.add),
               backgroundColor: Theme.of(context).primaryColor,
-              elevation: 0,
+              elevation: 5,
               isExtended: true,
             )),),
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,

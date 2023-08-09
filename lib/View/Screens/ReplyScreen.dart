@@ -36,6 +36,7 @@ class ReplyScreen extends StatelessWidget {
             .width,
         child: SingleChildScrollView(
           child: Column(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CommentScreen(
                   id:controller.Replies[0].comment!.id,
@@ -76,7 +77,9 @@ class ReplyScreen extends StatelessWidget {
               ),
             ),
               //new Comment
-              comment_Screen(id: controller.id.value,isComment: false),
+              Container(
+                alignment: Alignment.bottomCenter,
+                  child: comment_Screen(id: controller.id.value,isComment: false)),
             ],
           ),
         ),

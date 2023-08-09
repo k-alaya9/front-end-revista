@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jumping_dot/jumping_dot.dart';
 import 'package:lottie/lottie.dart';
+import 'package:revista/main.dart';
 import '../../Controllers/chatController.dart';
 import '../../Controllers/messageBubblecontroller.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -15,6 +16,7 @@ class MessageBubble extends StatelessWidget {
   final ValueKey? key;
   final id;
   final  message;
+  final replyId;
   final  userName;
   final  userImage;
   final urlImage;
@@ -24,18 +26,21 @@ class MessageBubble extends StatelessWidget {
   final isTyping;
   final selected;
   final reaction;
-  final isReplied;
   final isSending;
   MessageBubble({this.message, this.userName, this.userImage, this.urlImage,
        this.isMe, this.TimeSent, this.urlVoice,
-      this.key, this.isTyping,required this.id, this.selected, this.reaction,this.isReplied,this.isSending});
+      this.key, this.isTyping,required this.id, this.selected, this.reaction,this.isSending, this.replyId});
   messageBubbleController controller = Get.find();
   ChatController chatController=Get.find();
   var index;
   @override
   Widget build(BuildContext context) {
-    if(controller.getIdforRepiledmessage()!=null) {
-       index=chatController.messages[controller.getIdforRepiledmessage()];
+    if(replyId!=null){
+      for(int i=0;i<chatController.messages.length;i++) {
+        if(chatController.messages[i].id==replyId) {
+          index=chatController.messages[i];
+      }
+        }
     }
     return GetX(
         builder: (messageBubbleController controller) => Container(
@@ -59,15 +64,15 @@ class MessageBubble extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if(isReplied)
+                          if(replyId!=null)
                             Opacity(
                               key: ValueKey(index),
                               opacity: 0.5,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                 !isMe? Text('Replied to ${index.isMe?'you':'themself'}'):
-                                      Text('you replied to ${!index.isMe?'them':'Yourself'}'),
+                                 !isMe? Text('Replied to ${index.authorId==sharedPreferences!.getInt('authorId')?'you':'themself'}'):
+                                      Text('you replied to ${index.authorId!=sharedPreferences!.getInt('authorId')?'them':'Yourself'}'),
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     decoration: BoxDecoration(
@@ -75,7 +80,7 @@ class MessageBubble extends StatelessWidget {
                                       borderRadius:BorderRadius.circular(25),
                                     ),
                                     padding:
-                                    index.urlImage=='' || index.urlImage==null?
+                                    index.voiceRecord==null || index.image==null?
                                     EdgeInsets.symmetric(
                                         vertical: 5, horizontal: 16):EdgeInsets.zero,
                                     margin: EdgeInsets.symmetric(
@@ -83,7 +88,7 @@ class MessageBubble extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         // voice message
-                                        if (index.urlVoice != '')
+                                        if (index.voiceRecord != null)
                                           Container(
                                             child: Row(children: [
                                               IconButton(
@@ -131,7 +136,7 @@ class MessageBubble extends StatelessWidget {
                                             ]),
                                           ),
                                         //image message
-                                        if (index.urlImage != null&&index.urlImage!='')
+                                        if (index.image != null)
                                           InkWell(
                                             borderRadius: BorderRadius.circular(25),
                                             splashFactory: NoSplash.splashFactory,
@@ -146,22 +151,14 @@ class MessageBubble extends StatelessWidget {
                                             ),
                                           ),
                                         //text message
-                                        if (index.message != null)
+                                        if (index.text != null)
                                           Text(
-                                            index.message!,
+                                            index.text!,
                                             style: TextStyle(
                                                 color:Colors.black,),
-                                            textAlign:
-                                            !index.isMe ? TextAlign.end : TextAlign.start,
+                                            // textAlign:
+                                            // !index.isMe ? TextAlign.end : TextAlign.start,
                                           ),
-                                        //is typing or not
-                                        index.isTyping&&!index.isMe?Center(child: JumpingDots(
-                                          color: Theme.of(context).backgroundColor,
-                                          radius: 20,
-                                          numberOfDots: 3,
-                                          animationDuration: Duration(milliseconds: 200),
-                                        ),
-                                        ):Container()
                                       ],
                                     ),
                                   ),
@@ -171,16 +168,14 @@ class MessageBubble extends StatelessWidget {
                           GestureDetector(
                           // behavior: HitTestBehavior.translucent,
                             onLongPressStart:(details) {
-                              print('long');
-                              print(key!);
                               if(controller.overlayEntry!=null){
-                                controller.overlayEntry!.mounted?controller.onCloseOverlay():controller.showReactionView(id: key!.value,selected: selected,context: context,isMe: isMe,
+                                controller.overlayEntry!.mounted?controller.onCloseOverlay():controller.showReactionView(id:id,selected: selected,context: context,isMe: isMe,
                                     reaction: reaction,
                                     tapPosition: details.globalPosition,
                                   widget:  context.widget,
                                 );
                               }else{
-                                controller.showReactionView(id: key!.value,selected: selected,context: context,isMe: isMe,
+                                controller.showReactionView(id: id,selected: selected,context: context,isMe: isMe,
                                     reaction: reaction,
                                     tapPosition: details.globalPosition,
                                   widget:  context.widget,
@@ -296,7 +291,7 @@ class MessageBubble extends StatelessWidget {
                                       onTap: () =>selected.value?(){}: controller.showImage(urlImage),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
-                                        child: Image.file(
+                                        child: Image.network(
                                           urlImage,
                                           fit: BoxFit.cover,
                                           width:190,

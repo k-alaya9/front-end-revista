@@ -21,12 +21,12 @@ void onDidReceiveNotificationResponse(NotificationResponse notificationResponse)
       break;
     case "Post":
       await Get.to(()=>ViewPost(),arguments: {
-        'PostId':id
+        'postId':id
       });
       break;
     case 'Reply':
       await Get.to(()=>ReplyScreen(),arguments: {
-        'ReplyId':id
+        'replyId':id
       });
       break;
     case'Chat':

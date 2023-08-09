@@ -23,13 +23,14 @@ class TopicWidget extends StatelessWidget {
        onTap: ()=>controller.onPressed(id),
        child: Container(
          width: 100,
+         padding: EdgeInsets.all(5),
          height: 100,
          decoration: BoxDecoration(
            shape: BoxShape.rectangle,
            borderRadius: BorderRadius.circular(10),
            color: pressed.value?Theme.of(context).primaryColor:Theme.of(context).accentColor,
          ),
-         child: Center(child: Text(name,style: Theme.of(context).textTheme.bodyText1),)
+         child: Center(child: Text(name,style: Theme.of(context).textTheme.bodyText1,maxLines: 1,overflow: TextOverflow.ellipsis),)
        ),
      ),
    );

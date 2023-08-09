@@ -39,12 +39,12 @@ class Notifications extends StatelessWidget {
               break;
             case "Post":
                Get.to(()=>ViewPost(),arguments: {
-                'PostId':id
+                'postId':id
               });
               break;
             case 'Reply':
                Get.to(()=>ReplyScreen(),arguments: {
-                'ReplyId':id
+                'replyId':id
               });
               break;
             case'Chat':

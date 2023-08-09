@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
@@ -106,7 +107,12 @@ class messageBubbleController extends GetxController {
     tapPosition,
     widget,
   }) {
+    var index;
     selected.value = true;
+    for(int i=0;i<controller.messages.length;i++)
+      if(controller.messages[i].id==id){
+        index=i;
+      }
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         right: !isMe?5:null,
@@ -149,6 +155,13 @@ class messageBubbleController extends GetxController {
                                   child: InkWell(
                                 onTap: () {
                                   reaction.value = reactions[index].reaction;
+                                  var map={
+                                    "command" : "add_reaction",
+                                    "message_id" :'$id',
+                                    "reaction_id" : "${index+1}"
+                                  };
+                                  var body = jsonEncode(map);
+                                  controller.channel.sink.add(body);
                                   onCloseOverlay();
                                   selected.value = false;
                                 },
@@ -191,7 +204,7 @@ class messageBubbleController extends GetxController {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(DateFormat.jm()
-                              .format(DateTime.parse(controller.messages[id].createdAt!)),style: Theme.of(context).textTheme.bodyText1),
+                              .format(DateTime.parse(controller.messages[index].createdAt!)),style: Theme.of(context).textTheme.bodyText1),
                         ),
                         Divider(color: Get.isDarkMode?Colors.white:Colors.black,),
                         TextButton(
@@ -211,16 +224,6 @@ class messageBubbleController extends GetxController {
                               children: [
                                 Text('Forward',style: Theme.of(context).textTheme.bodyText1,),
                                 Icon(Icons.reply,color: Get.isDarkMode?Colors.white:Colors.black),
-                              ],
-                            )),
-                        Divider(color: Get.isDarkMode?Colors.white:Colors.black,),
-                        TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Delete',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red)),
-                                Icon(Icons.delete,color: Colors.red,),
                               ],
                             )),
                       ],

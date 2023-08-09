@@ -65,6 +65,7 @@ class Messages {
   var voiceRecord;
   String? createdAt;
   String? updatedAt;
+  var reply_id;
   int? chat;
   var selected;
 
@@ -77,7 +78,7 @@ class Messages {
         this.voiceRecord,
         this.createdAt,
         this.updatedAt,
-        this.chat,this.selected});
+        this.chat,this.selected,this.reply_id});
 
   Messages.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -89,6 +90,7 @@ class Messages {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     chat = json['chat'];
+    reply_id=json['reply_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -102,6 +104,7 @@ class Messages {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['chat'] = this.chat;
+    data['reply_id']=this.reply_id;
     return data;
   }
 }

@@ -110,24 +110,21 @@ class Post extends StatelessWidget {
                         physics: ScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2, vertical: 10),
-                            child: Container(
-                                width: 80,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Theme.of(context).accentColor,
-                                ),
-                                child: Center(
-                                  child: Text(topics[index]!['name'],
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1),
-                                )),
-                          );
+                          return Container(
+                            padding: EdgeInsets.all(5),
+                              margin: EdgeInsets.all(5),
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(10),
+                                color: Theme.of(context).accentColor,
+                              ),
+                              child: Center(
+                                child: Text(topics[index]!['name'],
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1),
+                              ));
                         }),
                   ),
                 ],

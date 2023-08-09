@@ -45,7 +45,7 @@ class DiscoverScreen extends StatelessWidget {
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.search,
-                                color: Colors.grey
+                                color: Colors.grey,
                               ),
                               border: InputBorder.none,
                               hintText: "Search",
@@ -71,23 +71,24 @@ class DiscoverScreen extends StatelessWidget {
                                       },
                                       splashFactory: NoSplash.splashFactory,
                                       child: Container(
+                                        height: 40,
+                                        width: 100,
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(10),
                                           color: controller.selected.value
                                               ? Theme.of(context).primaryColor
                                               : Colors.grey
                                         ),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 10),
                                         margin: EdgeInsets.symmetric(
                                           vertical: 20,
                                           horizontal: 5,
                                         ),
-                                        child: Text('General'),
+                                        child: Center(child: Text('General',style: Theme.of(context).textTheme.bodyText1!.copyWith(color:Colors.white),)),
                                       )),
                                   Container(
-                                    height: 70,
+                                    height: 40,
                                     child: ListView.builder(
                                       itemCount: controller.topics.length,
                                       shrinkWrap: true,
@@ -114,21 +115,24 @@ class DiscoverScreen extends StatelessWidget {
                                           child: GetX( builder: (SearchController controller) { return Container(
                                         decoration: BoxDecoration(
                                         borderRadius:
-                                        BorderRadius.circular(15),
+                                        BorderRadius.circular(10),
                                         color: controller.topics[index]
                                             .pressed.value
                                         ? Theme.of(context)
                                             .primaryColor
                                             : Colors.grey,
                                         ),
-                                        padding: EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 10),
+                                            width: 100,
+                                            height: 40,
+                                            padding: EdgeInsets.all(5),
                                         margin: EdgeInsets.symmetric(
-                                        vertical: 20,
+                                        // vertical: 20,
                                         horizontal: 5,
                                         ),
-                                        child: Text(
-                                        controller.topics[index].name,style: TextStyle(color: Colors.white)),
+                                        child: Center(
+                                          child: Text(
+                                          controller.topics[index].name,style: TextStyle(color: Colors.white)),
+                                        ),
                                         ); },
                                           ),
                                         );
@@ -139,14 +143,15 @@ class DiscoverScreen extends StatelessWidget {
                               );
                             },
                           ),
-                        )
+                        ),
+                        Divider(color: Get.isDarkMode?Colors.white:Colors.black45,)
                       ],
                     ),
                   ),
                 )
               ];
             },
-            floatHeaderSlivers: true,
+            // floatHeaderSlivers: true,
             scrollBehavior: CupertinoScrollBehavior(),
             body: Container(
               child: GetX(

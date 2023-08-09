@@ -117,7 +117,9 @@ class ViewPost extends StatelessWidget {
                             ),
                           ),
                           //newComment
-                          comment_Screen(id: controller.id.value,isComment: true),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                              child: comment_Screen(id: controller.id.value,isComment: true)),
                         ],
                       ),
                     ),

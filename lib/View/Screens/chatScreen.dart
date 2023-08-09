@@ -23,7 +23,7 @@ class ChatScreen extends StatelessWidget {
   var y = Get.put(messageBubbleController());
   var replied = false.obs;
 
-  var id;
+  // var id;
 
   var focusNode = FocusNode();
 
@@ -65,97 +65,103 @@ class ChatScreen extends StatelessWidget {
                 return Container();
               } else {
                 return ListView.builder(
+                  controller: controller.scrollController,
+                  padding: EdgeInsets.only(top: 20),
                   shrinkWrap: true,
-                  itemCount: controller.messages.length,
+                  itemCount: controller.loading.value? controller.messages.length +1:controller.messages.length,
                   itemBuilder: (context, index) {
                     var isMe = controller.messages[index].authorId ==
                         sharedPreferences!.getInt('access_id')
                         ? true
                         : false;
-                    return AnimationConfiguration.staggeredList(
-                      position: index,
-                      duration: const Duration(milliseconds: 500),
-                      child: SlideAnimation(
-                        horizontalOffset: !isMe ? 50 : -50,
-                        child: Dismissible(
-                          // behavior: HitTestBehavior.opaque,
-                          key: UniqueKey(),
-                          direction: DismissDirection.horizontal,
-                          movementDuration: Duration(milliseconds: 500),
-                          onDismissed: (dir) {},
-                          confirmDismiss: (direction) async {
-                            FocusScope.of(context).requestFocus(focusNode);
-                            if (direction == DismissDirection.startToEnd) {
-                              replied.value = true;
-                              id = index;
-                              print(id);
-                            }
-                          },
-                          background: Container(
-                            child: Row(
-                              children: [
-                                Text(
-                                  'reply',
-                                  style:
-                                  Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ],
+                    if(index<controller.messages.length){
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 500),
+                        child: SlideAnimation(
+                          horizontalOffset: !isMe ? 50 : -50,
+                          child: Dismissible(
+                            // behavior: HitTestBehavior.opaque,
+                            key: UniqueKey(),
+                            direction: DismissDirection.horizontal,
+                            movementDuration: Duration(milliseconds: 500),
+                            onDismissed: (dir) {},
+                            confirmDismiss: (direction) async {
+                              FocusScope.of(context).requestFocus(focusNode);
+                              if (direction == DismissDirection.startToEnd) {
+                                replied.value = true;
+                                controller.id.value = index;
+                              }
+                            },
+                            background: Container(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'reply',
+                                    style:
+                                    Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          secondaryBackground: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(Icons.arrow_circle_left_outlined),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  DateFormat.jm().format(DateTime.parse(
-                                      controller.messages[index].createdAt!)),
-                                  style:
-                                  Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ],
+                            secondaryBackground: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Icon(Icons.arrow_circle_left_outlined),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    DateFormat.jm().format(DateTime.parse(
+                                        controller.messages[index].createdAt!)),
+                                    style:
+                                    Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          child: MessageBubble(
-                            key: ValueKey(index),
-                            id: controller.messages[index].id,
-                            message: controller.messages[index].text,
-                            userName: '',
-                            userImage: isMe ? '' : controller.imageUrl.value,
-                            urlImage: controller.messages[index].image,
-                            isMe: isMe,
-                            TimeSent: controller.messages[index].createdAt,
-                            urlVoice: controller.messages[index].voiceRecord,
-                            isTyping: false,
-                            selected: false.obs,
-                            reaction: controller.messages[index].reaction == 1
-                                ? Reaction.like.obs
-                                : controller.messages[index].reaction == 2
-                                ? Reaction.love.obs
-                                : controller.messages[index].reaction == 4
-                                ? Reaction.wow.obs
-                                : controller.messages[index]
-                                .reaction ==
-                                3
-                                ? Reaction.lol.obs
-                                : controller.messages[index]
-                                .reaction ==
-                                5
-                                ? Reaction.sad.obs
-                                : controller.messages[index]
-                                .reaction ==
-                                6
-                                ? Reaction.angry.obs
-                                : Reaction.none.obs,
-                            isReplied: false,
+                            child: MessageBubble(
+                              key: ValueKey(index),
+                              id: controller.messages[index].id,
+                              message: controller.messages[index].text,
+                              userName: '',
+                              userImage: isMe ? '' : controller.imageUrl.value,
+                              urlImage: controller.messages[index].image,
+                              isMe: isMe,
+                              TimeSent: controller.messages[index].createdAt,
+                              urlVoice: controller.messages[index].voiceRecord,
+                              isTyping: false,
+                              selected: false.obs,
+                              reaction: controller.messages[index].reaction == 1
+                                  ? Reaction.like.obs
+                                  : controller.messages[index].reaction == 2
+                                  ? Reaction.love.obs
+                                  : controller.messages[index].reaction == 4
+                                  ? Reaction.wow.obs
+                                  : controller.messages[index]
+                                  .reaction ==
+                                  3
+                                  ? Reaction.lol.obs
+                                  : controller.messages[index]
+                                  .reaction ==
+                                  5
+                                  ? Reaction.sad.obs
+                                  : controller.messages[index]
+                                  .reaction ==
+                                  6
+                                  ? Reaction.angry.obs
+                                  : Reaction.none.obs,
+                              replyId: controller.messages[index].reply_id,
                               isSending: false.obs,
+                            ),
                           ),
                         ),
-                      ),
-                    );
+                      );
+                    }
+                    else{
+                      return Center(child: CupertinoActivityIndicator(),);
+                    }
                   },
                 );
               }
@@ -696,7 +702,7 @@ class ChatScreen extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Replaying to ${controller.messages[id].authorId == sharedPreferences!.getInt('access_id') ? 'yourself' : controller.username}',
+                                          'Replaying to ${controller.messages[controller.id.value].authorId == sharedPreferences!.getInt('access_id') ? 'yourself' : controller.username}',
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
@@ -706,7 +712,7 @@ class ChatScreen extends StatelessWidget {
                                           height: 5,
                                         ),
                                         Text(
-                                          controller.messages[id].text!,
+                                          controller.messages[controller.id.value].text!,
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
@@ -795,9 +801,9 @@ class ChatScreen extends StatelessWidget {
                                                                 .message!.value,
                                                             controller.username,
                                                             replied);
-                                                        if (id != null)
-                                                          messageController
-                                                              .setId(id);
+                                                      //   if (id != null)
+                                                      //     messageController
+                                                      //         .setId(id);
                                                       }
                                                     },
                                                     child: Text(
