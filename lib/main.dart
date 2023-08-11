@@ -112,19 +112,19 @@ notifiy()async{
       .then((done) {
     channel.stream.listen((newData) async {
       var data = json.decode(newData);
-      print(newData);
       var type = data['text']['type'];
       var id=data['text']["forward_id"];
       var Text = data['text']['detail'];
       var imageUrl = data['text']['profile_image'];
       var dateTime = data['text']['created_at'];
+      var username=data['text']['username'];
       sharedPreferences!.setInt('notfiicationsId', id);
       // final bigPicture = await DownloadUtil.downloadAndSaveFile(
       //    imageUrl ,
       //     'image');
       notifications.show(
-        0,
-        'revista',
+        id,
+        type=='Chat'?username:'revista',
         Text,
         payload: '$type',
         NotificationDetails(
@@ -139,6 +139,7 @@ notifiy()async{
                 priority: Priority.high,
                 subText: dateTime)),
       );
-    });
+
+          });
   });
 }

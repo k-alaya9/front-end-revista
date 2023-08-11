@@ -99,7 +99,7 @@ class FollowingScreen extends StatelessWidget {
             }
             return SmartRefresher(
               header:
-                  ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
+                  ClassicHeader(refreshingIcon: CupertinoActivityIndicator(),),
               onRefresh: controller.onRefresh,
               enablePullDown: true,
               enablePullUp: true,

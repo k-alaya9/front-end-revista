@@ -25,7 +25,14 @@ class PostScreen extends StatelessWidget {
           child: DrawerWidget(),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
-        middle: Text('Home', style: Theme.of(context).textTheme.headline1),
+        middle: Container(
+          margin: EdgeInsets.only(top: 3,bottom: 3,right: 45),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(image: AssetImage('asset/image/logo.png'),isAntiAlias: true,filterQuality: FilterQuality.high,fit: BoxFit.contain)
+          ),
+        ),
       ),
       body: SmartRefresher(
           enablePullDown: true,

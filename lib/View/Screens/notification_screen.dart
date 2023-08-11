@@ -21,6 +21,12 @@ class notification_screen extends StatelessWidget {
     var token = sharedPreferences!.getInt('access_id');
     print(token);
     notificationsController controller = Get.put(notificationsController());
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      controller.notifiction_number.value=0;
+      // Add Your Code here.
+
+    });
+
     return Scaffold(
         backgroundColor: Theme
             .of(context)

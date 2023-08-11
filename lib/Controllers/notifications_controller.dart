@@ -24,7 +24,7 @@ class notificationsController extends GetxController with WidgetsBindingObserver
   var imageUrl = '';
   var username = '';
   var dateTime;
-
+  var notifiction_number=0.obs;
   List notifications = [];
   RefreshController refreshController = RefreshController(initialRefresh: true);
   var channel;
@@ -55,7 +55,6 @@ class notificationsController extends GetxController with WidgetsBindingObserver
   }
 
   notificationChannel() {
-
     var token = sharedPreferences!.getInt('access_id');
     print(token);
     FlutterLocalNotificationsPlugin notifications =
@@ -81,6 +80,7 @@ class notificationsController extends GetxController with WidgetsBindingObserver
         print(newData);
         var type = data['text']['type'];
         var id=data['text']["forward_id"];
+        var username=data['text']['username'];
         var Text = data['text']['detail'];
         var imageUrl = data['text']['profile_image'];
         var dateTime = data['text']['created_at'];
@@ -88,9 +88,11 @@ class notificationsController extends GetxController with WidgetsBindingObserver
         // final bigPicture = await DownloadUtil.downloadAndSaveFile(
         //    imageUrl ,
         //     'image');
+        print(type);
+        print(username);
         notifications.show(
-            0,
-            'revista',
+            id,
+            type=='Chat'?username:'revista',
             Text,
             payload: '$type',
             NotificationDetails(
@@ -105,7 +107,9 @@ class notificationsController extends GetxController with WidgetsBindingObserver
                         //  largeIcon:  DrawableResourceAndroidBitmap('image'),
                         priority: Priority.high,
                         subText: dateTime)));
-
+        if(type!='Chat')
+          notifiction_number++;
+        print(notifiction_number.value);
       });
     });
   }

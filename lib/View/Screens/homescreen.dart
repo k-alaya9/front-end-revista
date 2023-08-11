@@ -14,6 +14,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/cupertino.dart';
 import '../../Controllers/ViewPostController.dart';
 import '../../Controllers/homeController.dart';
+import '../../Controllers/notifications_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -49,14 +50,38 @@ class HomeScreen extends StatelessWidget {
                   automaticIndicatorColorAdjustment: true,
                   isScrollable: false,
                   tabs: [
-                    Icon(
+                    controller.pageindex.value==0?Icon(
                       Icons.home,
-                    ),
-                    Icon(
-                      Icons.search,
-                    ),
+                    ):Icon(Icons.home_outlined),
+                    controller.pageindex.value==1?Icon(
+                      Icons.explore,
+                    ):Icon(Icons.explore_outlined),
+                     controller.pageindex.value==2?
+                     Icon(Icons.messenger):
                     Icon(Icons.messenger_outline),
-                    Icon(Icons.notifications_active_outlined)
+                    GetX(builder: (notificationsController ncontroller)=>
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                           controller.pageindex.value==3?Icon(Icons.notifications_active_rounded):Icon(Icons.notifications_active_outlined),
+                            if(ncontroller.notifiction_number.value!=0)
+                            Positioned(
+                              right: -8,
+                              top: -7,
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                child: Center(child: Text((ncontroller.notifiction_number.value).toInt().toString(),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)),),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                    )
                   ],
                 ),
               )

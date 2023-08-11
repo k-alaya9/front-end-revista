@@ -10,6 +10,7 @@ import 'package:like_button/like_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:revista/Controllers/ProfileController.dart';
 import 'package:revista/Services/apis/login_api.dart';
+import 'package:revista/View/Widgets/reportWidget.dart';
 import 'package:revista/View/Widgets/showImage.dart';
 import 'package:revista/View/Widgets/topicPost.dart';
 import 'package:revista/main.dart';
@@ -75,58 +76,97 @@ class Post extends StatelessWidget {
             });
           },
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundImage: NetworkImage(
-                  userImage,
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    textAlign: TextAlign.start,
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: '${nickName} \n',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      TextSpan(
-                          text: username, style: TextStyle(color: Colors.grey)),
-                    ]),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    height: 40,
-                    child: ListView.builder(
-                        itemCount: topics.length,
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: EdgeInsets.all(5),
-                              margin: EdgeInsets.all(5),
-                              height: 40,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(10),
-                                color: Theme.of(context).accentColor,
-                              ),
-                              child: Center(
-                                child: Text(topics[index]!['name'],
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1),
-                              ));
-                        }),
-                  ),
+             Row(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+               CircleAvatar(
+                 radius: 30,
+                 backgroundImage: NetworkImage(
+                   userImage,
+                 ),
+               ),
+               SizedBox(width: 10,),
+               Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   RichText(
+                     textAlign: TextAlign.start,
+                     text: TextSpan(children: [
+                       TextSpan(
+                         text: '${nickName} \n',
+                         style: Theme.of(context).textTheme.bodyText1,
+                       ),
+                       TextSpan(
+                           text: username, style: TextStyle(color: Colors.grey)),
+                     ]),
+                   ),
+                   SizedBox(
+                     height: 5,
+                   ),
+                   Container(
+                     height: 40,
+                     width: 220,
+                     child: ListView.builder(
+                         itemCount: topics.length,
+                         shrinkWrap: true,
+                         physics: ScrollPhysics(),
+                         scrollDirection: Axis.horizontal,
+
+                         itemBuilder: (context, index) {
+                           return Container(
+                               padding: EdgeInsets.all(5),
+                               margin: EdgeInsets.all(5),
+                               height: 40,
+                               decoration: BoxDecoration(
+                                 shape: BoxShape.rectangle,
+                                 borderRadius: BorderRadius.circular(10),
+                                 color: Theme.of(context).accentColor,
+                               ),
+                               child: Center(
+                                 child: Text(topics[index]!['name'],
+                                     style: Theme.of(context)
+                                         .textTheme
+                                         .bodyText1),
+                               ));
+                         }),
+                   ),
+                 ],
+               ),
+             ],),
+              PopupMenuButton<int>(
+                icon: Icon(Icons.more_horiz),
+                onSelected: (item) => handleClick(item),
+                itemBuilder: (context) => [
+                  if(authorId==sharedPreferences!.getInt('access_id'))
+                    PopupMenuItem<int>(value: 0, child: Row(
+                      children: [
+                        Icon(Icons.delete,color: Colors.red,),
+                        Text('Delete post'),
+                      ],
+                    ),),
+                  if(authorId==sharedPreferences!.getInt('access_id'))
+                    PopupMenuItem<int>(value: 1, child: Row(
+                      children: [
+                        Icon(Icons.edit_note_outlined),
+                        Text('Edit post'),
+                      ],
+                    )),
+                  PopupMenuItem<int>(value: 2, child: Row(
+                    children: [
+                      Icon(Icons.copy_rounded),
+                      Text('Copy Link'),
+                    ],
+                  )),
+                  if(authorId!=sharedPreferences!.getInt('access_id'))
+                    PopupMenuItem<int>(value: 3, child: Row(
+                      children: [
+                        Icon(Icons.report_problem_outlined,color: Colors.red),
+                        Text('Report post'),
+                      ],
+                    )),
+
                 ],
               ),
             ],
@@ -480,5 +520,29 @@ class Post extends StatelessWidget {
         ),
       ]),
     );
+  }
+  Future<void> handleClick(int item) async {
+    switch (item) {
+      case 0:
+        print('hi');
+        final token=sharedPreferences!.getString('access_token');
+        await DeleteMyPosts(token, id);
+        break;
+      case 1:
+        break;
+      case 2:
+      /* Clipboard.setData(const ClipboardData(text: "Your Copy text")).then((_) {
+        Get.showSnackBar(
+            const SnackBar(content: Text('Copied to your clipboard !')));
+      });*/
+        break;
+      case 3:
+        Get.defaultDialog(
+          content: Report(type: 'post',id: id),
+          title: 'Report',
+          contentPadding: EdgeInsets.zero,
+        );
+        break;
+    }
   }
 }

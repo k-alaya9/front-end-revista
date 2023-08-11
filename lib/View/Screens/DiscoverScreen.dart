@@ -24,7 +24,7 @@ class DiscoverScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Discover",
+                        Text("Explore",
                             style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30)),
                         SizedBox(
                           height: 20,

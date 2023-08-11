@@ -107,7 +107,7 @@ sendTopicList(String token, List topicList)async{
       controller.topicsSelected.value=true;
       sharedPreferences!.setBool('topicsSelected',controller.topicsSelected.value);
       controller.selecteditems.clear();
-      Get.toNamed('/home');
+      Get.offAllNamed('/home');
       print(data);
     } else {
       print(response.body);

@@ -71,7 +71,27 @@ newComment(int postId, String content, String token,  ) async{
     // Handle exceptions
     print('Failed to post comment: $e');
 
+  }}
+  deleteMyComment(token,postId)async{
+
+    try{
+      final response=await http.delete(Uri.parse('http://$ip/posts/comments/$postId/'),
+          headers: {'Authorization': 'Token $token'});
+
+      if (response.statusCode == 204) {
+        final data = jsonDecode(response.body);
+        print(data);
+        final comments = data.map<comment>((e) {
+          return comment.fromJson(e);
+        }).toList();
+        return comments;
+      } else {
+        final data = jsonDecode(response.body);
+        print(data);
+        throw Exception(response.reasonPhrase);
+      }
+
+    }catch(e){
+      print(e);
+    }
   }
-
-
-}

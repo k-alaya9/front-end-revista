@@ -9,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../Controllers/visitProfileController.dart';
 import '../../Services/apis/chat_api.dart';
 import '../Widgets/post.dart';
+import '../Widgets/reportWidget.dart';
 
 class visiterProfileScreen extends StatelessWidget {
    visiterProfileScreen({Key? key}) : super(key: key);
@@ -27,8 +28,32 @@ class visiterProfileScreen extends StatelessWidget {
               Get.back();
             }, icon: Icon(Icons.arrow_back_ios)),
           ),
-          trailing: Material(color: Theme.of(context).backgroundColor,
-              child: IconButton(onPressed:(){}, icon: Icon(Icons.more_vert))
+          middle: Container(alignment: Alignment(2,0),child: Text(controller.Username!.value,style: Theme.of(context).textTheme.headline1,overflow: TextOverflow.visible,)),
+          trailing: Material(
+            color: Theme.of(context).backgroundColor,
+            child: DropdownButton(
+                icon: Icon(Icons.more_vert),
+                underline: Container(),
+                items: [
+                  DropdownMenuItem(child: Row(children: [
+                    Icon(Icons.report_problem_outlined,color: Colors.red,),
+                    SizedBox(width: 5,),
+                    Text('Report User'),
+                  ],),value: 1,),
+                  DropdownMenuItem(child: Row(children: [
+                    Icon(Icons.block_outlined,color: Colors.red,),
+                    SizedBox(width: 5,),
+                    Text('Block User'),
+                  ],),value: 2,),
+                ], onChanged: (val){
+              if(val==1){
+                Get.defaultDialog(
+                  content: Report(type: 'user',id: controller.id.value),
+                  title: 'Report',
+                  contentPadding: EdgeInsets.zero,
+                );
+              }
+            }),
           ),
         ),
         extendBody: true,
@@ -159,17 +184,17 @@ class visiterProfileScreen extends StatelessWidget {
                                   children: [
                                     Container(
                                       padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          color:Colors.grey[300],
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.circular(20)),
+                                      // decoration: BoxDecoration(
+                                      //     color:Colors.grey[300],
+                                      //     shape: BoxShape.rectangle,
+                                      //     borderRadius: BorderRadius.circular(20)),
                                       child: Column(
                                         children: [
                                           Text(
                                             'Followers',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1!.copyWith(color: Colors.black),
+                                                .bodyText1,
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -178,7 +203,7 @@ class visiterProfileScreen extends StatelessWidget {
                                             controller.followers!.value,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1!.copyWith(color: Colors.black),
+                                                .bodyText1,
                                           ),
                                         ],
                                       ),
@@ -190,17 +215,17 @@ class visiterProfileScreen extends StatelessWidget {
                                       },
                                       child: Container(
                                         padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[300],
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.circular(20)),
+                                        // decoration: BoxDecoration(
+                                        //     color: Colors.grey[300],
+                                        //     shape: BoxShape.rectangle,
+                                        //     borderRadius: BorderRadius.circular(20)),
                                         child: Column(
                                           children: [
                                             Text(
                                               'Posts',
                                               style:Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1!.copyWith(color: Colors.black),
+                                                  .bodyText1,
                                             ),
                                             SizedBox(
                                               height: 10,
@@ -209,7 +234,7 @@ class visiterProfileScreen extends StatelessWidget {
                                               controller.numberOfPosts!.value,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1!.copyWith(color: Colors.black),
+                                                  .bodyText1,
                                             ),
                                           ],
                                         ),
@@ -217,18 +242,17 @@ class visiterProfileScreen extends StatelessWidget {
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          color:Colors.grey[300],
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.circular(20)),
+                                      // decoration: BoxDecoration(
+                                      //     color:Colors.grey[300],
+                                      //     shape: BoxShape.rectangle,
+                                      //     borderRadius: BorderRadius.circular(20)),
                                       child: Column(
                                         children: [
                                           Text(
                                             "Following",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1!.copyWith(color: Colors.black
-                                            ),
+                                                .bodyText1
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -237,7 +261,7 @@ class visiterProfileScreen extends StatelessWidget {
                                             controller.following!.value,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1!.copyWith(color: Colors.black),
+                                                .bodyText1,
                                           ),
                                         ],
                                       ),
@@ -282,7 +306,7 @@ class visiterProfileScreen extends StatelessWidget {
                                                   color: controller.View.value
                                                       ? Theme.of(context)
                                                       .primaryColor
-                                                      : Colors.deepPurple[100],
+                                                      : Theme.of(context).accentColor,
                                                   size: 25,
                                                 ),
                                               ),
@@ -296,7 +320,7 @@ class visiterProfileScreen extends StatelessWidget {
                                                   color: !controller.View.value
                                                       ? Theme.of(context)
                                                       .primaryColor
-                                                      : Colors.deepPurple[100],
+                                                      : Theme.of(context).accentColor,
                                                   size: 25,
                                                 ),
                                               ),

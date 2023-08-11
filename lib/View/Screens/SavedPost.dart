@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:revista/View/Widgets/drawerWidget.dart';
 
 import '../../Controllers/savedPostController.dart';
 import '../Widgets/post.dart';
@@ -18,6 +19,10 @@ class SavedPost extends StatelessWidget {
     savedPostController controller=Get.find();
     return Scaffold(
       appBar: CupertinoNavigationBar(
+        leading: Material(
+          color: Theme.of(context).backgroundColor,
+          child: DrawerWidget(),
+        ),
         backgroundColor: Theme.of(context).backgroundColor,
         middle: Text('SavedPosts',style: Theme.of(context).textTheme.headline1),
       ),

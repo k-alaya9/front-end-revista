@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,6 @@ import 'package:lottie/lottie.dart';
 import 'package:revista/main.dart';
 import '../../Controllers/chatController.dart';
 import '../../Controllers/messageBubblecontroller.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class MessageBubble extends StatelessWidget {
   final ValueKey? key;
@@ -33,12 +34,14 @@ class MessageBubble extends StatelessWidget {
   messageBubbleController controller = Get.find();
   ChatController chatController=Get.find();
   var index;
+  var i;
   @override
   Widget build(BuildContext context) {
     if(replyId!=null){
       for(int i=0;i<chatController.messages.length;i++) {
         if(chatController.messages[i].id==replyId) {
           index=chatController.messages[i];
+          this.i=i;
       }
         }
     }
@@ -65,104 +68,110 @@ class MessageBubble extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if(replyId!=null)
-                            Opacity(
-                              key: ValueKey(index),
-                              opacity: 0.5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                 !isMe? Text('Replied to ${index.authorId==sharedPreferences!.getInt('authorId')?'you':'themself'}'):
-                                      Text('you replied to ${index.authorId!=sharedPreferences!.getInt('authorId')?'them':'Yourself'}'),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300]!.withOpacity(0.5),
-                                      borderRadius:BorderRadius.circular(25),
-                                    ),
-                                    padding:
-                                    index.voiceRecord==null || index.image==null?
-                                    EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 16):EdgeInsets.zero,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 5 , horizontal:5),
-                                    child: Column(
-                                      children: [
-                                        // voice message
-                                        if (index.voiceRecord != null)
-                                          Container(
-                                            child: Row(children: [
-                                              IconButton(
-                                                  onPressed: (){},
-                                                  icon: Icon(Icons.play_arrow),
-                                                  color: Colors.white),
-                                              AudioFileWaveforms(
-                                                size: Size(
-                                                    MediaQuery.of(context).size.width /
-                                                        3,
-                                                    40.0),
-                                                playerController:
-                                                controller.playerController,
-                                                enableSeekGesture: true,
-                                                continuousWaveform: true,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.rectangle,
-                                                  borderRadius:
-                                                  BorderRadius.circular(25),
+                            InkWell(
+                              onTap: (){
+                                print(i);
+                                chatController.scrollTo(i);
+                              },
+                              child: Opacity(
+                                key: ValueKey(index),
+                                opacity: 0.5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                   !isMe? Text('Replied to ${index.authorId==sharedPreferences!.getInt('authorId')?'you':'themself'}'):
+                                        Text('you replied to ${index.authorId!=sharedPreferences!.getInt('authorId')?'them':'Yourself'}'),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300]!.withOpacity(0.5),
+                                        borderRadius:BorderRadius.circular(25),
+                                      ),
+                                      padding:
+                                      index.voiceRecord==null || index.image==null?
+                                      EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 16):EdgeInsets.zero,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 5 , horizontal:5),
+                                      child: Column(
+                                        children: [
+                                          // voice message
+                                          if (index.voiceRecord != null)
+                                            Container(
+                                              child: Row(children: [
+                                                IconButton(
+                                                    onPressed: (){},
+                                                    icon: Icon(Icons.play_arrow),
+                                                    color: Colors.white),
+                                                AudioFileWaveforms(
+                                                  size: Size(
+                                                      MediaQuery.of(context).size.width /
+                                                          3,
+                                                      40.0),
+                                                  playerController:
+                                                  controller.playerController,
+                                                  enableSeekGesture: true,
+                                                  continuousWaveform: true,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.rectangle,
+                                                    borderRadius:
+                                                    BorderRadius.circular(25),
+                                                  ),
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      controller.formatTime(
+                                                          controller.position),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(color: Colors.white),
+                                                    ),
+                                                    Text(
+                                                      controller.formatTime(
+                                                          controller.duration -
+                                                              controller.position),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(color: Colors.white),
+                                                    ),
+                                                  ],
+                                                )
+                                              ]),
+                                            ),
+                                          //image message
+                                          if (index.image != null)
+                                            InkWell(
+                                              borderRadius: BorderRadius.circular(25),
+                                              splashFactory: NoSplash.splashFactory,
+                                              onTap: () {},
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20),
+                                                child: Image.file(
+                                                  urlImage,
+                                                  fit: BoxFit.cover,
+                                                  width:190,
                                                 ),
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    controller.formatTime(
-                                                        controller.position),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1!
-                                                        .copyWith(color: Colors.white),
-                                                  ),
-                                                  Text(
-                                                    controller.formatTime(
-                                                        controller.duration -
-                                                            controller.position),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1!
-                                                        .copyWith(color: Colors.white),
-                                                  ),
-                                                ],
-                                              )
-                                            ]),
-                                          ),
-                                        //image message
-                                        if (index.image != null)
-                                          InkWell(
-                                            borderRadius: BorderRadius.circular(25),
-                                            splashFactory: NoSplash.splashFactory,
-                                            onTap: () {},
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
-                                              child: Image.file(
-                                                urlImage,
-                                                fit: BoxFit.cover,
-                                                width:190,
-                                              ),
                                             ),
-                                          ),
-                                        //text message
-                                        if (index.text != null)
-                                          Text(
-                                            index.text!,
-                                            style: TextStyle(
-                                                color:Colors.black,),
-                                            // textAlign:
-                                            // !index.isMe ? TextAlign.end : TextAlign.start,
-                                          ),
-                                      ],
+                                          //text message
+                                          if (index.text != null)
+                                            Text(
+                                              index.text!,
+                                              style: TextStyle(
+                                                  color:Colors.black,),
+                                              // textAlign:
+                                              // !index.isMe ? TextAlign.end : TextAlign.start,
+                                            ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           GestureDetector(
@@ -187,8 +196,22 @@ class MessageBubble extends StatelessWidget {
                               print('double tap');
                               if (reaction.value == Reaction.none) {
                                 reaction.value = Reaction.love;
+                                var map={
+                                  "command" : "add_reaction",
+                                  "message_id" :'$id',
+                                  "reaction_id" : "${2}"
+                                };
+                                var body = jsonEncode(map);
+                                chatController.channel.sink.add(body);
                               } else {
                                 reaction.value = Reaction.none;
+                                var map={
+                                  "command" : "add_reaction",
+                                  "message_id" :'$id',
+                                  "reaction_id" : "${0}"
+                                };
+                                var body = jsonEncode(map);
+                                chatController.channel.sink.add(body);
                               }
                             },
                             child: Container(
@@ -344,6 +367,13 @@ class MessageBubble extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               reaction.value = Reaction.none;
+                              var map={
+                                "command" : "add_reaction",
+                                "message_id" :'$id',
+                                "reaction_id" : "${0}"
+                              };
+                              var body = jsonEncode(map);
+                              chatController.channel.sink.add(body);
                             },
                             child: AnimatedSize(
                               duration: Duration(seconds: 2),
@@ -365,4 +395,5 @@ class MessageBubble extends StatelessWidget {
         ),
     );
   }
+
 }

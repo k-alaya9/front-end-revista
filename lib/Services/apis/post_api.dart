@@ -266,3 +266,22 @@ getDiscoverList(token,id)async{
     print(e);
   }
 }
+DeleteMyPosts(token,id)async{
+  try{
+    final response=await http.delete(Uri.parse('http://$ip/posts/post/$id/'),
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },);
+    if (response.statusCode == 204) {
+      final data = jsonDecode(response.body);
+      print('done');
+    } else {
+      final data = jsonDecode(response.body);
+      print(data);
+      throw Exception(response.reasonPhrase);
+    }
+  }catch(e){
+    print(e);
+  }
+}

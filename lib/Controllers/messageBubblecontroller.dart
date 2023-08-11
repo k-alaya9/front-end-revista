@@ -11,9 +11,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revista/View/Widgets/messageBubble.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 import 'dart:io';
 import '../Models/reactionModel.dart';
+import '../Services/apis/chat_api.dart';
+import '../main.dart';
 import 'chatController.dart';
 
 enum Reaction { like, love, lol, wow, sad, angry, none }
@@ -21,7 +22,9 @@ enum Reaction { like, love, lol, wow, sad, angry, none }
 class messageBubbleController extends GetxController {
   var id;
   final MessageKey = GlobalKey();
+  var picked=false.obs;
   List selectedMessages = [];
+  RxList chats=[].obs;
 //ToDo add the repiled view
   var reactionView = false.obs;
   var visible = true.obs;
@@ -194,6 +197,8 @@ class messageBubbleController extends GetxController {
                   widget,
                   SizedBox(height: 10,),
                   Container(
+                    padding: EdgeInsets.all(10),
+                    width: 200,
                     decoration: BoxDecoration(
                       color: Theme.of(context).backgroundColor,
                       shape: BoxShape.rectangle,
@@ -206,9 +211,13 @@ class messageBubbleController extends GetxController {
                           child: Text(DateFormat.jm()
                               .format(DateTime.parse(controller.messages[index].createdAt!)),style: Theme.of(context).textTheme.bodyText1),
                         ),
-                        Divider(color: Get.isDarkMode?Colors.white:Colors.black,),
-                        TextButton(
-                            onPressed: () {},
+                        Divider(color: Get.isDarkMode?Colors.white:Colors.black54,),
+                        InkWell(
+                            onTap: () {
+                              controller.id.value=index;
+                              controller.replied.value=true;
+                              onCloseOverlay();
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -216,9 +225,12 @@ class messageBubbleController extends GetxController {
                                 Icon(Icons.subdirectory_arrow_left,color: Get.isDarkMode?Colors.white:Colors.black,)
                               ],
                             )),
-                        Divider(color: Get.isDarkMode?Colors.white:Colors.black,),
-                        TextButton(
-                            onPressed: () {},
+                        Divider(color: Get.isDarkMode?Colors.white:Colors.black54,),
+                        InkWell(
+                            onTap: () {
+                               onCloseOverlay();
+                               showShare();
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -322,10 +334,167 @@ class messageBubbleController extends GetxController {
       useSafeArea: true,
     );
   }
+  send(){
+    selectedMessages.clear();
+    print('hi');
+    picked.value=false;
+    Get.back();
+  }
   getIdforRepiledmessage(){
    return id;
   }
   setId(id){
     this.id=id;
   }
+showShare()async{
+  var token = sharedPreferences!.getString('access_token');
+  try {
+    final data;
+    data = await getChats(token);
+    chats.assignAll(data);
+  } catch (e) {
+    print(e);
+  }
+  var context=Get.context!;
+
+  Get.bottomSheet(
+    Container(
+      height: MediaQuery.of(context).size.height/2,
+      child: Column(
+        children: [
+          SizedBox(height: 5,),
+          Container(
+            height: 5,
+            width: 50,
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(25),
+                color:
+                Get.isDarkMode ? Colors.white : Colors.black),
+          ),
+          Text('Share',
+              style: Theme.of(context).textTheme.headline1),
+          Expanded(
+            child: Scaffold(
+              body: Column(children: [ListView.builder(
+                  physics: ScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: chats.length,
+                  itemBuilder: (context, index) {
+                    var selected = false.obs;
+                    if (chats.isNotEmpty) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height:
+                        MediaQuery.of(context).size.height * 0.13,
+                        child: ListTile(
+                          onTap: () {
+                            picked.value = !picked.value;
+                            if(picked.value)
+                              selectedMessages.add(chats[index].id);
+                            if(!picked.value)
+                              selectedMessages.remove(chats[index].id);
+                            print(selectedMessages);
+                            // picked.value=selectedMessages.isNotEmpty;
+                            print(controller.picked.value);
+
+                          },
+                          style: ListTileStyle.list,
+                          leading: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      chats[index]
+                                          .user!
+                                          .profileImage!)),
+                            ),
+                            margin: EdgeInsets.all(5),
+                          ),
+                          title: Text(chats[index].user!.username!,
+                            style:
+                            Theme.of(context).textTheme.bodyText1,
+                          ),
+                          subtitle: Text(
+                            chats[index].user!.firstName! +
+                                ' ' +
+                                chats[index].user!.lastName!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(
+                                overflow: TextOverflow.fade,
+                                color:
+                                Colors.grey.withOpacity(0.5)),
+                          ),
+                          trailing: GetX(builder: (messageBubbleController controller)=> Container(
+                            margin:
+                            EdgeInsets.only(top: 10, bottom: 0,right: 10),
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                                color: picked.value
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context)
+                                    .backgroundColor,
+                                shape: BoxShape.circle,
+                                border: picked.value
+                                    ? null
+                                    : Border.all()),
+                            child: picked.value?Center(child: Icon(Icons.check_rounded,color: Colors.white,)):null,
+                          ),
+
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: Text('You Dont have any chat yet'),
+                      );
+                    }
+                  }),],),
+              persistentFooterButtons: [
+                InkWell(
+                  onTap: () => picked.value?send():(){},
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Obx(
+                          ()=>Container(
+                        key: ValueKey(1),
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: picked.value?Theme.of(context).primaryColor:Theme.of(context).accentColor,
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Text(
+                          'Send',
+                          style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(25),
+      topRight: Radius.circular(25),
+    ),),
+    backgroundColor: Theme.of(context).backgroundColor,
+    enableDrag: true,
+    enterBottomSheetDuration: Duration(milliseconds: 500),
+    exitBottomSheetDuration: Duration(milliseconds: 500),
+  );
+}
+
+
 }

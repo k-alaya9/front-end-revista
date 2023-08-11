@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/ProfileController.dart';
 import '../../Controllers/notifications_controller.dart';
+import '../Widgets/drawerWidget.dart';
 import '../Widgets/post.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -17,6 +18,15 @@ class ProfileScreen extends StatelessWidget {
     ProfileController controller = Get.put(ProfileController());
     return SafeArea(
       child: Scaffold(
+        appBar: CupertinoNavigationBar(
+          padding: EdgeInsetsDirectional.zero,
+          leading: Material(
+            color: Theme.of(context).backgroundColor,
+            child: DrawerWidget(),
+          ),
+          backgroundColor: Theme.of(context).backgroundColor,
+          middle: Text('Profile', style: Theme.of(context).textTheme.headline1),
+        ),
         body: Obx(() {
           if (controller.profileImage.value.isNotEmpty &&
               controller.CoverImage.value.isNotEmpty) {
@@ -161,11 +171,11 @@ class ProfileScreen extends StatelessWidget {
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[300],
-                                              shape: BoxShape.rectangle,
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
+                                          // decoration: BoxDecoration(
+                                          //     color: Colors.grey[300],
+                                          //     shape: BoxShape.rectangle,
+                                          //     borderRadius:
+                                          //         BorderRadius.circular(20)),
                                           child: Column(
                                             children: [
                                               Text(
@@ -173,8 +183,7 @@ class ProfileScreen extends StatelessWidget {
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                    ,
                                               ),
                                               SizedBox(
                                                 height: 10,
@@ -184,8 +193,7 @@ class ProfileScreen extends StatelessWidget {
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                    ,
                                               ),
                                             ],
                                           ),
@@ -201,11 +209,11 @@ class ProfileScreen extends StatelessWidget {
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[300],
-                                              shape: BoxShape.rectangle,
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
+                                          // decoration: BoxDecoration(
+                                          //     color: Colors.grey[300],
+                                          //     shape: BoxShape.rectangle,
+                                          //     borderRadius:
+                                          //         BorderRadius.circular(20)),
                                           child: Column(
                                             children: [
                                               Text(
@@ -213,8 +221,7 @@ class ProfileScreen extends StatelessWidget {
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                    ,
                                               ),
                                               SizedBox(
                                                 height: 10,
@@ -224,8 +231,7 @@ class ProfileScreen extends StatelessWidget {
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                    ,
                                               ),
                                             ],
                                           ),
@@ -238,11 +244,11 @@ class ProfileScreen extends StatelessWidget {
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[300],
-                                              shape: BoxShape.rectangle,
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
+                                          // decoration: BoxDecoration(
+                                          //     color: Colors.grey[300],
+                                          //     shape: BoxShape.rectangle,
+                                          //     borderRadius:
+                                          //         BorderRadius.circular(20)),
                                           child: Column(
                                             children: [
                                               Text(
@@ -250,8 +256,7 @@ class ProfileScreen extends StatelessWidget {
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                    ,
                                               ),
                                               SizedBox(
                                                 height: 10,
@@ -261,8 +266,7 @@ class ProfileScreen extends StatelessWidget {
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                    ,
                                               ),
                                             ],
                                           ),
@@ -320,8 +324,7 @@ class ProfileScreen extends StatelessWidget {
                                                               ? Theme.of(
                                                                       context)
                                                                   .primaryColor
-                                                              : Colors.deepPurple[
-                                                                  100])),
+                                                              : Theme.of(context).accentColor)),
                                             ),
                                           ),
                                           Container(
@@ -352,8 +355,7 @@ class ProfileScreen extends StatelessWidget {
                                                               ? Theme.of(
                                                                       context)
                                                                   .primaryColor
-                                                              : Colors.deepPurple[
-                                                                  100])),
+                                                              : Theme.of(context).accentColor)),
                                             ),
                                           ),
                                           Row(
@@ -368,8 +370,7 @@ class ProfileScreen extends StatelessWidget {
                                                     color: controller.View.value
                                                         ? Theme.of(context)
                                                             .primaryColor
-                                                        : Colors
-                                                            .deepPurple[100],
+                                                        : Theme.of(context).accentColor,
                                                     size: 25,
                                                   ),
                                                 ),
@@ -385,8 +386,7 @@ class ProfileScreen extends StatelessWidget {
                                                             .View.value
                                                         ? Theme.of(context)
                                                             .primaryColor
-                                                        : Colors
-                                                            .deepPurple[100],
+                                                        :Theme.of(context).accentColor,
                                                     size: 25,
                                                   ),
                                                 ),

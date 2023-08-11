@@ -1,12 +1,13 @@
 import 'dart:convert';
-
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Models/message.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../Controllers/chatController.dart';
@@ -16,15 +17,16 @@ import '../../Services/apis/linking.dart';
 import '../../main.dart';
 import '../Widgets/messageBubble.dart';
 import '../Widgets/photoMessage.dart';
+import '../Widgets/reportWidget.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
+
   var x = Get.put(ChatController(),);
+
   var y = Get.put(messageBubbleController());
-  var replied = false.obs;
 
   // var id;
-
   var focusNode = FocusNode();
 
   @override
@@ -48,7 +50,48 @@ class ChatScreen extends StatelessWidget {
         trailing: Material(
           color: Theme.of(context).backgroundColor,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.bottomSheet(
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 10,),
+                  CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(controller.imageUrl.value),),
+                  SizedBox(height: 10,),
+                  Text(controller.username.value),
+                    SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        createContainer(icon: Icons.call,text: 'Voice Call',func: (){print('call');}),
+                        createContainer(icon: Icons.video_call_rounded,text: 'Video Call',func: (){print('video');}),
+                        createContainer(icon: Icons.report_problem_outlined,text: 'Report',func: (){ Get.defaultDialog(
+                          content: Report(type: 'chat',id: controller.profileId.value),
+                          title: 'Report',
+                          contentPadding: EdgeInsets.zero,
+                        );}),
+                        createContainer(icon: Icons.person,text: 'Profile',func: (){Get.toNamed('/visitProfile',arguments: {
+                          'id': controller.profileId.value,
+                        });}),
+                      ],
+                    )
+                  ],
+                ),
+                backgroundColor: Theme.of(context).backgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                ),
+                enableDrag: true,
+                isScrollControlled: true,
+                ignoreSafeArea: true,
+              );
+            },
             child: GetX(builder: (ChatController controller)=>CircleAvatar(
               radius: 20,
               backgroundImage: NetworkImage(controller.imageUrl.value),
@@ -64,17 +107,21 @@ class ChatScreen extends StatelessWidget {
               if (controller.messages.value.isEmpty) {
                 return Container();
               } else {
-                return ListView.builder(
-                  controller: controller.scrollController,
-                  padding: EdgeInsets.only(top: 20),
-                  shrinkWrap: true,
-                  itemCount: controller.loading.value? controller.messages.length +1:controller.messages.length,
-                  itemBuilder: (context, index) {
-                    var isMe = controller.messages[index].authorId ==
-                        sharedPreferences!.getInt('access_id')
-                        ? true
-                        : false;
-                    if(index<controller.messages.length){
+                return SmartRefresher(
+                  controller: controller.refreshController,
+                   onRefresh: controller.onRefresh,
+                  enablePullUp: false,
+                  enablePullDown: true,
+                  header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator(),idleText: '',completeText: '',completeIcon: Container(),idleIcon: Container(),releaseText: '',releaseIcon: Container(),refreshingText: '',completeDuration: Duration(milliseconds: 0)),
+                  child: ListView.builder(
+                    controller: controller.scrollController,
+                    shrinkWrap: true,
+                    itemCount: controller.loading.value? controller.messages.length +1:controller.messages.length,
+                    itemBuilder: (context, index) {
+                      var isMe = controller.messages[index].authorId ==
+                          sharedPreferences!.getInt('access_id')
+                          ? true
+                          : false;
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         duration: const Duration(milliseconds: 500),
@@ -89,7 +136,7 @@ class ChatScreen extends StatelessWidget {
                             confirmDismiss: (direction) async {
                               FocusScope.of(context).requestFocus(focusNode);
                               if (direction == DismissDirection.startToEnd) {
-                                replied.value = true;
+                                controller.replied.value = true;
                                 controller.id.value = index;
                               }
                             },
@@ -121,169 +168,54 @@ class ChatScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            child: MessageBubble(
+                            child: AutoScrollTag(
                               key: ValueKey(index),
-                              id: controller.messages[index].id,
-                              message: controller.messages[index].text,
-                              userName: '',
-                              userImage: isMe ? '' : controller.imageUrl.value,
-                              urlImage: controller.messages[index].image,
-                              isMe: isMe,
-                              TimeSent: controller.messages[index].createdAt,
-                              urlVoice: controller.messages[index].voiceRecord,
-                              isTyping: false,
-                              selected: false.obs,
-                              reaction: controller.messages[index].reaction == 1
-                                  ? Reaction.like.obs
-                                  : controller.messages[index].reaction == 2
-                                  ? Reaction.love.obs
-                                  : controller.messages[index].reaction == 4
-                                  ? Reaction.wow.obs
-                                  : controller.messages[index]
-                                  .reaction ==
-                                  3
-                                  ? Reaction.lol.obs
-                                  : controller.messages[index]
-                                  .reaction ==
-                                  5
-                                  ? Reaction.sad.obs
-                                  : controller.messages[index]
-                                  .reaction ==
-                                  6
-                                  ? Reaction.angry.obs
-                                  : Reaction.none.obs,
-                              replyId: controller.messages[index].reply_id,
-                              isSending: false.obs,
+                              index: index,
+                              controller: controller.scrollController,
+                              child: MessageBubble(
+                                key: ValueKey(index),
+                                id: controller.messages[index].id,
+                                message: controller.messages[index].text,
+                                userName: '',
+                                userImage: isMe ? '' : controller.imageUrl.value,
+                                urlImage: controller.messages[index].image,
+                                isMe: isMe,
+                                TimeSent: controller.messages[index].createdAt,
+                                urlVoice: controller.messages[index].voiceRecord,
+                                isTyping: false,
+                                selected: false.obs,
+                                reaction: controller.messages[index].reaction == 1
+                                    ? Reaction.like.obs
+                                    : controller.messages[index].reaction == 2
+                                    ? Reaction.love.obs
+                                    : controller.messages[index].reaction == 4
+                                    ? Reaction.wow.obs
+                                    : controller.messages[index]
+                                    .reaction ==
+                                    3
+                                    ? Reaction.lol.obs
+                                    : controller.messages[index]
+                                    .reaction ==
+                                    5
+                                    ? Reaction.sad.obs
+                                    : controller.messages[index]
+                                    .reaction ==
+                                    6
+                                    ? Reaction.angry.obs
+                                    : Reaction.none.obs,
+                                replyId: controller.messages[index].reply_id,
+                                isSending: false.obs,
+                              ),
                             ),
                           ),
                         ),
                       );
-                    }
-                    else{
-                      return Center(child: CupertinoActivityIndicator(),);
-                    }
-                  },
+                    },
+                  ),
+
                 );
               }
             }),
-      // StreamBuilder(
-                // stream: controller.channel.stream,
-                // builder: (ctx, snapshot) {
-              // if (snapshot.connectionState == ConnectionState.waiting)
-              //     var map = {"command": "fetch_messages"};
-              //     var body = jsonEncode(map);
-              //     controller.channel.sink.add(body);
-              //     if(snapshot.hasData){
-              //     var json=jsonDecode(snapshot.data.toString());
-              //     var data=Autogenerated.fromJson(json);
-              //     if(controller.messages!=data.messages &&data.messages!=null){
-              //       controller.messages.assignAll(data.messages!);
-              //     }
-              // return Obx(() {
-              //   if (controller.messages.value.isEmpty) {
-              //     return Container();
-              //   } else {
-              //     return ListView.builder(
-              //       shrinkWrap: true,
-              //       itemCount: controller.messages.length,
-              //       itemBuilder: (context, index) {
-              //         var isMe = controller.messages[index].authorId ==
-              //                 sharedPreferences!.getInt('access_id')
-              //             ? true
-              //             : false;
-              //         return AnimationConfiguration.staggeredList(
-              //           position: index,
-              //           duration: const Duration(milliseconds: 500),
-              //           child: SlideAnimation(
-              //             horizontalOffset: !isMe ? 50 : -50,
-              //             child: Dismissible(
-              //               // behavior: HitTestBehavior.opaque,
-              //               key: UniqueKey(),
-              //               direction: DismissDirection.horizontal,
-              //               movementDuration: Duration(milliseconds: 500),
-              //               onDismissed: (dir) {},
-              //               confirmDismiss: (direction) async {
-              //                 FocusScope.of(context).requestFocus(focusNode);
-              //                 if (direction == DismissDirection.startToEnd) {
-              //                   replied.value = true;
-              //                   id = index;
-              //                   print(id);
-              //                 }
-              //               },
-              //               background: Container(
-              //                 child: Row(
-              //                   children: [
-              //                     Text(
-              //                       'reply',
-              //                       style:
-              //                           Theme.of(context).textTheme.bodyText1,
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //               secondaryBackground: Container(
-              //                 child: Row(
-              //                   mainAxisAlignment: MainAxisAlignment.end,
-              //                   children: [
-              //                     Icon(Icons.arrow_circle_left_outlined),
-              //                     SizedBox(
-              //                       width: 5,
-              //                     ),
-              //                     Text(
-              //                       DateFormat.jm().format(DateTime.parse(
-              //                           controller.messages[index].createdAt!)),
-              //                       style:
-              //                           Theme.of(context).textTheme.bodyText1,
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //               child: MessageBubble(
-              //                 key: ValueKey(index),
-              //                 id: controller.messages[index].id,
-              //                 message: controller.messages[index].text,
-              //                 userName: '',
-              //                 userImage: isMe ? '' : controller.imageUrl,
-              //                 urlImage: controller.messages[index].image,
-              //                 isMe: isMe,
-              //                 TimeSent: controller.messages[index].createdAt,
-              //                 urlVoice: controller.messages[index].voiceRecord,
-              //                 isTyping: false,
-              //                 selected: false.obs,
-              //                 reaction: controller.messages[index].reaction == 1
-              //                     ? Reaction.like.obs
-              //                     : controller.messages[index].reaction == 2
-              //                         ? Reaction.love.obs
-              //                         : controller.messages[index].reaction == 4
-              //                             ? Reaction.wow.obs
-              //                             : controller.messages[index]
-              //                                         .reaction ==
-              //                                     3
-              //                                 ? Reaction.lol.obs
-              //                                 : controller.messages[index]
-              //                                             .reaction ==
-              //                                         5
-              //                                     ? Reaction.sad.obs
-              //                                     : controller.messages[index]
-              //                                                 .reaction ==
-              //                                             6
-              //                                         ? Reaction.angry.obs
-              //                                         : Reaction.none.obs,
-              //                 isReplied: false,
-              //               ),
-              //             ),
-              //           ),
-              //         );
-              //       },
-              //     );
-              //   }
-              // });
-              // }
-              // else {
-              // return Container();
-              // }
-            // }
-            // ),
           ),
           GetX(
             builder: (ChatController controller) {
@@ -293,7 +225,7 @@ class ChatScreen extends StatelessWidget {
               transitionBuilder: (child, animation) {
                 return SlideTransition(
                   position: animation.drive(Tween(
-                      begin: const Offset(1.0, 0.0), end: const Offset(0, 0))),
+                      begin: const Offset(0.0, 1.0), end: const Offset(0, 0))),
                   child: child,
                 );
               },
@@ -383,7 +315,7 @@ class ChatScreen extends StatelessWidget {
                         ],
                       ),
                     )
-                  : !replied.value
+                  : !controller.replied.value
                       ? Container(
                           key: ValueKey(0),
                           margin: const EdgeInsets.only(top: 8),
@@ -395,7 +327,9 @@ class ChatScreen extends StatelessWidget {
                                     child: TextField(
                                   onChanged: (value) => controller.type(value),
                                   controller: controller.Textcontroller,
+                                  cursorColor: Theme.of(context).primaryColor,
                                   decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.all(5),
                                     prefixIcon: Padding(
                                       padding: const EdgeInsets.all(3.0),
                                       child: InkWell(
@@ -415,274 +349,269 @@ class ChatScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    hintText: 'Send a message...',
+                                    hintText: 'Message...',
                                     focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            width: 1),
+                                        borderSide: BorderSide.none,
                                         borderRadius:
                                             BorderRadius.circular(30)),
+                                    suffixIcon: GetX(
+                                      builder: (ChatController controller) =>
+                                          AnimatedSwitcher(
+                                            duration: const Duration(milliseconds: 500),
+                                            reverseDuration:
+                                            const Duration(milliseconds: 500),
+                                            transitionBuilder: ((child, animation) {
+                                              return SlideTransition(
+                                                child: child,
+                                                position: animation.drive(
+                                                  Tween(
+                                                    begin: const Offset(0, 1),
+                                                    end: const Offset(0, 0),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                            child: controller.isTyping.value
+                                                ? TextButton(
+                                                onPressed: () {
+                                                  FocusScope.of(context).unfocus();
+                                                  if (controller
+                                                      .message!.value.isNotEmpty) {
+                                                    controller.sendMessage(
+                                                        controller.message!.value,
+                                                        controller.username,
+                                                        controller.replied);
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Send',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1,
+                                                ))
+                                                : Row(
+                                               mainAxisAlignment: MainAxisAlignment.end,
+                                               mainAxisSize: MainAxisSize.min,
+                                               children: [
+                                                Column(
+                                                  children: [
+                                                    IconButton(
+                                                        onPressed: () async {
+                                                          if (controller
+                                                              .isRecorder.value) {
+                                                            await controller
+                                                                .stop();
+                                                          } else {
+                                                            await controller
+                                                                .record();
+                                                          }
+                                                        },
+                                                        icon: GetX(
+                                                            builder: (ChatController
+                                                            controller) =>
+                                                                Icon(
+                                                                  controller
+                                                                      .isRecorder
+                                                                      .value
+                                                                      ? Icons
+                                                                      .stop_circle_outlined
+                                                                      : Icons
+                                                                      .mic_rounded,
+                                                                  color: controller
+                                                                      .isRecorder
+                                                                      .value
+                                                                      ? Theme.of(
+                                                                      context)
+                                                                      .primaryColor
+                                                                      : Colors
+                                                                      .black,
+                                                                  size: 30,
+                                                                ))),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      var isScrolled=false.obs;
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      controller.fetchPhotos();
+                                                      Get.bottomSheet(
+                                                        SafeArea(
+                                                          child: Container(
+                                                            height: isScrolled.value?MediaQuery.of(context).size.height/2:MediaQuery.of(context).size.height-40,
+                                                            child: Column(
+                                                              children: [
+                                                                GestureDetector(
+                                                                  onVerticalDragStart: (val){
+                                                                    isScrolled.value=true;
+                                                                  },
+                                                                  onVerticalDragEnd: (val){
+                                                                    isScrolled.value=false;
+                                                                  },
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Container(
+                                                                        width: 60,
+                                                                        height: 5,
+                                                                        decoration: BoxDecoration(
+                                                                            color: Colors
+                                                                                .black,
+                                                                            borderRadius:
+                                                                            BorderRadius.all(
+                                                                                Radius.circular(12.0))),
+                                                                      ),
+                                                                      Container(
+                                                                          padding:
+                                                                          const EdgeInsets
+                                                                              .all(10),
+                                                                          child: Text(
+                                                                            'Gallery',
+                                                                            style: Theme.of(
+                                                                                context)
+                                                                                .textTheme
+                                                                                .headline1,
+                                                                          )),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                    padding:
+                                                                    const EdgeInsets
+                                                                        .all(10),
+                                                                    child: Text(
+                                                                      'Gallery',
+                                                                      style: Theme.of(
+                                                                          context)
+                                                                          .textTheme
+                                                                          .headline1,
+                                                                    )),
+                                                                Expanded(
+                                                                  child: Scaffold(
+                                                                    body:
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                      Column(
+                                                                        children: [
+                                                                          GridView
+                                                                              .builder(
+                                                                            shrinkWrap:
+                                                                            true,
+                                                                            scrollDirection:
+                                                                            Axis.vertical,
+                                                                            physics:
+                                                                            const ScrollPhysics(),
+                                                                            gridDelegate:
+                                                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                                              // A grid view with 3 items per row
+                                                                              crossAxisCount:
+                                                                              3,
+                                                                            ),
+                                                                            itemCount: controller
+                                                                                .photos
+                                                                                .length,
+                                                                            itemBuilder:
+                                                                                (_, index) {
+                                                                              return AssetThumbnail(
+                                                                                asset: controller.photos[index],
+                                                                                id: controller.photos[index].id,
+                                                                                selected: false.obs,
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    extendBody:
+                                                                    true,
+                                                                    persistentFooterButtons: [
+                                                                      GetX(
+                                                                          builder: (ChatController
+                                                                          controller) =>
+                                                                              AnimatedSwitcher(
+                                                                                duration: Duration(milliseconds: 500),
+                                                                                child: controller.picked.value
+                                                                                    ? InkWell(
+                                                                                  onTap: () => controller.send(),
+                                                                                  child: Align(
+                                                                                    alignment: Alignment.bottomCenter,
+                                                                                    child: Container(
+                                                                                      key: ValueKey(1),
+                                                                                      alignment: Alignment.center,
+                                                                                      width: MediaQuery.of(context).size.width,
+                                                                                      height: 50,
+                                                                                      decoration: BoxDecoration(
+                                                                                        color: Theme.of(context).primaryColor,
+                                                                                      ),
+                                                                                      child: Text(
+                                                                                        'Send',
+                                                                                        style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                )
+                                                                                    : Container(
+                                                                                  key: ValueKey(0),
+                                                                                ),
+                                                                              )),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        elevation: 10,
+                                                        backgroundColor:
+                                                        Theme.of(context)
+                                                            .backgroundColor,
+                                                        persistent: true,
+                                                        isScrollControlled: true,
+                                                        enableDrag: true,
+                                                        shape:
+                                                        const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.only(
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                  25),
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                  25)),
+                                                        ),
+                                                      );
+                                                    },
+                                                    icon:  Icon(
+                                                      Icons.insert_photo_outlined,
+                                                      color: Colors.black,
+                                                      size: 30,
+                                                    )),
+                                                const SizedBox(width: 5,)
+                                              ],
+                                            ),
+                                          ),
+                                    ),
                                     filled: true,
                                     fillColor: Colors.grey.shade200,
                                     focusColor: Theme.of(context).primaryColor,
-                                    contentPadding: const EdgeInsets.all(10),
+                                    // contentPadding: const EdgeInsets.all(10),
                                     border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            width: 1),
+                                        borderSide: BorderSide.none,
                                         borderRadius:
                                             BorderRadius.circular(30)),
                                     enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            width: 1),
+                                        borderSide: BorderSide.none,
                                         borderRadius:
                                             BorderRadius.circular(30)),
                                   ),
                                 )),
-                                GetX(
-                                  builder: (ChatController controller) =>
-                                      AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 500),
-                                    reverseDuration:
-                                        const Duration(milliseconds: 500),
-                                    transitionBuilder: ((child, animation) {
-                                      return SlideTransition(
-                                        child: child,
-                                        position: animation.drive(
-                                          Tween(
-                                            begin: const Offset(1, 0),
-                                            end: const Offset(0, 0),
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                    child: controller.isTyping.value
-                                        ? TextButton(
-                                            onPressed: () {
-                                              FocusScope.of(context).unfocus();
-                                              if (controller
-                                                  .message!.value.isNotEmpty) {
-                                                controller.sendMessage(
-                                                    controller.message!.value,
-                                                    controller.username,
-                                                    replied);
-                                              }
-                                            },
-                                            child: Text(
-                                              'Send',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1,
-                                            ))
-                                        : Row(
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  IconButton(
-                                                      onPressed: () async {
-                                                        if (controller
-                                                            .isRecorder.value) {
-                                                          await controller
-                                                              .stop();
-                                                        } else {
-                                                          await controller
-                                                              .record();
-                                                        }
-                                                      },
-                                                      icon: GetX(
-                                                          builder: (ChatController
-                                                                  controller) =>
-                                                              Icon(
-                                                                controller
-                                                                        .isRecorder
-                                                                        .value
-                                                                    ? Icons
-                                                                        .stop_circle_outlined
-                                                                    : Icons
-                                                                        .mic_rounded,
-                                                                color: controller
-                                                                        .isRecorder
-                                                                        .value
-                                                                    ? Theme.of(
-                                                                            context)
-                                                                        .primaryColor
-                                                                    : Colors
-                                                                        .black,
-                                                                size: 30,
-                                                              ))),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    var isScrolled=false.obs;
-                                                    FocusScope.of(context)
-                                                        .unfocus();
-                                                    controller.fetchPhotos();
-                                                    Get.bottomSheet(
-                                                      SafeArea(
-                                                        child: Container(
-                                                          height: isScrolled.value?MediaQuery.of(context).size.height/2:MediaQuery.of(context).size.height-40,
-                                                          child: Column(
-                                                            children: [
-                                                              GestureDetector(
-                                                                onVerticalDragStart: (val){
-                                                                  isScrolled.value=true;
-                                                                },
-                                                                onVerticalDragEnd: (val){
-                                                                  isScrolled.value=false;
-                                                                },
-                                                                child: Column(
-                                                                  children: [
-                                                                    Container(
-                                                                      width: 60,
-                                                                      height: 5,
-                                                                      decoration: BoxDecoration(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          borderRadius:
-                                                                              BorderRadius.all(
-                                                                                  Radius.circular(12.0))),
-                                                                    ),
-                                                                    Container(
-                                                                        padding:
-                                                                        const EdgeInsets
-                                                                            .all(10),
-                                                                        child: Text(
-                                                                          'Gallery',
-                                                                          style: Theme.of(
-                                                                              context)
-                                                                              .textTheme
-                                                                              .headline1,
-                                                                        )),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(10),
-                                                                  child: Text(
-                                                                    'Gallery',
-                                                                    style: Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .headline1,
-                                                                  )),
-                                                              Expanded(
-                                                                child: Scaffold(
-                                                                  body:
-                                                                      SingleChildScrollView(
-                                                                    child:
-                                                                        Column(
-                                                                      children: [
-                                                                        GridView
-                                                                            .builder(
-                                                                          shrinkWrap:
-                                                                              true,
-                                                                          scrollDirection:
-                                                                              Axis.vertical,
-                                                                          physics:
-                                                                              const ScrollPhysics(),
-                                                                          gridDelegate:
-                                                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                                            // A grid view with 3 items per row
-                                                                            crossAxisCount:
-                                                                                3,
-                                                                          ),
-                                                                          itemCount: controller
-                                                                              .photos
-                                                                              .length,
-                                                                          itemBuilder:
-                                                                              (_, index) {
-                                                                            return AssetThumbnail(
-                                                                              asset: controller.photos[index],
-                                                                              id: controller.photos[index].id,
-                                                                              selected: false.obs,
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  extendBody:
-                                                                      true,
-                                                                  persistentFooterButtons: [
-                                                                    GetX(
-                                                                        builder: (ChatController
-                                                                                controller) =>
-                                                                            AnimatedSwitcher(
-                                                                              duration: Duration(milliseconds: 500),
-                                                                              child: controller.picked.value
-                                                                                  ? InkWell(
-                                                                                      onTap: () => controller.send(),
-                                                                                      child: Align(
-                                                                                        alignment: Alignment.bottomCenter,
-                                                                                        child: Container(
-                                                                                          key: ValueKey(1),
-                                                                                          alignment: Alignment.center,
-                                                                                          width: MediaQuery.of(context).size.width,
-                                                                                          height: 50,
-                                                                                          decoration: BoxDecoration(
-                                                                                            color: Theme.of(context).primaryColor,
-                                                                                          ),
-                                                                                          child: Text(
-                                                                                            'Send',
-                                                                                            style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    )
-                                                                                  : Container(
-                                                                                      key: ValueKey(0),
-                                                                                    ),
-                                                                            )),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      elevation: 10,
-                                                      backgroundColor:
-                                                          Theme.of(context)
-                                                              .backgroundColor,
-                                                      persistent: true,
-                                                      isScrollControlled: true,
-                                                      enableDrag: true,
-                                                      shape:
-                                                          const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        25),
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        25)),
-                                                      ),
-                                                    );
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.photo_outlined,
-                                                    size: 30,
-                                                  )),
-                                            ],
-                                          ),
-                                  ),
-                                ),
                               ],
                             ),
                           ))
                       : Container(
-                          key: ValueKey(0),
+                          key: ValueKey(2),
                           margin: const EdgeInsets.only(top: 8),
                           padding: const EdgeInsets.all(5),
                           height: 110,
@@ -723,7 +652,7 @@ class ChatScreen extends StatelessWidget {
                                   ),
                                   IconButton(
                                       onPressed: () {
-                                        replied.value = false;
+                                        controller.replied.value = false;
                                       },
                                       icon: Icon(
                                         Icons.close,
@@ -739,14 +668,12 @@ class ChatScreen extends StatelessWidget {
                                         controller.type(value),
                                     autofocus: true,
                                     focusNode: focusNode,
+                                    cursorColor: Theme.of(context).primaryColor,
                                     controller: controller.Textcontroller,
                                     decoration: InputDecoration(
-                                      hintText: 'Send a message...',
+                                      hintText: 'Message...',
                                       focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              width: 1),
+                                          borderSide:BorderSide.none,
                                           borderRadius:
                                               BorderRadius.circular(30)),
                                       filled: true,
@@ -755,17 +682,11 @@ class ChatScreen extends StatelessWidget {
                                           Theme.of(context).primaryColor,
                                       contentPadding: const EdgeInsets.all(10),
                                       border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              width: 1),
+                                          borderSide:BorderSide.none,
                                           borderRadius:
                                               BorderRadius.circular(30)),
                                       enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              width: 1),
+                                          borderSide:BorderSide.none,
                                           borderRadius:
                                               BorderRadius.circular(30)),
                                     ),
@@ -800,7 +721,7 @@ class ChatScreen extends StatelessWidget {
                                                             controller
                                                                 .message!.value,
                                                             controller.username,
-                                                            replied);
+                                                            controller.replied);
                                                       //   if (id != null)
                                                       //     messageController
                                                       //         .setId(id);
@@ -823,6 +744,28 @@ class ChatScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+  createContainer({icon,text,func}){
+    var context=Get.context!;
+    return InkWell(
+      onTap: func,
+      child: Container(
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).backgroundColor,
+        ),
+        child: Column(
+          children: [
+            Icon(icon,color: Theme.of(context).primaryColor,),
+            SizedBox(height: 5,),
+            Text(text,style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).primaryColor),)
+          ],
+        ),
+      ),
+      splashFactory: NoSplash.splashFactory,
     );
   }
 }
