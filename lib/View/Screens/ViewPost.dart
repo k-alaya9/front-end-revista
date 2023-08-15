@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/commentController.dart';
 
 import '../../Controllers/ViewPostController.dart';
@@ -41,90 +42,98 @@ class ViewPost extends StatelessWidget {
                       ),
           ),
         ),
-        body: GetX(
+        body:  GetX(
           builder: (PostController controller) => controller.username.value.isEmpty &&controller.Comment.isEmpty
               ? Center(
-                  child: CupertinoActivityIndicator(),
-                )
+            child: CupertinoActivityIndicator(),
+          )
               : NotificationListener(
-                  onNotification: (value) => controller.onNotification(value),
+            onNotification: (value) => controller.onNotification(value),
+            child: SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: false,
+                header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
+                controller: controller.refreshController,
+                onRefresh: controller.onRefresh,
+                child:SingleChildScrollView(
+                  controller: controller.scrollController,
                   child: Container(
-                    height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
-                    child: SingleChildScrollView(
-                      controller: controller.scrollController,
-                      child: Column(
-                        children: [
-                          Post(
-                            saveId: controller.savedId.value,
-                            likeId: controller.likeId.value,
-                            authorId: controller.authorId.value,
-                            topics: controller.topics.value,
-                            id: controller.id.value,
-                            username: controller.username.value,
-                            imageUrl: controller.imageUrl.value,
-                            date: DateFormat('yyyy-mm-dd').add_Hm().parse(controller.date.replaceAll('T',' ')),
-                            nickName: controller.nickName.value,
-                            numberOfComments: controller.numberOfComments,
-                            textPost: controller.textPost.value,
-                            numberOfLikes:controller.numberOfLikes,
-                            url: controller.url.value,
-                            userImage: controller.userImage.value,
-                          ),
-                          Divider(),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          SingleChildScrollView(
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 20),
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
+                    child: Column(
+                      children: [
+                        Post(
+                          saveId: controller.savedId.value,
+                          likeId: controller.likeId.value,
+                          authorId: controller.authorId.value,
+                          topics: controller.topics.value,
+                          id: controller.id.value,
+                          username: controller.username.value,
+                          imageUrl: controller.imageUrl.value,
+                          date: DateFormat('yyyy-mm-dd').add_Hm().parse(controller.date.replaceAll('T',' ')),
+                          nickName: controller.nickName.value,
+                          numberOfComments: controller.numberOfComments,
+                          textPost: controller.textPost.value,
+                          numberOfLikes:controller.numberOfLikes,
+                          url: controller.url.value,
+                          userImage: controller.userImage.value,
+                        ),
+                        Divider(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SingleChildScrollView(
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 20),
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
                                       "Comments",
                                       style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30)
-                                    ),
                                   ),
-                                  SizedBox(
-                                    height: 5,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    physics: ScrollPhysics(),
+                                    itemCount: controller.Comment.length,
+                                    itemBuilder: (ctx, index) {
+                                      return CommentScreen(
+                                        type: 'comment',
+                                        authorid: controller.Comment[index].author!.id,
+                                        id: controller.Comment[index].id,
+                                        userImage: controller.Comment[index]
+                                            .author!.user!.profileImage,
+                                        date: controller
+                                            .Comment[index].createdAt,
+                                        username: controller.Comment[index]
+                                            .author!.user!.username,
+                                        comment:
+                                        controller.Comment[index].content,
+                                        numberOfLikesOfComments: 0,
+                                      );
+                                    },
                                   ),
-                                  Container(
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      physics: ScrollPhysics(),
-                                      itemCount: controller.Comment.length,
-                                      itemBuilder: (ctx, index) {
-                                        return CommentScreen(
-                                          id: controller.Comment[index].id,
-                                          userImage: controller.Comment[index]
-                                              .author!.user!.profileImage,
-                                          date: controller
-                                              .Comment[index].createdAt,
-                                          username: controller.Comment[index]
-                                              .author!.user!.username,
-                                          comment:
-                                              controller.Comment[index].content,
-                                          numberOfLikesOfComments: 0,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                          //newComment
-                          Align(
+                        ),
+                        //newComment
+                        Align(
                             alignment: Alignment.bottomCenter,
-                              child: comment_Screen(id: controller.id.value,isComment: true)),
-                        ],
-                      ),
+                            child: comment_Screen(id: controller.id.value,isComment: true)),
+                      ],
                     ),
                   ),
                 ),
+            ),
+          ),
         ),
       ),
     );

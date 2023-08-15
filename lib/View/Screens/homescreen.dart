@@ -8,6 +8,7 @@ import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Services/apis/linking.dart';
 import 'package:revista/View/Screens/DiscoverScreen.dart';
 import 'package:revista/View/Screens/MessageScreen.dart';
+import 'package:revista/View/Screens/cameraScreen.dart';
 import 'package:revista/View/Screens/createPost.dart';
 import 'package:revista/View/Screens/home.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -59,29 +60,7 @@ class HomeScreen extends StatelessWidget {
                      controller.pageindex.value==2?
                      Icon(Icons.messenger):
                     Icon(Icons.messenger_outline),
-                    GetX(builder: (notificationsController ncontroller)=>
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                           controller.pageindex.value==3?Icon(Icons.notifications_active_rounded):Icon(Icons.notifications_active_outlined),
-                            if(ncontroller.notifiction_number.value!=0)
-                            Positioned(
-                              right: -8,
-                              top: -7,
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                child: Center(child: Text((ncontroller.notifiction_number.value).toInt().toString(),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)),),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                    )
+                    Icon(Icons.live_tv)
                   ],
                 ),
               )
@@ -93,7 +72,51 @@ class HomeScreen extends StatelessWidget {
                 shape: BoxShape.circle
             ),
             child: FloatingActionButton(
-              onPressed: () => Get.toNamed('/CreatePost'),
+              onPressed: () {
+                Get.bottomSheet(
+                  Container(
+                    height: 100,
+                    padding: EdgeInsets.only(top: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: ()=>Get.toNamed('/CreatePost'),
+                          splashFactory: NoSplash.splashFactory,
+                          child: Column(
+                            children: [
+                              Icon(Icons.post_add,color: Get.isDarkMode?Colors.white:Colors.black,),
+                              Text('Create Post',style: Theme.of(context).textTheme.bodyText1,),
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: (){
+                            Get.to(()=>CameraScreen());
+                          },
+                          splashFactory: NoSplash.splashFactory,
+                          child: Column(
+                            children: [
+                              Icon(Icons.live_tv_outlined,color: Get.isDarkMode?Colors.white:Colors.black,),
+                              Text('Create Live',style: Theme.of(context).textTheme.bodyText1,),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  enableDrag: true,
+                  isScrollControlled: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15),
+                      topLeft: Radius.circular(15),
+                    )
+                  )
+                );
+              },
               child: Icon(Icons.add),
               backgroundColor: Theme.of(context).primaryColor,
               elevation: 5,

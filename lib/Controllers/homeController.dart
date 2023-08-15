@@ -6,6 +6,7 @@ import '../View/Screens/DiscoverScreen.dart';
 import '../View/Screens/MessageScreen.dart';
 import '../View/Screens/home.dart';
 import '../View/Screens/notification_screen.dart';
+import '../View/Screens/streamsScreen.dart';
 import 'ViewPostController.dart';
 
 class homeController extends GetxController with GetSingleTickerProviderStateMixin {
@@ -36,7 +37,7 @@ class homeController extends GetxController with GetSingleTickerProviderStateMix
     PostScreen(),
     DiscoverScreen(),
     MessageScreen(),
-    notification_screen(),
+    Streams(),
   ];
 
 

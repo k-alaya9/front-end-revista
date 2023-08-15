@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Models/notfications_model.dart';
+import 'package:revista/Services/apis/profile_api.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:workmanager/workmanager.dart';
@@ -27,7 +28,7 @@ class notificationsController extends GetxController with WidgetsBindingObserver
   var notifiction_number=0.obs;
   List notifications = [];
   RefreshController refreshController = RefreshController(initialRefresh: true);
-  var channel;
+  late IOWebSocketChannel channel;
   var sub;
   String? text;
 
@@ -67,6 +68,10 @@ class notificationsController extends GetxController with WidgetsBindingObserver
     channel = IOWebSocketChannel.connect(
         Uri.parse('ws://$ip/ws/notifications/'),
         headers: {'Authorization': token});
+
+    Timer.periodic(Duration(seconds: 10), (timer) {
+
+    });
     var init = InitializationSettings(android: androidInit);
     notifications
         .initialize(
@@ -125,17 +130,21 @@ class notificationsController extends GetxController with WidgetsBindingObserver
     }
   }
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state)async {
     super.didChangeAppLifecycleState(state);
+    final token=sharedPreferences!.getString('access_token');
     if (state == AppLifecycleState.resumed){
-      //TODO: set status to online here
       print('online');
       isOnline.value=true;
+      Timer.periodic(Duration(seconds: 10), (timer) {
+        userStatus(token,isOnline: isOnline.value);
+
+      });
     }
     else{
-      //TODO: set status to offline here
       print('offline');
       isOnline.value=false;
+      userStatus(token,isOnline: isOnline.value);
     }
 
   }

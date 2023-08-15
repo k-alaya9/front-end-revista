@@ -11,6 +11,7 @@ import '../Services/Thems/themeservice.dart';
 import '../Services/apis/profile_api.dart';
 import '../View/Screens/homescreen.dart';
 import '../View/Screens/profile_screen.dart';
+import '../View/Screens/settings.dart';
 import 'ProfileController.dart';
 import 'ViewPostController.dart';
 
@@ -75,9 +76,7 @@ class drawerController extends GetxController with GetSingleTickerProviderStateM
       case 1:
         return SavedPost();
         case 2:
-        return Scaffold(
-          backgroundColor: Colors.yellow,
-        );
+        return Settings();
       case 3:
         return ProfileScreen();
       default:{

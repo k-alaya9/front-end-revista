@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Services/apis/login_api.dart';
+import 'package:revista/main.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/visitProfileController.dart';
 import '../../Services/apis/chat_api.dart';
+import '../../Services/apis/profile_api.dart';
 import '../Widgets/post.dart';
 import '../Widgets/reportWidget.dart';
 
@@ -45,13 +47,17 @@ class visiterProfileScreen extends StatelessWidget {
                     SizedBox(width: 5,),
                     Text('Block User'),
                   ],),value: 2,),
-                ], onChanged: (val){
+                ], onChanged: (val) async {
               if(val==1){
                 Get.defaultDialog(
                   content: Report(type: 'user',id: controller.id.value),
                   title: 'Report',
                   contentPadding: EdgeInsets.zero,
                 );
+              }
+              if(val==2){
+                final token=sharedPreferences!.getString('access_token');
+                await blockUser(token,controller.id.value);
               }
             }),
           ),

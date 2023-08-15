@@ -9,11 +9,11 @@ import 'package:http/http.dart' as http;
 createPost({id, topics, text, link,File? image, token}) async {
   try {
     print(topics);
-    Map<String, String> body = {
-      'author': "$id",
-      'content': "$text",
-      'topics': '$topics',
-      'link': "$link",
+    Map<String,String> body = {
+      'author': id,
+      'content': text,
+      'topics':topics,
+      'link': link
     };
     print('hi');
     var request;
@@ -25,10 +25,54 @@ createPost({id, topics, text, link,File? image, token}) async {
         })
         ..fields.addAll(body)..
       files.add(await http.MultipartFile.fromPath('image', image!.path));
+      // request = jsonToFormData(request, body);
+
     }
     else{
        request =
       http.MultipartRequest('POST', Uri.parse('http://$ip/posts/'))
+         ..headers.addAll({
+          'Authorization': 'Token $token',
+        })..fields.addAll(body);
+       // request = jsonToFormData(request, body);
+    }
+    var response = await http.Response.fromStream(await request.send());
+    if (response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+      print(data);
+      Get.back();
+
+    } else {
+      print(response.body);
+      throw Exception(response.reasonPhrase);
+    }
+  } catch (e) {
+    print(e);
+  }
+}
+editPost({id, topics, text, link,File? image, token,postId}) async {
+  try {
+    print(topics);
+    Map<String, String> body = {
+      'author': "$id",
+      'content': "$text",
+      'topics': '$topics',
+      'link': "$link",
+    };
+    print('hi');
+    var request;
+    if(image!.path!=''){
+      request=
+      http.MultipartRequest('PATCH', Uri.parse('http://$ip/posts/post/$postId/'))
+        ..headers.addAll({
+          'Authorization': 'Token $token',
+        })
+        ..fields.addAll(body)..
+      files.add(await http.MultipartFile.fromPath('image', image!.path));
+    }
+    else{
+      request =
+      http.MultipartRequest('PATCH', Uri.parse('http://$ip/posts/post/$postId/'))
         ..headers.addAll({
           'Authorization': 'Token $token',
         })
@@ -48,6 +92,7 @@ createPost({id, topics, text, link,File? image, token}) async {
     print(e);
   }
 }
+
 getUserPosts(token,id)async{
   try {
     final response = await http.get(Uri.parse('http://$ip/posts/timeline/$id/'),
@@ -168,7 +213,8 @@ likePost(token,id) async {
     // Handle error
     print('Error: $error');
   }
-} unlikePost(token, Id) async {
+}
+unlikePost(token, Id) async {
   final url = 'http://$ip/posts/unlike/$Id/';
 
   try {
@@ -284,4 +330,10 @@ DeleteMyPosts(token,id)async{
   }catch(e){
     print(e);
   }
+}
+jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
+  for (var key in data.keys) {
+    request.fields[key] = data[key].toString();
+  }
+  return request;
 }

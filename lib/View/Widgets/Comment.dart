@@ -4,26 +4,32 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:readmore/readmore.dart';
+import 'package:revista/Services/apis/reply_api.dart';
 
 import '../../Controllers/commentController.dart';
+import '../../Services/apis/comment_api.dart';
+import '../../main.dart';
 import '../Screens/ReplyScreen.dart';
 
 class CommentScreen extends StatelessWidget {
   final id;
+  final authorid;
   final comment;
   final username;
   final  date ;
   final numberOfLikesOfComments;
   final userImage;
+  final type;
   var x=Get.put(CommentController());
   CommentController controller =Get.find();
 
   CommentScreen({super.key,
+    required this.authorid,
     required this.comment,
     required this.username,
     required this.date,
     required this.numberOfLikesOfComments,
-    required this.userImage, required this.id});
+    required this.userImage, required this.id, required this.type});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,8 +73,27 @@ class CommentScreen extends StatelessWidget {
                               child: Text(username,style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                             SizedBox(width:10,),
-                            Container(
-                              child: Text(DateFormat('yyyy-mm-dd').add_Hms().parse(date.replaceAll('T',' ')).toString(),style: TextStyle(fontSize:10,color: Colors.black54 ),overflow: TextOverflow.clip),
+                            Row(
+                              children: [
+                                Container(
+                                  child: Text(DateFormat('yyyy-mm-dd').add_Hms().parse(date.replaceAll('T',' ')).toString(),style: TextStyle(fontSize:10,color: Colors.black54 ),overflow: TextOverflow.clip),
+                                ),
+                                if(authorid==sharedPreferences!.getInt('access_id'))
+                                PopupMenuButton<int>(
+                                  icon: Icon(Icons.more_horiz),
+                                  onSelected: (item) => handleClick(item),
+                                  itemBuilder: (context) => [
+                                      PopupMenuItem<int>(value: 0, child: Row(
+                                        children: [
+                                          Icon(Icons.delete,color: Colors.red,),
+                                          Text('Delete comment'),
+                                        ],
+                                      ),),
+
+
+                                  ],
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -145,5 +170,18 @@ class CommentScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  Future<void> handleClick(int item) async {
+    switch (item) {
+      case 0:
+        final token=sharedPreferences!.getString('access_token');
+        if(type=='comment')
+        await  deleteMyComment (token,id);
+        else
+          await deleteMyReply(token, id);
+        break;
+
+
+    }
   }
 }

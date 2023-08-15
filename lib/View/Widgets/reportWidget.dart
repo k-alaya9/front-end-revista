@@ -11,41 +11,68 @@ class Report extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        color: Theme.of(context).backgroundColor,
+      ),
       width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height/2,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(() =>   CheckboxListTile(
-            value: controller.harassment.value,
-            onChanged: (val){
-              controller.updateHarassment(val!);
-            },
-            title: Text('Harassment'),),
+          Container(
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.center,
+            child: Text('Report',style: Theme.of(context).textTheme.headline1,),
           ),
-          Obx(() =>   CheckboxListTile(
-            value: controller.spam.value,
-            onChanged: (val){
-              controller.updateSpam(val!);
-            },
-            title: Text('Spam'),),
+          Obx(
+                () => RadioListTile<options>(
+              title: Text('Harassment'),
+              value: options.harassment,
+              groupValue: controller.selectedOption.value,
+              onChanged: (value) {
+                controller.setSelectedOption(value!);
+              },
+                  activeColor: Theme.of(context).primaryColor,
+            ),
           ),
-          Obx(() =>   CheckboxListTile(
-            value: controller.inappropriate_Content.value,
-            onChanged: (val){
-              controller.update_Inappropriate_Content(val!);
-            },
-            title: Text('Inappropriate_Content'),),
+          Obx(
+                () => RadioListTile<options>(
+              title: Text('Spam'),
+              value: options.spam,
+              groupValue: controller.selectedOption.value,
+              onChanged: (value) {
+                controller.setSelectedOption(value!);
+              },
+                  activeColor: Theme.of(context).primaryColor,
+            ),
+          ),
+          Obx(
+                () => RadioListTile<options>(
+              title: Text('InappropriateContent'),
+              value: options.inappropriate_content,
+              groupValue: controller.selectedOption.value,
+              onChanged: (value) {
+                controller.setSelectedOption(value!);
+              },
+                  activeColor: Theme.of(context).primaryColor,
+            ),
           ),
           Container(
               height: 50,
+              padding: EdgeInsets.all(5),
               child:Expanded(child:  TextField(
                 controller: controller.detailsController,
                 cursorColor: Theme.of(context).primaryColor,
                 decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(bottom: 0,left: 10,top: 1),
                   disabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Theme.of(context).primaryColor,),
+                      borderRadius: BorderRadius.circular(25)
+                  ),
                   enabledBorder:OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black12,),
                       borderRadius: BorderRadius.circular(25)),
@@ -53,7 +80,6 @@ class Report extends StatelessWidget {
                   focusedErrorBorder:InputBorder.none,
                   hintText:
                   'More Info !',
-
                   hintStyle: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -74,12 +100,20 @@ class Report extends StatelessWidget {
 
               ),)
           ),
-          Row(children: [
-            OutlinedButton(onPressed:(){Get.back();}, child:Text('Cancel',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).accentColor),)),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+            OutlinedButton(onPressed:(){Get.back();}, child:Text('Cancel',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).primaryColor),),style:
+            ButtonStyle(
+              splashFactory: NoSplash.splashFactory,
+            ),),
             OutlinedButton(onPressed:(){
               controller.report(type, id);
             }, child:Text('Confirm',),style:
                 ButtonStyle(
+                  splashFactory: NoSplash.splashFactory,
+                  foregroundColor: MaterialStatePropertyAll(Colors.white),
                   backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColor),
                 ),
             ),

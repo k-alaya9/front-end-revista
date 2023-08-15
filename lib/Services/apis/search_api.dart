@@ -63,6 +63,7 @@ getSearchList(token,query)async {
       final result = data.map<search>((e) {
         return search.fromJson(e);
       }).toList();
+      print(result);
       return result;
     }
   }

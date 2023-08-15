@@ -35,9 +35,11 @@ class User {
   String? profileImage;
   String? firstName;
   String? lastName;
+  bool? isOnline;
 
   User(
       {this.id,
+        this.isOnline,
         this.username,
         this.profileImage,
         this.firstName,
@@ -49,6 +51,7 @@ class User {
     profileImage = json['profile_image'];
     firstName = json['first_name'];
     lastName = json['last_name'];
+    isOnline=json['is_online'];
   }
 
   Map<String, dynamic> toJson() {
@@ -58,6 +61,7 @@ class User {
     data['profile_image'] = this.profileImage;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
+    data['is_online']=this.isOnline;
     return data;
   }
 }

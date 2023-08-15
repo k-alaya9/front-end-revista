@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:get/get.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class DrawerWidget extends StatelessWidget {
       },
       icon: Icon(Icons.menu,
         size: 30,
+        color: Get.isDarkMode?Colors.white:Colors.black
+        ,
       ),
     );
   }

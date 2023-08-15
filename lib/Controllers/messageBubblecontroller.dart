@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
-
+import 'package:http/http.dart'as http;
 import 'package:audio_waveforms/audio_waveforms.dart';
 
 // import 'package:audioplayers/audioplayers.dart';
@@ -14,6 +14,7 @@ import 'package:revista/View/Widgets/messageBubble.dart';
 import 'dart:io';
 import '../Models/reactionModel.dart';
 import '../Services/apis/chat_api.dart';
+import '../Services/apis/linking.dart';
 import '../main.dart';
 import 'chatController.dart';
 
@@ -25,7 +26,6 @@ class messageBubbleController extends GetxController {
   var picked=false.obs;
   List selectedMessages = [];
   RxList chats=[].obs;
-//ToDo add the repiled view
   var reactionView = false.obs;
   var visible = true.obs;
   List<ReactionModel> reactions = [
@@ -67,7 +67,7 @@ class messageBubbleController extends GetxController {
   ];
    OverlayEntry? overlayEntry;
   ChatController controller = Get.find();
-  late final PlayerController playerController;
+  var  playerController;
   var isPlayed = false.obs;
   var duration = Duration.zero;
   var position = Duration.zero;
@@ -79,12 +79,19 @@ class messageBubbleController extends GetxController {
     isPlayed.value = playerController.playerState == PlayerState.playing;
   }
 
-  void played(path) async {
-    playerController.preparePlayer(path: path!);
+  void played(xpath) async {
+    var response = await http.get(Uri.parse('http://$ip$xpath'!));
+    print(response.body);
+    var directory = await getApplicationDocumentsDirectory();
+    var path = "${directory.path}/xpath.aac";
+    final audio=File(path);
+    await audio.writeAsBytes(response.bodyBytes);
+    print(audio.path);
+    playerController.preparePlayer(path: audio.path!);
     await playerController.startPlayer(finishMode: FinishMode.pause);
-    playerController.onCurrentDurationChanged.listen((event) {
-      duration = event.seconds;
-    });
+    // playerController.onCurrentDurationChanged.listen((event) {
+    //   duration = event;
+    // });
     // duration = await playerController.getDuration(DurationType.max);
   }
 
@@ -325,7 +332,7 @@ class messageBubbleController extends GetxController {
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             color: Colors.transparent),
-                        child: Image.file(photo),
+                        child: Image.network(photo),
                       )),
                 ],
               ),

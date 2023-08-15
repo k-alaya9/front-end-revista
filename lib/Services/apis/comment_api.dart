@@ -75,16 +75,12 @@ newComment(int postId, String content, String token,  ) async{
   deleteMyComment(token,postId)async{
 
     try{
-      final response=await http.delete(Uri.parse('http://$ip/posts/comments/$postId/'),
+      final response=await http.delete(Uri.parse('http://$ip/posts/comment/$postId/'),
           headers: {'Authorization': 'Token $token'});
 
       if (response.statusCode == 204) {
-        final data = jsonDecode(response.body);
+        var data='deleted';
         print(data);
-        final comments = data.map<comment>((e) {
-          return comment.fromJson(e);
-        }).toList();
-        return comments;
       } else {
         final data = jsonDecode(response.body);
         print(data);

@@ -109,6 +109,7 @@ logout(token)async{
       headers: {'Authorization':"token $token"}
     );
     if (response.statusCode == 204) {
+
       await deleteTokens();
       Get.offAllNamed('/login');
     } else {
@@ -136,5 +137,6 @@ Future<String?> getAccessToken() async {
 Future<void> deleteTokens() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove('access_token');
+  await prefs.remove('access_id');
 }
 

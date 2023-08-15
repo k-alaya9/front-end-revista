@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:revista/Services/apis/reply_api.dart';
 import 'package:revista/main.dart';
-
+import 'package:flutter_mentions/flutter_mentions.dart';
 import '../../Controllers/commentController.dart';
 import '../../Services/apis/comment_api.dart';
 
@@ -35,13 +36,51 @@ class comment_Screen extends StatelessWidget {
               )),
           Expanded(
             child: Container(
-              child: TextField(
+              child: FlutterMentions(
+                key: isComment?controller.mentionsKeyComment:controller.mentionsKeyReply,
+                suggestionPosition: SuggestionPosition.Top,
+                onChanged: (value){
+                  controller.text!.value=value;
+                    var v=value.replaceAll('@','');
+                    controller.getSearch(v);
+                },
+                mentions: [
+                  Mention(
+                      trigger:'@',
+                    disableMarkup: true,
+                    matchAll: true,
+                    data:controller.allData,
+                    suggestionBuilder: (data) {
+                        print(data);
+                      return Container(
+                        padding: EdgeInsets.all(10.0),
+                        child: Row(
+                          children: <Widget>[
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                data['photo'],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Text(data['full_name']),
+                                Text('@${data['display']}'),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  ),
+                ],
                 cursorColor: Theme.of(context).primaryColor,
                 minLines: 1,
                 //Normal textInputField will be displayed
                 maxLines: 3,
                 // when user presses enter it will adapt to it
-                controller: controller.commentController,
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                     fillColor: Colors.white,
@@ -64,19 +103,12 @@ class comment_Screen extends StatelessWidget {
               ),
             ),
           ),
-          GetBuilder(builder: (CommentController controller)=>IconButton(
+          Obx(()=>IconButton(
             disabledColor: Colors.grey,
-            onPressed: controller.commentController.text.isNotEmpty? () async {
-              final content = controller.commentController.text.trim();
-              final token = sharedPreferences!.getString(
-                  'access_token'); // Replace with the user's authentication token
-              isComment?await newComment(id, content, token!):await newReply(id, content, token!);
-              controller.commentController.clear();
-
-            }:null,
+            onPressed:controller.text!.value.isNotEmpty?()=>controller.send(controller.text!.value, isComment, id) :null,
             icon: Icon(
               Icons.send,
-              color: Theme.of(context).primaryColor,
+              color:controller.text!.value!=null && controller.text!.value.isNotEmpty? Theme.of(context).primaryColor:Colors.grey,
             ),
           ),
 

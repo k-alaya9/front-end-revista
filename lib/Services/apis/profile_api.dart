@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:get/get.dart';
 import 'package:revista/Models/following_model.dart';
 import 'package:revista/Models/profile.dart';
 import 'package:revista/Models/visitprofile.dart';
@@ -261,5 +262,57 @@ Future<void> unfollowUser(token,int followId) async {
   } catch (error) {
     // Handle error
     print('Error: $error');
+  }
+}
+blockUser(token,id)async{
+  try{
+    final response=await http.post(Uri.parse('http://$ip/block-user/'),
+    headers: {
+      'Authorization': 'Token $token'
+        },
+        body: {
+          "blocked": '$id'
+        }
+    );
+    if(response.statusCode==201){
+      print('User Blocked Successfully');
+      Get.back();
+    }
+    else{
+      var data=json.decode(response.body);
+      print(data);
+    }
+  }catch(e){
+    throw e;
+  }
+}
+userStatus(token,{isOnline})async{
+  var map1=
+  {
+    "is_online": isOnline
+  }
+  ;
+  var jsonbody1=json.encode(map1);
+  try{
+    var response = await http.put(Uri.parse('http://$ip/auth/user-edit/'),
+        headers: {
+          'Authorization':'Token $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonbody1
+    );
+    if(response.statusCode==200){
+      final data = jsonDecode(response.body);
+      print('data');
+      getProfileinfo(token);
+    }
+    else{
+      print(response.body);
+      throw Exception(response.reasonPhrase);
+    }
+
+  }
+  on SocketException catch(_){
+    rethrow ;
   }
 }

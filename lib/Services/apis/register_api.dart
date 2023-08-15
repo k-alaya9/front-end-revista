@@ -16,16 +16,22 @@ Future<void> register(username, password,firstname,lastname,email,phonenumber,bi
     'phone_number':phonenumber,
     'birth_date':birthdate,
     'gender': gender,};
-  var  request = http.MultipartRequest('POST', Uri.parse('http://$ip/auth/register/'))
+  var  request;
+  if(profileImage.path!='') request = http.MultipartRequest('POST', Uri.parse('http://$ip/auth/register/'))
     ..fields.addAll(body)
     ..files.add(await http.MultipartFile.fromPath('profile_image',profileImage.path));
-
+else{
+      request = http.MultipartRequest('POST', Uri.parse('http://$ip/auth/register/'))
+      ..fields.addAll(body);
+  }
   try {
     controller.isLoading.value=true;
     var response = await http.Response.fromStream(await request.send());
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final accessToken = data['token'];
+      final accessId=data['id'];
+      await saveid(accessId);
       await saveTokens(accessToken); // Save the tokens to shared preferences
       Get.toNamed('/topic');
       print(response.body);
@@ -49,4 +55,8 @@ Future<String?> getAccessToken() async {
 Future<void> saveTokens(String accessToken) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('access_token', accessToken);
+}
+Future<void> saveid(int accessid) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('access_id', accessid);
 }

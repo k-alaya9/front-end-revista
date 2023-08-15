@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feed_reaction/flutter_feed_reaction.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -37,6 +36,8 @@ class MessageBubble extends StatelessWidget {
   var i;
   @override
   Widget build(BuildContext context) {
+    // controller.playerController = PlayerController();
+    // controller.isPlayed.value = controller.playerController.playerState == PlayerState.playing;
     if(replyId!=null){
       for(int i=0;i<chatController.messages.length;i++) {
         if(chatController.messages[i].id==replyId) {
@@ -151,7 +152,7 @@ class MessageBubble extends StatelessWidget {
                                               onTap: () {},
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(20),
-                                                child: Image.file(
+                                                child: Image.network(
                                                   urlImage,
                                                   fit: BoxFit.cover,
                                                   width:190,
@@ -315,6 +316,7 @@ class MessageBubble extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Image.network(
+
                                           urlImage,
                                           fit: BoxFit.cover,
                                           width:190,

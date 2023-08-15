@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Services/apis/comment_api.dart';
 import 'package:revista/main.dart';
@@ -7,8 +8,8 @@ import '../Models/post.dart';
 import '../Models/comment_model.dart';
 
 class PostController extends GetxController{
-  List<comment> Comment=[
-    ];
+  RxList<comment> Comment=<comment>[
+    ].obs;
   var savedId=0.obs;
   var likeId=0.obs;
   RxBool isAppBarVisible = true.obs;
@@ -26,6 +27,13 @@ class PostController extends GetxController{
   var topics=[].obs;
   late final ScrollController scrollController;
   viewPostController controller=Get.find();
+  RefreshController refreshController =
+  RefreshController(initialRefresh: true);
+  void onRefresh() async {
+    // monitor network fetch
+    await fetchData();
+    refreshController.refreshCompleted();
+  }
   @override
   void onInit() async{
     print('hi');

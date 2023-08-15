@@ -10,10 +10,12 @@ import 'package:revista/Services/apis/topic_api.dart';
 import 'package:revista/main.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import '../Models/post.dart';
 import '../Models/topic.dart';
+import '../Services/apis/comment_api.dart';
 import '../Services/apis/post_api.dart';
 
-class CreatePostController extends GetxController{
+class EditPostController extends GetxController{
   ProfileController controller=Get.find();
   var PostTextField=TextEditingController();
   var UrlTextField=TextEditingController();
@@ -22,16 +24,17 @@ class CreatePostController extends GetxController{
   var Name=''.obs;
   var isVisible=false.obs;
   late PickedFile imageFile;
+  var PostImage=''.obs;
   PanelController panelController=PanelController();
-   List<topicItem>items=[];
+  List<topicItem>items=[];
   List<int?> selecteditems=[];
-@override
+  @override
   void onInit() {
     fetchData();
     super.onInit();
   }
   final ImagePicker picker = ImagePicker();
-   Rx<File> fileImage =File('').obs;
+  Rx<File> fileImage =File('').obs;
   void takePhoto() async {
     var pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
@@ -47,6 +50,7 @@ class CreatePostController extends GetxController{
     Get.back();
   }
   deletePhoto(){
+    PostImage.value='';
     fileImage.value = File('');
   }
   Widget bottomsheet() {
@@ -120,8 +124,7 @@ class CreatePostController extends GetxController{
               ],
             );
           });
-    }
-    else if (selecteditems.isEmpty){
+    }else if (selecteditems.isEmpty){
       showCupertinoDialog(
           context: Get.context!,
           builder: (context) {
@@ -137,30 +140,13 @@ class CreatePostController extends GetxController{
               ],
             );
           });
-    }
-    else if(PostTextField.text.isEmpty&&fileImage.value.path==''){
-      showCupertinoDialog(
-          context: Get.context!,
-          builder: (context) {
-            return CupertinoAlertDialog(
-              title: Text('Error',style: Theme.of(context).textTheme.headline1),
-              content: Text("You need to post image or text in the post <3",style: Theme.of(context).textTheme.bodyText1,),
-              actions:[
-                TextButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Text('ok',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).primaryColor),))
-              ],
-            );
-          });
-    }
-    else  {
+    }else  {
       // Validation passed
       try{
         var token=await getAccessToken();
         var id=sharedPreferences!.getInt('access_id');
-        await createPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:fileImage.value,token: token);
+        var Postid=Get.arguments['editPostId'];
+        await editPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:fileImage.value,token: token,postId: Postid);
       }
       catch(e){
         print(e);
@@ -178,23 +164,39 @@ class CreatePostController extends GetxController{
 
   }
   fetchData()async{
+    var id=Get.arguments['editPostId'];
     try{
       profileImage.value=controller.profileImage.value;
       userName.value=controller.Username.value;
       Name.value=controller.firstname.value+" "+controller.lastName.value;
       var token =await getAccessToken();
-      print(token);
-      print('hi');
       final list=await getTopicsListPost(token);
-      print(list);
+      final post Post=await getPost(token, id);
+      PostTextField.text=Post.content!;
+      UrlTextField.text=Post.link!;
+      if(Post.image!=null)
+        PostImage.value=Post.image!;
       if(items.isEmpty)
         for(var i in list) {
           items.add(i);
           print(items);
         }
-     update();
+      for(int i=0;i<Post.topics!.length;i++){
+        for(int j=0;j<items.length;j++){
+          // print(items[j].id);
+          print(Post.topics![i]['id']);
+        if(Post.topics![i]['id']==items[j].id){
+          print('eeeeee');
+          items[j].pressed.value=true;
+          selecteditems.add(Post.topics![i]['id']);
+        }
+        }
+      }
+
+      update();
     }
     catch(e){
     }
+
   }
 }

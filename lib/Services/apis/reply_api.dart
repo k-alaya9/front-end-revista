@@ -73,3 +73,22 @@ newReply(int commentId, String content, String token,  ) async{
 
 
 }
+deleteMyReply(token,postId)async{
+
+  try{
+    final response=await http.delete(Uri.parse('http://$ip/posts/reply/$postId/'),
+        headers: {'Authorization': 'Token $token'});
+
+    if (response.statusCode == 204) {
+      var data='deleted';
+      print(data);
+    } else {
+      final data = jsonDecode(response.body);
+      print(data);
+      throw Exception(response.reasonPhrase);
+    }
+
+  }catch(e){
+    print(e);
+  }
+}

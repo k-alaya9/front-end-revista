@@ -4,7 +4,6 @@ class search {
   String? profileImage;
   String? firstName;
   String? lastName;
-
   search(
       {this.id,
         this.username,

@@ -72,12 +72,13 @@ dependencies:
   photo_manager: ^2.6.0
   flutter_sound: ^9.2.13
   audio_waveforms: ^1.0.4
-  flutter_feed_reaction: ^0.0.4
 #  visibility_detector: ^0.4.0+2
   flutter_background_service: ^3.0.1
   workmanager: ^0.5.1
   cron: ^0.5.1
   scroll_to_index:
+  flutter_mentions: ^2.0.1
+  camera: ^0.10.5+3
 
 dev_dependencies:
   flutter_test:

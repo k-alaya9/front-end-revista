@@ -28,6 +28,35 @@ class MessageScreen extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         middle: Text('Chat',style: Theme.of(context).textTheme.headline1),
+       trailing: GetX(builder: (notificationsController ncontroller)=>
+           InkWell(
+             splashFactory: NoSplash.splashFactory,
+             onTap: (){
+               Get.toNamed('/notification');
+             },
+             child: Stack(
+               clipBehavior: Clip.none,
+               children: [
+                 Icon(Icons.notifications_active_outlined),
+                 if(ncontroller.notifiction_number.value!=0)
+                   Positioned(
+                     right: -8,
+                     top: -7,
+                     child: Container(
+                       width: 20,
+                       height: 20,
+                       decoration: BoxDecoration(
+                         shape: BoxShape.circle,
+                         color: Theme.of(context).primaryColor,
+                       ),
+                       child: Center(child: Text((ncontroller.notifiction_number.value).toInt().toString(),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)),),
+                     ),
+                   ),
+               ],
+             ),
+           ),
+
+       ),
       ),
         body:FutureBuilder(
             future: controller.fetchData(),
@@ -118,7 +147,6 @@ class MessageScreen extends StatelessWidget {
                                     contentPadding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
                                     onTap: (){
                                       print(controller.chats[index].id!);
-
                                       Get.toNamed('/chatScreen',arguments: {
                                         'chat_id': controller.chats[index].id!,
                                         'username':controller.chats[index].user!.username,
@@ -141,13 +169,13 @@ class MessageScreen extends StatelessWidget {
                                             left: 35,
                                             bottom: 5,
                                             child: GetX(
-                                              builder: (notificationsController controller) =>
+                                              builder: (messageScreenController controller) =>
                                                   Container(
                                                     width: 12,
                                                     height: 12,
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
-                                                      color: controller.isOnline.value==true?Colors.green:Colors.grey,
+                                                      color: controller.chats.value[index].user!.isOnline==true?Colors.green:Colors.grey,
                                                     ),
                                                   ),
                                             )),

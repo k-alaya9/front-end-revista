@@ -194,12 +194,14 @@ class ChatController extends GetxController  {
     var isFile= fileImage.value;
     var buffer =await isFile!.readAsBytes();
     String base64string = base64.encode(buffer);
+    print(base64string);
     var map ={
       "command" : "new_message",
       "message_type" : "image",
       "image" : base64string,
       "reply_id" : 0
     };
+    print(map);
     var body=jsonEncode(map);
     channel.sink.add(body);
     Get.back();
@@ -255,6 +257,7 @@ class ChatController extends GetxController  {
        "image" : base64string,
        "reply_id" : 0
      };
+     print(map);
      var body=jsonEncode(map);
      channel.sink.add(body);
     }
@@ -276,7 +279,7 @@ class ChatController extends GetxController  {
     var map ={
       "command" : "new_message",
       "message_type" : "voice_record",
-      "image" : base64string,
+      "voice_record" : base64string,
       "reply_id" : 0
     };
     var body=jsonEncode(map);

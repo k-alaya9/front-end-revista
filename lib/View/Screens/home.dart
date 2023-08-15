@@ -7,6 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Models/topic.dart';
 import '../../Controllers/drawerController.dart';
+import '../../Controllers/notifications_controller.dart';
 import '../Widgets/drawer.dart';
 import '../Widgets/drawerWidget.dart';
 import '../Widgets/post.dart';
@@ -32,6 +33,35 @@ class PostScreen extends StatelessWidget {
             shape: BoxShape.circle,
             image: DecorationImage(image: AssetImage('asset/image/logo.png'),isAntiAlias: true,filterQuality: FilterQuality.high,fit: BoxFit.contain)
           ),
+        ),
+        trailing: GetX(builder: (notificationsController ncontroller)=>
+            InkWell(
+              splashFactory: NoSplash.splashFactory,
+              onTap: (){
+                Get.toNamed('/notification');
+              },
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                Icon(Icons.notifications_active_outlined),
+                  if(ncontroller.notifiction_number.value!=0)
+                    Positioned(
+                      right: -8,
+                      top: -7,
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        child: Center(child: Text((ncontroller.notifiction_number.value).toInt().toString(),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)),),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
         ),
       ),
       body: SmartRefresher(

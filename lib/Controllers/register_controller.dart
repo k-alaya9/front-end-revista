@@ -34,7 +34,7 @@ class register_Controller extends GetxController {
   late PickedFile imageFile;
 
   final ImagePicker picker = ImagePicker();
-  Rx<File>? fileImage = File('asset/image/blank_profile_picture.png').obs;
+  Rx<File>? fileImage = File('').obs;
 
   void takePhoto() async {
     var pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -148,6 +148,6 @@ class register_Controller extends GetxController {
     ));
   }
   deletePhoto(){
-    fileImage!.value = File('asset/image/blank_profile_picture.png');
+    fileImage!.value = File('');
   }
 }

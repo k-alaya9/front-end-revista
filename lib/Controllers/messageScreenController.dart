@@ -6,7 +6,7 @@ import '../Models/chatModel.dart';
 import '../main.dart';
 
 class messageScreenController extends GetxController{
-  List <chat>chats=[];
+  RxList <chat>chats=<chat>[].obs;
   RefreshController refreshController = RefreshController(initialRefresh: true);
   @override
   void onInit() {

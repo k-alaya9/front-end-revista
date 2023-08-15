@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
@@ -19,8 +20,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../Controllers/postController.dart';
 import '../../Models/topic.dart';
 import '../../Services/apis/chat_api.dart';
+import '../../Services/apis/linking.dart';
 import '../../Services/apis/post_api.dart';
 import '../Screens/ViewPost.dart';
+import '../Screens/edit_post.dart';
 
 class Post extends StatelessWidget {
   final id;
@@ -113,7 +116,6 @@ class Post extends StatelessWidget {
                          shrinkWrap: true,
                          physics: ScrollPhysics(),
                          scrollDirection: Axis.horizontal,
-
                          itemBuilder: (context, index) {
                            return Container(
                                padding: EdgeInsets.all(5),
@@ -529,18 +531,22 @@ class Post extends StatelessWidget {
         await DeleteMyPosts(token, id);
         break;
       case 1:
+        Get.to(()=>EditPost(),
+        arguments: {
+          'editPostId':id
+            });
         break;
       case 2:
-      /* Clipboard.setData(const ClipboardData(text: "Your Copy text")).then((_) {
-        Get.showSnackBar(
-            const SnackBar(content: Text('Copied to your clipboard !')));
-      });*/
+       Clipboard.setData( ClipboardData(text: "http://$ip/posts/post/$id/")).then((_) {
+        Get.showSnackbar(GetSnackBar(
+          message: 'Copied to your clipboard !',
+        ));}
+       );
         break;
       case 3:
-        Get.defaultDialog(
-          content: Report(type: 'post',id: id),
-          title: 'Report',
-          contentPadding: EdgeInsets.zero,
+        Get.dialog(
+            Report(type: 'post',id: id),
+          useSafeArea: true,
         );
         break;
     }
