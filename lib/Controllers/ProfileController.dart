@@ -10,7 +10,10 @@ import 'package:revista/Services/apis/post_api.dart';
 
 import '../Models/post.dart';
 import '../Models/profile.dart';
+import '../Models/topic.dart';
 import '../Services/apis/profile_api.dart';
+import '../Services/apis/topic_api.dart';
+import '../View/Screens/streamsScreen.dart';
 import '../main.dart';
 
 class ProfileController extends GetxController{
@@ -18,6 +21,8 @@ class ProfileController extends GetxController{
   RefreshController(initialRefresh: true);
   RxList <post>Posts =<post>[].obs;
   RxList<savedPost>SavedPost=<savedPost>[].obs;
+  RxList topics=[].obs;
+  RxList<topicItem>items=<topicItem>[].obs;
   var postView=true.obs;
   var View=true.obs;
   int? id;
@@ -224,7 +229,24 @@ class ProfileController extends GetxController{
       firstnameController=TextEditingController(text: firstname.value);
       usernameController=TextEditingController(text: Username.value);
       bioController=TextEditingController(text: bio.value);
-
+      final list=await getTopicsListPost(token);
+      if(items.isEmpty)
+        for(var i in list) {
+          items.add(i);
+          print(items);
+        }
+      final t=await getYourTopic(token);
+      topics.assignAll(t);
+      for(int i=0;i<topics.length;i++){
+        for(int j=0;j<items.length;j++){
+          // print(items[j].id);
+          print(topics[i]['topic']);
+          if(topics![i]['topic']==items[j].id){
+            print('eeeeee');
+            items[j].pressed.value=true;
+          }
+        }
+      }
       final data=await getMyPosts(token);
       if(Posts!=data){
         Posts.assignAll(data);

@@ -66,7 +66,6 @@ Future<List>getTopicsListPost(token) async {
 }
 getYourTopic(token)async{
   try{
-    print('hi');
     final response = await http.get(
         Uri.parse('http://$ip/topics-follow/'),
         headers: {
@@ -76,11 +75,9 @@ getYourTopic(token)async{
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       print(data);
-      var map=data.map((e)=>topicItem.fromJson(e)).toList();
-      print(map);
+      var map=data.map((e)=>e).toList();
       return map;
     } else {
-      print('hi');
       print(response.body);
       throw Exception(response.body);
     }
@@ -121,5 +118,48 @@ sendTopicList(String token, List topicList)async{
   }
   finally{
     controller.onLoading.value=false;
+  }
+}
+unFollowTopics(token,id)async{
+try{
+  print(id);
+  final response=await http.delete(Uri.parse('http://$ip/topics-unfollow/$id',),
+  headers: {
+    'Authorization':'Token $token',
+    'Content-Type': 'application/json'
+  });
+  if(response.statusCode==204){
+    print('unfollowed!');
+    return false;
+  }
+  else{
+    print('failed');
+    return true;
+  }
+}catch(e){
+  print(e);
+}
+}
+followTopics(token,id)async{
+  var map={
+    'topic':id
+  };
+  try{
+    final response=await http.post(Uri.parse('http://$ip/topics-follow/'),
+        headers: {
+          'Authorization':'Token $token',
+          'Content-Type': 'application/json'
+        },
+      body: jsonEncode(map));
+    if(response.statusCode==201){
+      print('followed!');
+      return true;
+    }
+    else{
+      print('failed');
+      return false;
+    }
+  }catch(e){
+    print(e);
   }
 }
