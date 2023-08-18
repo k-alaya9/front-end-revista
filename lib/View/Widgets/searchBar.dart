@@ -80,8 +80,14 @@ class CustomSearch extends SearchDelegate{
                 title: Text(controller.searchResults[index].username!,style: Theme.of(context).textTheme.bodyText1,),
                 subtitle: Text(controller.searchResults[index].firstName!+' '+controller.searchResults[index].lastName!,style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey),),
                 onTap:()async{
+                  controller.fetchData();
                   final token=sharedPreferences!.getString('access_token');
                   await addHistory(token,controller.searchResults[index].username!);
+                  var id=sharedPreferences!.getInt('access_id');
+                  print(id);
+                  controller.searchResults[index]!.id==id?
+                  Get.toNamed('/Profile')
+                      :
                   Get.toNamed('/visitProfile', arguments: {
                     'id': controller.searchResults[index].id,
                   });
@@ -99,41 +105,34 @@ class CustomSearch extends SearchDelegate{
   @override
   Widget buildSuggestions(BuildContext context) {
     controller.getSearch(query);
-    return SmartRefresher(
-      header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
-      controller: controller.refreshController,
-      enablePullUp: false,
-      enablePullDown: true,
-      onRefresh: controller.onReady,
-      child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          physics: ScrollPhysics(),
-          itemCount: controller.allData.length,
-          itemBuilder: (context,index){
-            return ListTile(
-              leading:Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(image: NetworkImage(controller.allData[index].searchedUser!.profileImage!)),
-              )) ,
-              title: Text(controller.allData[index].searchedUser!.username!,style: Theme.of(context).textTheme.bodyText1,),
-              subtitle: Text(controller.allData[index].searchedUser!.firstName!+''+controller.allData[index].searchedUser!.lastName!),
-              onTap:(){
-                var id=sharedPreferences!.getInt('access_id');
-                print(id);
-                controller.allData[index].searchedUser!.id==id?
-                    Get.toNamed('/Profile')
-                    :
-                Get.toNamed('/visitProfile', arguments: {
-                  'id': controller.allData[index].searchedUser!.id,
-                });
-              },
-            );
-          }
-      ),
+    return ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        physics: ScrollPhysics(),
+        itemCount: controller.allData.length,
+        itemBuilder: (context,index){
+          return ListTile(
+            leading:Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: NetworkImage(controller.allData[index].searchedUser!.profileImage!)),
+            )) ,
+            title: Text(controller.allData[index].searchedUser!.username!,style: Theme.of(context).textTheme.bodyText1,),
+            subtitle: Text(controller.allData[index].searchedUser!.firstName!+''+controller.allData[index].searchedUser!.lastName!),
+            onTap:(){
+              var id=sharedPreferences!.getInt('access_id');
+              print(id);
+              controller.allData[index].searchedUser!.id==id?
+                  Get.toNamed('/Profile')
+                  :
+              Get.toNamed('/visitProfile', arguments: {
+                'id': controller.allData[index].searchedUser!.id,
+              });
+            },
+          );
+        }
     );
   }
 

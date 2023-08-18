@@ -115,7 +115,7 @@ notifiy()async{
         .resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>()!
         .requestPermission();
-    var androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var androidInit = AndroidInitializationSettings('@mipmap/launcher_icon');
     channel = IOWebSocketChannel.connect(
         Uri.parse('ws://$ip/ws/notifications/'),
         headers: {'Authorization': token});

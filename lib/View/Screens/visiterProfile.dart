@@ -51,10 +51,9 @@ class visiterProfileScreen extends StatelessWidget {
                   ],),value: 2,),
                 ], onChanged: (val) async {
               if(val==1){
-                Get.defaultDialog(
-                  content: Report(type: 'user',id: controller.id.value),
-                  title: translator.translate("Report"),
-                  contentPadding: EdgeInsets.zero,
+                Get.dialog(
+                  Report(type: 'user',id: controller.id.value),
+                  useSafeArea: true
                 );
               }
               if(val==2){

@@ -240,10 +240,12 @@ class ProfileController extends GetxController{
       for(int i=0;i<topics.length;i++){
         for(int j=0;j<items.length;j++){
           // print(items[j].id);
-          print(topics[i]['topic']);
+          print(topics[i]['id']);
+          print(items[j].id);
+          print(items[j].followId);
           if(topics![i]['topic']==items[j].id){
             print('eeeeee');
-            items[j].pressed.value=true;
+            items[j].followId.value=topics[i]['id'];
           }
         }
       }
@@ -299,6 +301,20 @@ class ProfileController extends GetxController{
   }
   switchViewPost(){
     postView.value=true;
+  }
+  followtopics(index)async{
+    final token=sharedPreferences!.getString('access_token');
+    if(!items[index].pressed.value&&items[index].followId.value==0){
+
+      items[index].pressed.value=  (items[index].followId.value=await  followTopics(token,items[index].id))!=null?
+    true:
+    false
+    ;
+
+    }else if(items[index].followId.value!=0)
+    items[index].pressed.value= await unFollowTopics(token,items[index].followId.value);
+    items[index].followId.value=0;
+    fetchData();
   }
   void showSnackBar(var e) {
     Get.showSnackbar(GetSnackBar(

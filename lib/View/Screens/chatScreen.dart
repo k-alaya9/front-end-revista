@@ -66,10 +66,9 @@ class ChatScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        createContainer(icon: Icons.report_problem_outlined,text: "Report",func: (){ Get.defaultDialog(
-                          content: Report(type: "chat",id: controller.profileId.value),
-                          title: "Report",
-                          contentPadding: EdgeInsets.zero,
+                        createContainer(icon: Icons.report_problem_outlined,text: "Report",func: (){ Get.dialog(
+                           Report(type: "chat",id: controller.profileId.value),
+                          useSafeArea: true
                         );}),
                         createContainer(icon: Icons.person,text: "Profile",func: (){
                           print(controller.profileId);

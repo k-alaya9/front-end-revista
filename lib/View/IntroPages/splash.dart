@@ -21,13 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
           () {
         if(sharedPreferences!.getBool('firstTimer')==false){
           if(sharedPreferences!.getString('access_token')==null)
-          Get.offAll(login());
+          Get.offAll(()=>login());
           else{
             Get.offAllNamed('/home');
           }
         }
         else{
-          Get.offAll(OnBordingScreen());
+          Get.offAll(()=>OnBordingScreen());
 
         }
           },

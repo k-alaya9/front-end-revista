@@ -42,7 +42,7 @@ class comment_Screen extends StatelessWidget {
                       suggestionBuilder: (data) {
                           print(data);
                         return Container(
-                          padding: EdgeInsets.all(10.0),
+                          margin: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
                           child: Row(
                             children: <Widget>[
                               CircleAvatar(

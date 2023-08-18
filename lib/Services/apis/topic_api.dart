@@ -152,12 +152,14 @@ followTopics(token,id)async{
         },
       body: jsonEncode(map));
     if(response.statusCode==201){
+      var data=jsonDecode(response.body);
+      print(data);
       print('followed!');
-      return true;
+      print(data['id']);
+      return data['id'];
     }
     else{
       print('failed');
-      return false;
     }
   }catch(e){
     print(e);

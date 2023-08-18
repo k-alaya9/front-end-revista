@@ -298,7 +298,7 @@ class EditProfileScreen extends StatelessWidget {
                     ),
                     Container(
                         alignment: Alignment.centerLeft,
-                        height: 40,
+                        height: 120,
                         child: TextFormField(
                           style: Theme.of(context).textTheme.bodyText1,
                           // initialValue:bio ?? '',
@@ -367,10 +367,7 @@ class EditProfileScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(
                                     onPressed: () async {
-                                      final token=sharedPreferences!.getString('access_token');
-                                      controller.items[index].pressed.value?
-                                      controller.items[index].pressed.value= await unFollowTopics(token,controller.items[index].id):
-                                      controller.items[index].pressed.value=await  followTopics(token,controller.items[index].id);
+                                    controller.followtopics(index);
                                     },
                                     style: ButtonStyle(
                                       elevation: MaterialStatePropertyAll(0),

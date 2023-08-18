@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
     homeController controller = Get.find();
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: NotificationListener<ScrollNotification>(
             onNotification: (value) => controller.onNotification(value),
             child: GetX(

@@ -30,26 +30,37 @@ class DiscoverScreen extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          height: 46,
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: TextField(
-                            onTap: () {
-                              showSearch(
-                                context: context,
-                                delegate: CustomSearch(),
-                              );
-                            },
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.grey,
+                        InkWell(
+                          splashFactory: NoSplash.splashFactory,
+                          onTap: () {
+                            controller.fetchData();
+                            showSearch(
+                              context: context,
+                              delegate: CustomSearch(),
+                            );
+                          },
+                          child: Container(
+                            height: 46,
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: TextField(
+                              onTap: () {
+                                showSearch(
+                                  context: context,
+                                  delegate: CustomSearch(),
+                                );
+                              },
+                              enabled: false,
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Colors.grey,
+                                ),
+                                border: InputBorder.none,
+                                hintText: translator.translate("Search"),
                               ),
-                              border: InputBorder.none,
-                              hintText: translator.translate("Search"),
                             ),
                           ),
                         ),
