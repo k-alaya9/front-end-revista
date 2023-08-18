@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/ProfileController.dart';
+import 'package:revista/Services/apis/topic_api.dart';
+import 'package:revista/main.dart';
+
+import '../../Controllers/followingController.dart';
 
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -15,6 +19,7 @@ class EditProfileScreen extends StatelessWidget {
     var bio=controller.bio.value;
     var firstname=controller.firstname.value;
     var lastname=controller.lastName.value;
+
     return Scaffold(
       appBar: CupertinoNavigationBar(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -326,7 +331,61 @@ class EditProfileScreen extends StatelessWidget {
                           onSaved: (val) {
                             controller.bio.value = val!;
                           },
-                        ))
+                        )),
+                    ListView.builder
+                      (
+                      itemCount: controller.items.length,
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                            width: MediaQuery.of(context).size.width,
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                              enabled: true,
+                              leading: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(image: NetworkImage(controller.items[index].imageUrl)),
+                                ),
+                              ),
+                              title: Text(controller.items[index].name ,
+                                  style: Theme.of(context).textTheme.bodyText1),
+                              subtitle: Text(
+                                username,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: Colors.grey, fontSize: 13),
+                              ),
+                              trailing: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                      final token=sharedPreferences!.getString('access_token');
+                                      controller.items[index].pressed.value?
+                                      controller.items[index].pressed.value= await unFollowTopics(token,controller.items[index].id):
+                                      controller.items[index].pressed.value=await  followTopics(token,controller.items[index].id);
+                                    },
+                                    style: ButtonStyle(
+                                      elevation: MaterialStatePropertyAll(0),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Theme.of(context).primaryColor),
+                                    ),
+                                    child: GetX(builder: ( ProfileController controller)=>
+                                        Text(controller.items[index].pressed.value?'unFollow':'Follow')),
+                                    )
+                                    ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },)
                   ],
                 ),
               ],

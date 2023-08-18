@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:revista/View/Screens/loginscreen.dart';
 
+import '../../main.dart';
 import '../Screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,7 +19,17 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       Duration(seconds: 5),
           () {
-        Get.to(OnBordingScreen());
+        if(sharedPreferences!.getBool('firstTimer')==false){
+          if(sharedPreferences!.getString('access_token')==null)
+          Get.offAll(login());
+          else{
+            Get.offAllNamed('/home');
+          }
+        }
+        else{
+          Get.offAll(OnBordingScreen());
+
+        }
           },
     );
     super.initState();
@@ -28,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Container(
 
       child: Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: const EdgeInsets.all(150.0),
         child: Image(image: AssetImage('asset/image/logo.png'),),
       ),
 
