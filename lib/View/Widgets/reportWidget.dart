@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../Controllers/reportController.dart';
 class Report extends StatelessWidget {
   final type;
@@ -25,11 +26,11 @@ class Report extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(10),
             alignment: Alignment.center,
-            child: Text('Report',style: Theme.of(context).textTheme.headline1,),
+            child: Text(translator.translate("Report"),style: Theme.of(context).textTheme.headline1,),
           ),
           Obx(
                 () => RadioListTile<options>(
-              title: Text('Harassment'),
+              title: Text(translator.translate("Harassment")),
               value: options.harassment,
               groupValue: controller.selectedOption.value,
               onChanged: (value) {
@@ -40,7 +41,7 @@ class Report extends StatelessWidget {
           ),
           Obx(
                 () => RadioListTile<options>(
-              title: Text('Spam'),
+              title: Text(translator.translate("Spam")),
               value: options.spam,
               groupValue: controller.selectedOption.value,
               onChanged: (value) {
@@ -51,7 +52,7 @@ class Report extends StatelessWidget {
           ),
           Obx(
                 () => RadioListTile<options>(
-              title: Text('InappropriateContent'),
+              title: Text(translator.translate("InappropriateContent")),
               value: options.inappropriate_content,
               groupValue: controller.selectedOption.value,
               onChanged: (value) {
@@ -79,7 +80,7 @@ class Report extends StatelessWidget {
                   errorBorder: InputBorder.none,
                   focusedErrorBorder:InputBorder.none,
                   hintText:
-                  'More Info !',
+                  translator.translate("More Info !"),
                   hintStyle: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -104,13 +105,13 @@ class Report extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-            OutlinedButton(onPressed:(){Get.back();}, child:Text('Cancel',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).primaryColor),),style:
+            OutlinedButton(onPressed:(){Get.back();}, child:Text(translator.translate("Cancel"),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).primaryColor),),style:
             ButtonStyle(
               splashFactory: NoSplash.splashFactory,
             ),),
             OutlinedButton(onPressed:(){
               controller.report(type, id);
-            }, child:Text('Confirm',),style:
+            }, child:Text(translator.translate("Confirm"),),style:
                 ButtonStyle(
                   splashFactory: NoSplash.splashFactory,
                   foregroundColor: MaterialStatePropertyAll(Colors.white),

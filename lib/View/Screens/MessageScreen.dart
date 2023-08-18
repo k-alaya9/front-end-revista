@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/messageScreenController.dart';
 import 'package:shimmer/shimmer.dart';
@@ -27,7 +28,7 @@ class MessageScreen extends StatelessWidget {
           child: DrawerWidget(),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
-        middle: Text('Chat',style: Theme.of(context).textTheme.headline1),
+        middle: Text(translator.translate("Chat"),style: Theme.of(context).textTheme.headline1),
        trailing: GetX(builder: (notificationsController ncontroller)=>
            InkWell(
              splashFactory: NoSplash.splashFactory,
@@ -212,7 +213,7 @@ class MessageScreen extends StatelessWidget {
                           );
                         }
                         else{
-                          return Center(child: Text('You Dont have any chat yet'),);
+                          return Center(child: Text(translator.translate("You Dont have any chat yet")),);
                         }
                       }
                       return Container();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:lottie/lottie.dart';
 import 'package:revista/Services/apis/login_api.dart';
 import 'package:shimmer/shimmer.dart';
@@ -137,9 +138,9 @@ class DrawerScreen extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            drawerList(Icons.home, "Home Screen", 0, context),
-            drawerList(Icons.save_alt, "Saved_Post", 1, context),
-            drawerList(Icons.settings, "Settings & Privacy", 2, context),
+            drawerList(Icons.home, translator.translate("Home Screen"), 0, context),
+            drawerList(Icons.save_alt, translator.translate("Saved Posts"), 1, context),
+            drawerList(Icons.settings, translator.translate("Settings & Privacy"), 2, context),
             GestureDetector(
               onTap: () async {
                 try {
@@ -161,7 +162,7 @@ class DrawerScreen extends StatelessWidget {
                     SizedBox(
                       width: 12,
                     ),
-                    Text('Logout',
+                    Text(translator.translate("Logout"),
                         style: Theme.of(context).textTheme.headline1),
                   ],
                 ),

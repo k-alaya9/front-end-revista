@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:lottie/lottie.dart';
 class IntroPage_1 extends StatelessWidget {
   const IntroPage_1({Key? key}) : super(key: key);
@@ -26,11 +27,11 @@ class IntroPage_1 extends StatelessWidget {
                   child:Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text('Welcome to revista app',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+                      Text(translator.translate("Welcome to revista app"),style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
                     SizedBox(height: 5,),
-                    Text('Where you can find all the topics',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+                    Text(translator.translate("Where you can find all the topics"),style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
                       SizedBox(height: 5,),
-                    Text('that peak your interest and many more!',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+                    Text(translator.translate("that peak your interest and many more!"),style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
                 ],
                   ),
 

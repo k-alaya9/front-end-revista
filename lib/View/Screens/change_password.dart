@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../Controllers/settingsController.dart';
 
@@ -29,7 +30,7 @@ class Change_Passwordstate extends State<Change_Password> {
             ),
           ),
           centerTitle: true,
-          title: Text('Change Password',
+          title: Text(translator.translate("Change Password"),
               style:Theme.of(context).textTheme.headline1),
         ),
         body: Padding(
@@ -42,7 +43,7 @@ class Change_Passwordstate extends State<Change_Password> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Your password should include a combination of number,letters and special characters \# \@\$\%',
+                        translator.translate("Your password should include a combination of number,letters and special characters \# \@\$\%"),
                       style: Theme.of(context).textTheme.bodyText1
                     ),
                     SizedBox(
@@ -56,7 +57,7 @@ class Change_Passwordstate extends State<Change_Password> {
                         cursorColor: Theme.of(context).primaryColor,
                         decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyText1,
-                          labelText: 'Current Password',
+                          labelText: translator.translate("Current Password"),
                           suffixIcon: IconButton(
                               onPressed: () =>
                                   controller.changeCurrentPasswordVis(),
@@ -75,10 +76,10 @@ class Change_Passwordstate extends State<Change_Password> {
                         ),
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "This field is required";
+                            return translator.translate("This field is required");
                           }
                           if (val.length <= 6) {
-                            return "PassWord is too short";
+                            return translator.translate("PassWord is too short");
                           }
                         },
                         onSaved: (val) {
@@ -97,7 +98,7 @@ class Change_Passwordstate extends State<Change_Password> {
                         cursorColor: Theme.of(context).primaryColor,
                         decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyText1,
-                          labelText: 'New Password',
+                          labelText: translator.translate("New Password"),
                           suffixIcon: IconButton(
                               icon: Icon(controller.newPasswordVis.value
                                   ? Icons.remove_red_eye_outlined
@@ -117,14 +118,14 @@ class Change_Passwordstate extends State<Change_Password> {
                         ),
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "This field is required";
+                            return translator.translate("This field is required");
                           }
                           if (val.length <= 6) {
-                            return "PassWord is too short";
+                            return translator.translate("PassWord is too short");
                           }
                           if (val ==
                               controller.currentPasswordController.text) {
-                            return 'New password Should not be same as old Password';
+                            return translator.translate("New password Should not be same as old Password");
                           }
                         },
                         onSaved: (val) {
@@ -143,7 +144,7 @@ class Change_Passwordstate extends State<Change_Password> {
                         cursorColor: Theme.of(context).primaryColor,
                         decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyText1,
-                          labelText: 'Re-type new Password',
+                          labelText: translator.translate("Re-type new Password"),
                           suffixIcon: IconButton(
                               onPressed: () =>
                                   controller.changeRe_typePasswordVis(),
@@ -163,10 +164,10 @@ class Change_Passwordstate extends State<Change_Password> {
                         ),
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "This field is required";
+                            return translator.translate("This field is required");
                           }
                           if (val != controller.newPasswordController.text) {
-                            return "PassWord does not match";
+                            return translator.translate("PassWord does not match");
                           }
                         },
                         onSaved: (val) {
@@ -188,7 +189,7 @@ class Change_Passwordstate extends State<Change_Password> {
                             controller.submitPassword();
                           },
                           child: Text(
-                            'Change Password',
+                            translator.translate("Change Password"),
                             style: TextStyle(color: Colors.white),
                           ),
                         ))

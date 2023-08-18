@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/createPostController.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -33,7 +34,7 @@ class EditPost extends StatelessWidget {
             ),
           ),
           backgroundColor: Theme.of(context).backgroundColor,
-          middle: Text('Edit Your Post',
+          middle: Text(translator.translate("Edit Your Post"),
               style: Theme.of(context).textTheme.headline1),
           trailing: Material(
             color: Theme.of(context).backgroundColor,
@@ -42,7 +43,7 @@ class EditPost extends StatelessWidget {
               onPressed: () {
                 controller.SubmitPost();
               },
-              child: Text('Save',
+              child: Text(translator.translate("Save"),
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold)),
@@ -111,14 +112,14 @@ class EditPost extends StatelessWidget {
                                   const Duration(milliseconds: 500),
                                 );
                               },
-                              child: Text('Edit photo'))),
+                              child: Text(translator.translate("Edit photo")))),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: CupertinoTextField(
                           cursorColor: Theme.of(context).primaryColor,
                           maxLines: 1,
                           prefix: Icon(Icons.link),
-                          placeholder: 'Paste Your URL HERE',
+                          placeholder: translator.translate("Paste Your URL HERE"),
                           controller: controller.UrlTextField,
                         ),
                       ),
@@ -227,7 +228,7 @@ class EditPost extends StatelessWidget {
                             errorBorder: InputBorder.none,
                             focusedErrorBorder: InputBorder.none,
                             hintText:
-                            'Have something to share with the community?',
+                            translator.translate("Have something to share with the community?"),
                             hintStyle: Theme.of(context)
                                 .textTheme
                                 .bodyText1!

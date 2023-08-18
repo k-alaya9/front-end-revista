@@ -4,6 +4,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Services/apis/linking.dart';
 import 'package:revista/View/Screens/DiscoverScreen.dart';
@@ -11,6 +12,7 @@ import 'package:revista/View/Screens/MessageScreen.dart';
 import 'package:revista/View/Screens/cameraScreen.dart';
 import 'package:revista/View/Screens/createPost.dart';
 import 'package:revista/View/Screens/home.dart';
+import 'package:revista/View/Screens/streamsScreen.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/cupertino.dart';
 import '../../Controllers/ViewPostController.dart';
@@ -87,19 +89,19 @@ class HomeScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Icon(Icons.post_add,color: Get.isDarkMode?Colors.white:Colors.black,),
-                              Text('Create Post',style: Theme.of(context).textTheme.bodyText1,),
+                              Text(translator.translate("Create Post"),style: Theme.of(context).textTheme.bodyText1,),
                             ],
                           ),
                         ),
                         InkWell(
                           onTap: (){
-                            Get.to(()=>CameraScreen());
+                            Get.to(()=>MyAppdd(role: true,));
                           },
                           splashFactory: NoSplash.splashFactory,
                           child: Column(
                             children: [
                               Icon(Icons.live_tv_outlined,color: Get.isDarkMode?Colors.white:Colors.black,),
-                              Text('Create Live',style: Theme.of(context).textTheme.bodyText1,),
+                              Text(translator.translate("Create Live"),style: Theme.of(context).textTheme.bodyText1,),
                             ],
                           ),
                         )

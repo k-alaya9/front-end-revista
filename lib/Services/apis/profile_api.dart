@@ -294,12 +294,11 @@ userStatus(token,{isOnline})async{
   ;
   var jsonbody1=json.encode(map1);
   try{
-    var response = await http.put(Uri.parse('http://$ip/auth/user-edit/'),
+    var response = await http.get(Uri.parse('http://$ip/auth/user-status/'),
         headers: {
           'Authorization':'Token $token',
           'Content-Type': 'application/json',
         },
-        body: jsonbody1
     );
     if(response.statusCode==200){
       final data = jsonDecode(response.body);

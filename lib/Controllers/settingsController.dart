@@ -144,4 +144,9 @@ class settingsController extends GetxController{
     fetchData();
     super.onInit();
   }
+  RxBool valLan1 = false.obs;
+  onChangeFunctions1(bool newValue1) {
+    valLan1.value = newValue1;
+
+  }
 }

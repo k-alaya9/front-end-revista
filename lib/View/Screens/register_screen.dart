@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../Controllers/register_controller.dart';
 
@@ -27,7 +28,7 @@ class Register extends StatelessWidget {
               ),
               Container(
                 alignment: Alignment.topLeft,
-                child: Text("Register",
+                child: Text(translator.translate("Register"),
                     style: Theme.of(context)
                         .textTheme
                         .headline1!
@@ -80,7 +81,7 @@ class Register extends StatelessWidget {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Gender:',
+                      translator.translate("Gender:"),
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1!
@@ -167,7 +168,7 @@ class Register extends StatelessWidget {
                       indent: 80,
                     )),
                     Text(
-                      'OR',
+                      translator.translate("OR"),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const Expanded(
@@ -196,7 +197,7 @@ Widget buildfirstname(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "first name:",
+        translator.translate( "first name:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -213,7 +214,7 @@ Widget buildfirstname(context) {
           textAlign: TextAlign.start,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
-            hintText: 'First Name',
+            hintText: translator.translate("First Name"),
             filled: true,
             fillColor: Colors.grey.shade100,
             border: OutlineInputBorder(
@@ -232,10 +233,10 @@ Widget buildfirstname(context) {
           ),
           validator: (val) {
             if (val!.isNum) {
-              return 'Invalid Name';
+              return translator.translate("Invalid Name");
             }
             if (val.isEmpty) {
-              return 'Enter Your FirstName';
+              return translator.translate("Enter Your FirstName");
             }
           },
           onSaved: (val) {
@@ -252,7 +253,7 @@ Widget buildlastname(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "last name:",
+        translator.translate("last name:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -268,7 +269,7 @@ Widget buildlastname(context) {
             controller: controller.lastnameController,
             style: const TextStyle(color: Colors.black),
             decoration: InputDecoration(
-              hintText: 'Last Name',
+              hintText: translator.translate("Last Name"),
               filled: true,
               fillColor: Colors.grey.shade100,
               border: OutlineInputBorder(
@@ -287,7 +288,7 @@ Widget buildlastname(context) {
             ),
             validator: (val) {
               if (val!.isNum) {
-                return "Invalid Name";
+                return translator.translate("Invalid Name");
               }
             },
             onSaved: (val) {
@@ -303,7 +304,7 @@ Widget buildusername(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "user name:",
+        translator.translate("user name:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -317,7 +318,7 @@ Widget buildusername(context) {
           child: TextFormField(
             controller: controller.usernameController,
             decoration: InputDecoration(
-              hintText: 'Username',
+              hintText: translator.translate("Username"),
               filled: true,
               fillColor: Colors.grey.shade100,
               border: OutlineInputBorder(
@@ -340,7 +341,7 @@ Widget buildusername(context) {
             ),
             validator: (val) {
               if (val!.isEmpty) {
-                return 'This filed is required';
+                return translator.translate("This filed is required");
               }
             },
             onSaved: (val) {
@@ -356,7 +357,7 @@ Widget buildemail(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "E-mail:",
+        translator.translate("E-mail:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -371,7 +372,7 @@ Widget buildemail(context) {
           controller: controller.emailController,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
-            hintText: 'E-mail',
+            hintText: translator.translate("E-mail"),
             filled: true,
             fillColor: Colors.grey.shade100,
             border: OutlineInputBorder(
@@ -394,10 +395,10 @@ Widget buildemail(context) {
           ),
           validator: (val) {
             if (!val!.isEmail) {
-              return "Invalid Email";
+              return translator.translate("Invalid Email");
             }
             if (val.isEmpty) {
-              return 'Please Enter Your E-mail';
+              return translator.translate("Please Enter Your E-mail");
             }
           },
           onSaved: (val) {
@@ -414,7 +415,7 @@ Widget buildpassword(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "password:",
+        translator.translate("password:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -431,7 +432,7 @@ Widget buildpassword(context) {
             controller: controller.passwordController,
             style: const TextStyle(color: Colors.black),
             decoration: InputDecoration(
-              hintText: 'Password',
+              hintText: translator.translate("Password"),
               filled: true,
               fillColor: Colors.grey.shade100,
               border: OutlineInputBorder(
@@ -460,10 +461,10 @@ Widget buildpassword(context) {
             ),
             validator: (val) {
               if (val!.isEmpty) {
-                return "This field is required";
+                return translator.translate("This field is required");
               }
               if (val!.length! < 8) {
-                return "PassWord can't be less than 8 Characters";
+                return translator.translate("PassWord can't be less than 8 Characters");
               }
             },
             onSaved: (val) {
@@ -481,7 +482,7 @@ Widget buildconfpassword(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "confirm password:",
+        translator.translate("confirm password:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -498,7 +499,7 @@ Widget buildconfpassword(context) {
             controller: controller.confpasswordController,
             style: const TextStyle(color: Colors.black),
             decoration: InputDecoration(
-              hintText: 'ConfirmPassword',
+              hintText: translator.translate("ConfirmPassword"),
               filled: true,
               fillColor: Colors.grey.shade100,
               border: OutlineInputBorder(
@@ -527,10 +528,10 @@ Widget buildconfpassword(context) {
             ),
             validator: (val) {
               if (val!.isEmpty) {
-                return "This field is required";
+                return translator.translate("This field is required");
               }
               if (val != controller.passwordController.text) {
-                return "PassWord does not match";
+                return translator.translate("PassWord does not match");
               }
             },
             onSaved: (val) {
@@ -548,7 +549,7 @@ Widget buildphonenumber(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "phone number:",
+        translator.translate("phone number:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -563,7 +564,7 @@ Widget buildphonenumber(context) {
           controller: controller.phonenumController,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
-            hintText: 'Phone Number',
+            hintText: translator.translate("Phone Number"),
             filled: true,
             fillColor: Colors.grey.shade100,
             border: OutlineInputBorder(
@@ -586,7 +587,7 @@ Widget buildphonenumber(context) {
           ),
           validator: (val) {
             if (!val!.isNum && val.isNotEmpty) {
-              return "Invalid phoneNumber";
+              return translator.translate("Invalid phoneNumber");
             }
           },
           onSaved: (val) {
@@ -603,7 +604,7 @@ Widget buildbirthdate(context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        "birthday date:",
+        translator.translate("birthday date:"),
         style: Theme.of(context)
             .textTheme
             .bodyText1!
@@ -711,8 +712,8 @@ Widget bottomsheet() {
     ),
     child: Column(
       children: <Widget>[
-        const Text(
-          'Choose Profile Photo',
+         Text(
+          translator.translate("Choose Profile Photo"),
           style: TextStyle(
             fontSize: 20,
           ),
@@ -722,19 +723,19 @@ Widget bottomsheet() {
           children: [
             MaterialButton(
               child: Column(
-                children: [Icon(Icons.camera_alt), Text('Take Picutre')],
+                children: [Icon(Icons.camera_alt), Text(translator.translate("Take Picutre"))],
               ),
               onPressed: controller.takePhoto,
             ),
             MaterialButton(
               child: Column(
-                children: [Icon(Icons.photo), Text('Pick Picture')],
+                children: [Icon(Icons.photo), Text(translator.translate("Pick Picture"))],
               ),
               onPressed: controller.gitPhoto,
             ),
             MaterialButton(
               child: Column(
-                children: [Icon(Icons.delete), Text('Delete Picutre')],
+                children: [Icon(Icons.delete), Text(translator.translate("Delete Picutre"))],
               ),
               onPressed: controller.deletePhoto,
             )
@@ -758,7 +759,7 @@ Widget buildRegisterButton(context) {
               ),
               color: Theme.of(context).accentColor,
               padding: const EdgeInsets.all(15),
-              child: const Text("Register",
+              child:  Text(translator.translate("Register"),
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -783,7 +784,7 @@ Widget buildRegisterWithGoogleButton(context) {
           Row(children: [
         Image.asset('asset/image/Google.png', scale: 3),
         SizedBox(width: 50,),
-        const Text("Register with Google",
+         Text(translator.translate("Register with Google"),
             style: TextStyle(
                 fontSize: 12,
                 color: Colors.black,
@@ -805,7 +806,7 @@ Widget termAndCondaoitions(context) {
                 value: controller.isChecked.value,
                 onChanged: (val) => controller.Check(val)),
             TextButton(
-              child: Text("Terms and Condition",
+              child: Text(translator.translate("Terms and Condition"),
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

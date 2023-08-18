@@ -30,6 +30,8 @@ import 'View/Screens/register_screen.dart';
 import 'View/Screens/topicsscreen.dart';
 import 'View/Screens/visiterProfile.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
+
 
 SharedPreferences? sharedPreferences;
 
@@ -41,7 +43,12 @@ void main() async {
   await service.configure(iosConfiguration: IosConfiguration(), androidConfiguration:AndroidConfiguration(onStart: onStart, isForegroundMode: true,autoStartOnBoot: true,autoStart: true));
   service.invoke('setAsBackground');
   service.startService();
-  runApp(MyApp());
+  await translator.init(
+    localeType: LocalizationDefaultType.device,
+    languagesList: <String>['ar', 'en'],
+    assetsDirectory: 'asset/Localizations/',
+  );
+  runApp(LocalizedApp(child: MyApp()));
 }
 
 //ToDo Hero animation
@@ -62,7 +69,9 @@ class MyApp extends StatelessWidget {
         builder: EasyLoading.init(),
         initialRoute: '/',
         defaultTransition: Transition.cupertino,
-        transitionDuration: Duration(milliseconds: 500),
+        locale: translator.locale,
+        localizationsDelegates: translator.delegates,
+        supportedLocales:translator.locals(),
         getPages: [
           GetPage(
             name: '/',

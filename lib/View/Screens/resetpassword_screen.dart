@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../Controllers/resetpassword_ controller.dart';
 
@@ -13,7 +14,7 @@ class resetPassword extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-          title: Text('Reset Password'),
+          title: Text(translator.translate("Reset Password")),
           centerTitle: true,
           titleTextStyle: Theme.of(context)
               .textTheme
@@ -63,15 +64,15 @@ class resetPassword extends StatelessWidget {
                         color: Theme.of(context).primaryColor, width: 1),
                   ),
                   enabled: true,
-                  hintText: 'Enter Your new password...',
+                  hintText: translator.translate("Enter Your new password..."),
                 ),
                 obscureText: !controller.visibility.value,
                 validator: (val) {
                   if (val!.length < 8) {
-                    return "Password is too short";
+                    return translator.translate("Password is too short");
                   }
                   if (val.isEmpty) {
-                    return ' this fields is required';
+                    return translator.translate(" this fields is required");
                   }
                 },
                 onSaved: (val) {
@@ -115,18 +116,18 @@ class resetPassword extends StatelessWidget {
                         color: Theme.of(context).primaryColor, width: 1),
                   ),
                   enabled: true,
-                  hintText: 'Confirm password..',
+                  hintText: translator.translate("Confirm password.."),
                 ),
                 obscureText: !controller.visibilityconfirm.value,
                 validator: (val) {
                   if (val!.length < 8) {
-                    return "Password is too short";
+                    return translator.translate("Password is too short");
                   }
                   if (val.isEmpty) {
-                    return ' this fields is required';
+                    return translator.translate(" this fields is required");
                   }
                   if(val!=controller.newPassword){
-                    return "this password does not match";
+                    return translator.translate("this password does not match");
                   }
                 },
                 onSaved: (val) {
@@ -157,7 +158,7 @@ class resetPassword extends StatelessWidget {
                   shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)))),
-              child: Text('Done',
+              child: Text(translator.translate("Done"),
                   style: Theme.of(context).textTheme.bodyText1),
             ),
           )),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/followingController.dart';
@@ -35,8 +36,8 @@ class FollowingScreen extends StatelessWidget {
               );
             },
             child: controller.isSearching.value?CupertinoTextField(
-              placeholder: 'Search here...',
-            ): Text('Followings',style: Theme.of(context).textTheme.headline1,),
+              placeholder: translator.translate("Search here..."),
+            ): Text(translator.translate("Followings"),style: Theme.of(context).textTheme.headline1,),
           ),),
         trailing: Material(
             color: Theme.of(context).backgroundColor,

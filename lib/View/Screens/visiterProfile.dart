@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Services/apis/login_api.dart';
 import 'package:revista/main.dart';
@@ -40,18 +41,18 @@ class visiterProfileScreen extends StatelessWidget {
                   DropdownMenuItem(child: Row(children: [
                     Icon(Icons.report_problem_outlined,color: Colors.red,),
                     SizedBox(width: 5,),
-                    Text('Report User'),
+                    Text(translator.translate("Report User")),
                   ],),value: 1,),
                   DropdownMenuItem(child: Row(children: [
                     Icon(Icons.block_outlined,color: Colors.red,),
                     SizedBox(width: 5,),
-                    Text('Block User'),
+                    Text(translator.translate("Block User")),
                   ],),value: 2,),
                 ], onChanged: (val) async {
               if(val==1){
                 Get.defaultDialog(
                   content: Report(type: 'user',id: controller.id.value),
-                  title: 'Report',
+                  title: translator.translate("Report"),
                   contentPadding: EdgeInsets.zero,
                 );
               }
@@ -127,7 +128,7 @@ class visiterProfileScreen extends StatelessWidget {
                                             var token= await getAccessToken();
                                             var chatId=await newChat(token,controller.id.value);
                                           },
-                                          child: Text('Message'),
+                                          child: Text(translator.translate("Message")),
                                           style: ButtonStyle(
                                             shape: MaterialStatePropertyAll(
                                               RoundedRectangleBorder(
@@ -152,7 +153,7 @@ class visiterProfileScreen extends StatelessWidget {
                                         GetX(
                                           builder: (visitProfileController controller)=> ElevatedButton(
                                             onPressed: controller.follow,
-                                            child: Text(controller.followId.value !=0 ?'following':'follow'),
+                                            child: Text(controller.followId.value !=0 ?"following":"follow"),
                                             style: ButtonStyle(
                                               shape: MaterialStatePropertyAll(
                                                 RoundedRectangleBorder(
@@ -197,7 +198,7 @@ class visiterProfileScreen extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            'Followers',
+                                            translator.translate("Followers"),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1,
@@ -228,7 +229,7 @@ class visiterProfileScreen extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             Text(
-                                              'Posts',
+                                              translator.translate("Posts"),
                                               style:Theme.of(context)
                                                   .textTheme
                                                   .bodyText1,
@@ -255,7 +256,7 @@ class visiterProfileScreen extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            "Following",
+                                              translator.translate("Following"),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1
@@ -292,7 +293,7 @@ class visiterProfileScreen extends StatelessWidget {
                                                       color: Theme.of(context)
                                                           .primaryColor))
                                                   ),
-                                          child: Text('Posts',
+                                          child: Text(translator.translate("Posts"),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .headline1!

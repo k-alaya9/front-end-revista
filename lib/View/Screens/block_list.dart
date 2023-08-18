@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Services/apis/forgetpassword_api.dart';
 import 'package:revista/Services/apis/settings_api.dart';
 import 'package:revista/main.dart';
@@ -27,7 +28,7 @@ class Block_List extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        title: Text('Block List', style: Theme.of(context).textTheme.headline1
+        title: Text( translator.translate('Block List'), style: Theme.of(context).textTheme.headline1
         ),
       ),
       body:
@@ -38,8 +39,7 @@ class Block_List extends StatelessWidget {
               children:[
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                  child: Text('Once you block someone, that person can no longer see things you post on your Timeline,'
-                    ' tage you,invite you to events or groups,start a conversation with you, or add you as a friend',
+                  child: Text( translator.translate("Once you block someone, that person can no longer see things you post on your Timeline,"),
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 2)
                 ),),
                 SizedBox(height: 20,),
@@ -92,7 +92,7 @@ class Block_List extends StatelessWidget {
                                   backgroundColor: MaterialStatePropertyAll(
                                       Theme.of(context).primaryColor),
                                 ),
-                                child: Text('unblock')),
+                                child: Text( translator.translate("unblock"))),
                           ),
                         ),
                       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/View/Screens/loginscreen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../Controllers/onbordingcontroller.dart';
@@ -38,7 +39,7 @@ class OnBordingScreen extends StatelessWidget {
                  //SKIP
                  GestureDetector(
                  child:
-                 Text('Skip'),
+                 Text(translator.translate("Skip")),
                  onTap:(){
                    controller.jumpToPage(3);
                  },
@@ -51,14 +52,14 @@ class OnBordingScreen extends StatelessWidget {
                   //NEXT OR Get Sated
                      Getcontroller.isLast.value? GestureDetector(
                      child:
-                     Text('Get Started'),
+                     Text(translator.translate("Get Started")),
                        onTap: ()async{
                        await Getcontroller.switchFirsTimer();
                        },
                  )
                  : GestureDetector(
                    child:
-                  Text('Next'),
+                  Text(translator.translate("Next")),
                    onTap: (){
                     controller.nextPage(
                     duration: Duration(milliseconds: 500),

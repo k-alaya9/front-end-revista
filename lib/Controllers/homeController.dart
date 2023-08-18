@@ -37,7 +37,7 @@ class homeController extends GetxController with GetSingleTickerProviderStateMix
     PostScreen(),
     DiscoverScreen(),
     MessageScreen(),
-    Streams(),
+    MyAppdd(role: false),
   ];
 
 

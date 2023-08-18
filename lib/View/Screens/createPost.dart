@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:get/get.dart';
 import 'package:revista/Controllers/createPostController.dart';
@@ -31,7 +32,7 @@ class CreatePost extends StatelessWidget {
             ),
           ),
           backgroundColor: Theme.of(context).backgroundColor,
-          middle: Text('Create New Post',
+          middle: Text(translator.translate("Create New Post"),
               style: Theme.of(context).textTheme.headline1),
           trailing: Material(
             color: Theme.of(context).backgroundColor,
@@ -40,7 +41,7 @@ class CreatePost extends StatelessWidget {
               onPressed: () {
                 controller.SubmitPost();
               },
-              child: Text('Post',
+              child: Text(translator.translate("Post"),
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold)),
@@ -108,14 +109,14 @@ class CreatePost extends StatelessWidget {
                                       const Duration(milliseconds: 500),
                                 );
                               },
-                              child: Text('Add photo'))),
+                              child: Text(translator.translate("Add photo")))),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: CupertinoTextField(
                           cursorColor: Theme.of(context).primaryColor,
                           maxLines: 1,
                           prefix: Icon(Icons.link),
-                          placeholder: 'Paste Your URL HERE',
+                          placeholder: translator.translate("Paste Your URL HERE"),
                           controller: controller.UrlTextField,
                         ),
                       ),
@@ -215,7 +216,7 @@ class CreatePost extends StatelessWidget {
                             errorBorder: InputBorder.none,
                             focusedErrorBorder: InputBorder.none,
                             hintText:
-                                'Have something to share with the community?',
+                            translator.translate( "Have something to share with the community?"),
                             hintStyle: Theme.of(context)
                                 .textTheme
                                 .bodyText1!

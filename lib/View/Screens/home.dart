@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Models/topic.dart';
@@ -66,10 +67,11 @@ class PostScreen extends StatelessWidget {
       ),
       body: SmartRefresher(
           enablePullDown: true,
-          enablePullUp: false,
+          enablePullUp: true,
           header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator()),
           controller: controller.refreshController,
           onRefresh: controller.onRefresh,
+          onLoading: controller.onLoad,
           child: GetX(
             builder: (viewPostController controller) => ListView.builder(
               physics: const ScrollPhysics(),
@@ -115,7 +117,7 @@ class PostScreen extends StatelessWidget {
                   );
                 } else {
                   return Center(
-                    child: Text('u dont ahve any posts'),
+                    child: Text(translator.translate("u dont ahve any posts")),
                   );
                 }
               },

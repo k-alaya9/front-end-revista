@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../Controllers/search_controller.dart';
 import '../Widgets/post.dart';
@@ -24,7 +25,7 @@ class DiscoverScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Explore",
+                        Text(translator.translate("Explore"),
                             style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30)),
                         SizedBox(
                           height: 20,
@@ -48,7 +49,7 @@ class DiscoverScreen extends StatelessWidget {
                                 color: Colors.grey,
                               ),
                               border: InputBorder.none,
-                              hintText: "Search",
+                              hintText: translator.translate("Search"),
                             ),
                           ),
                         ),
@@ -85,7 +86,7 @@ class DiscoverScreen extends StatelessWidget {
                                           vertical: 20,
                                           horizontal: 5,
                                         ),
-                                        child: Center(child: Text('General',style: Theme.of(context).textTheme.bodyText1!.copyWith(color:Colors.white),)),
+                                        child: Center(child: Text(translator.translate("General"),style: Theme.of(context).textTheme.bodyText1!.copyWith(color:Colors.white),)),
                                       )),
                                   Container(
                                     height: 40,

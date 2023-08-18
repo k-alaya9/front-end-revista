@@ -170,7 +170,7 @@ getMyBlockList(token)async{
 deactiveAccount(token,)async{
   try {
     var response = await http.put(
-      Uri.parse('http://$ip/auth/deactivate_account/'),
+      Uri.parse('http://$ip/auth/deactivate-account/'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Token $token',

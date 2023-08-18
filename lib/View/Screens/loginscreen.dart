@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/logincontroller.dart';
 import 'package:revista/Services/apis/login_api.dart';
 import 'package:revista/View/Screens/register_screen.dart';
@@ -26,7 +27,7 @@ class login extends StatelessWidget {
             children: [
               Image.asset('asset/image/post.png',fit: BoxFit.cover,height: MediaQuery.of(context).size.height*0.50),
               const SizedBox(height: 10,),
-              Text('Welcome Back!',
+              Text(translator.translate("Welcome Back!"),
                   style: Theme.of(context).textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),
@@ -57,7 +58,7 @@ class login extends StatelessWidget {
                 height: 40,
                 padding: const EdgeInsets.all(15),
                 child: Text(
-                  'Login with username and password',
+                  translator.translate("Login with username and password"),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
@@ -74,7 +75,7 @@ class login extends StatelessWidget {
                           indent: 80,
                         )),
                     Text(
-                      'OR',
+                      translator.translate( "OR"),
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const Expanded(
@@ -106,7 +107,7 @@ class login extends StatelessWidget {
                     const SizedBox(
                       width: 20,
                     ),
-                    Text('Login with Google',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black),)
+                    Text(translator.translate("Login with Google"),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black),)
                   ]),
                 ),
               ),
@@ -117,7 +118,7 @@ class login extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?",style: Theme.of(context).textTheme.bodyText1,),
+                  Text((translator.translate("Don't have an account?")),style: Theme.of(context).textTheme.bodyText1,),
                   TextButton(
                       onPressed: () {
                         Get.bottomSheet(
@@ -139,7 +140,7 @@ class login extends StatelessWidget {
                           elevation: MaterialStateProperty.all(0),
                           splashFactory: NoSplash.splashFactory),
                       child: Text(
-                        'Create one!',
+                        translator.translate("Create one!"),
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).accentColor,decoration: TextDecoration.underline),
                       )),
                 ],

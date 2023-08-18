@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Services/apis/linking.dart';
 import 'package:revista/View/Widgets/notifications.dart';
@@ -44,7 +45,7 @@ class notification_screen extends StatelessWidget {
           //         },
           //         icon: Icon(Icons.arrow_back_ios),
           //         splashRadius: 1)),
-          middle: Text('Notifications  ',
+          middle: Text(translator.translate("Notifications  "),
               style:
               Theme
                   .of(context)

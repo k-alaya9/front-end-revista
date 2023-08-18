@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/followingController.dart';
 import 'package:revista/Controllers/visitProfileController.dart';
 import '../../Services/apis/profile_api.dart';
@@ -85,7 +86,7 @@ class followerList extends StatelessWidget {
                   ),
                   child: GetBuilder(
                     builder: (followingController controller) => Text(
-                      followId == 0 ? 'Follow' : 'Following',
+                      followId == 0 ? translator.translate("Follow") : translator.translate("Following"),
                     ),
                   )),
             ),

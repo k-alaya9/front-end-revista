@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/logincontroller.dart';
 import 'package:revista/View/Screens/forgetpasswordscreen.dart';
 
@@ -24,7 +25,7 @@ class bottomSheet extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(top: 20, right: 255),
                 child: Text(
-                  'Login',
+                  translator.translate("Login"),
                   style: Theme.of(context)
                       .textTheme
                       .headline1!
@@ -37,7 +38,7 @@ class bottomSheet extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(right: 270),
                 child: Text(
-                  'Username',
+                  translator.translate("Username"),
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1,
@@ -64,7 +65,7 @@ class bottomSheet extends StatelessWidget {
                                   color: Theme.of(context).accentColor,
                                 ))
                             : null,
-                        hintText: 'Enter Your Username...',
+                        hintText: translator.translate("Enter Your Username..."),
                         hintStyle: Theme.of(context)
                             .textTheme
                             .bodyText1!
@@ -88,10 +89,10 @@ class bottomSheet extends StatelessWidget {
                       ),
                       validator: (val){
                         if(val!.isEmpty){
-                          return "Please Enter Your Username";
+                          return translator.translate("Please Enter Your Username");
                         }
                         else if(val.length<4){
-                          return"Username should be at least 4 characters";
+                          return translator.translate("Username should be at least 4 characters");
                         }
                         return null;
                       },
@@ -103,7 +104,7 @@ class bottomSheet extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(right: 270),
                 child: Text(
-                  'Password',
+                  translator.translate("Password"),
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1,
@@ -122,7 +123,7 @@ class bottomSheet extends StatelessWidget {
                           autocorrect: false,
                           cursorColor: Theme.of(context).accentColor,
                           decoration: InputDecoration(
-                            hintText: 'Enter Your Password...',
+                            hintText: translator.translate("Enter Your Password..."),
                             hintStyle: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
@@ -159,7 +160,7 @@ class bottomSheet extends StatelessWidget {
                           ),
                       validator: (val){
                             if(val!.length<8){
-                              return "Password is too short";
+                              return translator.translate("Password is too short");
                             }
                             return null;
                       },
@@ -180,7 +181,7 @@ class bottomSheet extends StatelessWidget {
                       animationDuration: Duration(seconds: 1),
                       elevation: MaterialStateProperty.all(0),
                       splashFactory: NoSplash.splashFactory),
-                  child: Text('Forgotten Password ?',
+                  child: Text(translator.translate("Forgotten Password ?"),
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           color: Theme.of(context).accentColor,
                           fontSize: 13,
@@ -210,7 +211,7 @@ class bottomSheet extends StatelessWidget {
                         shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30)))),
-                    child: Text('Login',
+                    child: Text(translator.translate("Login"),
                         style: Theme.of(context).textTheme.bodyText1),
                   ),
                 ),

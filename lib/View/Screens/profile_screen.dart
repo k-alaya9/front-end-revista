@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Controllers/ProfileController.dart';
@@ -25,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
             child: DrawerWidget(),
           ),
           backgroundColor: Theme.of(context).backgroundColor,
-          middle: Text('Profile', style: Theme.of(context).textTheme.headline1),
+          middle: Text(translator.translate("Profile"), style: Theme.of(context).textTheme.headline1),
         ),
         body: Obx(() {
           if (controller.profileImage.value.isNotEmpty &&
@@ -179,7 +180,7 @@ class ProfileScreen extends StatelessWidget {
                                           child: Column(
                                             children: [
                                               Text(
-                                                'Followers',
+                                                translator.translate("Followers"),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
@@ -217,7 +218,7 @@ class ProfileScreen extends StatelessWidget {
                                           child: Column(
                                             children: [
                                               Text(
-                                                'Posts',
+                                                translator.translate( "Posts"),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
@@ -252,7 +253,7 @@ class ProfileScreen extends StatelessWidget {
                                           child: Column(
                                             children: [
                                               Text(
-                                                "Following",
+                                                translator.translate("Following"),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1!
@@ -313,7 +314,7 @@ class ProfileScreen extends StatelessWidget {
                                                       NoSplash.splashFactory),
                                               onPressed: () =>
                                                   controller.switchViewPost(),
-                                              child: Text('Posts',
+                                              child: Text(translator.translate("Posts"),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .headline1!
@@ -344,7 +345,7 @@ class ProfileScreen extends StatelessWidget {
                                                       NoSplash.splashFactory),
                                               onPressed: () => controller
                                                   .switchViewSavedPosts(),
-                                              child: Text('Saved',
+                                              child: Text(translator.translate("Saved"),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .headline1!

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -33,19 +34,27 @@ class viewPostController extends GetxController {
   var picked=false.obs;
   void onRefresh() async {
     // monitor network fetch
+    page.value=1;
     await fetchData();
     refreshController.refreshCompleted();
   }
-
+  var page=1.obs;
   late List<List<topicItem>> items;
+
+  onLoad()async{
+    // monitor network fetch
+    page.value++;
+    await fetchData();
+    refreshController.loadComplete();
+  }
 
   fetchData() async {
     try {
       final List<post> data;
       final token =sharedPreferences!.getString('access_token');
-      data = await getPostsList(token);
+      data = await getPostsList(token,page.value);
       if (Posts != data){
-        Posts.assignAll(data);
+        Posts.addAll(data);
       }
     } catch (e) {
       print(e);

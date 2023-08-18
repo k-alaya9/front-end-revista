@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -39,7 +40,7 @@ class ShowImage extends StatelessWidget {
                 DropdownMenuItem(child: Row(children: [
                   Icon(Icons.arrow_downward,),
                   SizedBox(width: 5,),
-                  Text('Save'),
+                  Text(translator.translate("Save")),
                 ],),value: 1,)
               ], onChanged: (val){
             if(val==1){

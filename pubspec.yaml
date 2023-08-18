@@ -44,7 +44,7 @@ dependencies:
   smooth_page_indicator:
   hidden_drawer_menu: ^3.0.1
   image_picker:
-  intl: ^0.18.1
+  intl: any
   flutter_zoom_drawer: ^3.0.4+1
   web_socket_channel: ^2.4.0
   flutter_local_notifications: ^14.1.0
@@ -79,6 +79,9 @@ dependencies:
   scroll_to_index:
   flutter_mentions: ^2.0.1
   camera: ^0.10.5+3
+  localize_and_translate:
+  agora_rtc_engine:
+  agora_rtm:
 
 dev_dependencies:
   flutter_test:
@@ -149,7 +152,9 @@ flutter:
     - asset/animations/logoscreen.mp4.lottie (3).json
     - asset/animations/logo.mp4.lottie (1).json
     - asset/image/logo.png
-    # An image asset can refer to one or more resolution-specific "variants", see
+    - asset/Localizations/ar.json
+    - asset/Localizations/en.json
+  # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see

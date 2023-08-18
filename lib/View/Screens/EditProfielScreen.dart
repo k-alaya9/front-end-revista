@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/ProfileController.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -25,14 +26,14 @@ class EditProfileScreen extends StatelessWidget {
               },
               icon: Icon(Icons.arrow_back_ios)),
         ),
-        middle: Text('Profile Settings',
+        middle: Text(translator.translate("Profile Settings"),
             style: Theme.of(context).textTheme.headline1),
         trailing: Material(
           color: Theme.of(context).backgroundColor,
           child: TextButton(
               onPressed: controller.editData,
               child: Text(
-                'Done',
+                translator.translate( "Done"),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!
@@ -80,7 +81,7 @@ class EditProfileScreen extends StatelessWidget {
                       exitBottomSheetDuration: const Duration(milliseconds: 500),
                     );
                   },
-                  child: Text('Change'),
+                  child: Text(translator.translate("Change")),
                   style: ButtonStyle(
                     shape: MaterialStatePropertyAll(
                       RoundedRectangleBorder(
@@ -105,7 +106,7 @@ class EditProfileScreen extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(left: 5),
                           child: Text(
-                            "first name:",
+                            translator.translate( "first name:"),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
@@ -123,7 +124,7 @@ class EditProfileScreen extends StatelessWidget {
                             textAlign: TextAlign.start,
                             style: const TextStyle(color: Colors.black),
                             decoration: InputDecoration(
-                              hintText: 'First Name',
+                              hintText: translator.translate("First Name"),
                               filled: true,
                               fillColor: Colors.grey.shade100,
                               border: OutlineInputBorder(
@@ -145,10 +146,10 @@ class EditProfileScreen extends StatelessWidget {
                             ),
                             validator: (val) {
                               if (val!.isNum) {
-                                return 'Invalid Name';
+                                return translator.translate("Invalid Name");
                               }
                               if (val.isEmpty) {
-                                return 'Enter Your FirstName';
+                                return translator.translate("Enter Your FirstName");
                               }
                             },
                             onSaved: (val) {
@@ -164,7 +165,7 @@ class EditProfileScreen extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(left: 5),
                           child: Text(
-                            "last name:",
+                            translator.translate("last name:"),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
@@ -181,7 +182,7 @@ class EditProfileScreen extends StatelessWidget {
                               controller: controller.lastnameController,
                               style: const TextStyle(color: Colors.black),
                               decoration: InputDecoration(
-                                hintText: 'Last Name',
+                                hintText: translator.translate("Last Name"),
                                 filled: true,
                                 fillColor: Colors.grey.shade100,
                                 border: OutlineInputBorder(
@@ -203,7 +204,7 @@ class EditProfileScreen extends StatelessWidget {
                               ),
                               validator: (val) {
                                 if (val!.isNum) {
-                                  return "Invalid Name";
+                                  return translator.translate("Invalid Name");
                                 }
                               },
                               onSaved: (val) {
@@ -223,7 +224,7 @@ class EditProfileScreen extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(left: 5),
                       child: Text(
-                        "Username:",
+                        translator.translate("Username:"),
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1!
@@ -240,7 +241,7 @@ class EditProfileScreen extends StatelessWidget {
                           // initialValue:username ?? '',
                           controller: controller.usernameController,
                           decoration: InputDecoration(
-                            hintText: 'Username',
+                            hintText: translator.translate("Username"),
                             filled: true,
                             fillColor: Colors.grey.shade100,
                             border: OutlineInputBorder(
@@ -262,7 +263,7 @@ class EditProfileScreen extends StatelessWidget {
                           ),
                           validator: (val) {
                             if (val!.isEmpty) {
-                              return 'This filed is required';
+                              return translator.translate("This filed is required");
                             }
                           },
                           onSaved: (val) {
@@ -280,7 +281,7 @@ class EditProfileScreen extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(left: 5),
                       child: Text(
-                        "Bio:",
+                        translator.translate("Bio:"),
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1!
@@ -301,7 +302,7 @@ class EditProfileScreen extends StatelessWidget {
                           minLines: null,
                           maxLines: null,
                           decoration: InputDecoration(
-                            hintText: 'tell people about you',
+                            hintText: translator.translate("tell people about you"),
                             filled: true,
                             fillColor: Colors.grey.shade100,
                             border: OutlineInputBorder(

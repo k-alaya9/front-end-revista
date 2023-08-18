@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/View/Widgets/drawerWidget.dart';
 
@@ -24,7 +25,7 @@ class SavedPost extends StatelessWidget {
           child: DrawerWidget(),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
-        middle: Text('SavedPosts',style: Theme.of(context).textTheme.headline1),
+        middle: Text(translator.translate("SavedPosts"),style: Theme.of(context).textTheme.headline1),
       ),
       body:  SmartRefresher(
           enablePullDown: true,
@@ -76,7 +77,7 @@ class SavedPost extends StatelessWidget {
                   );
                 } else {
                   return Center(
-                    child: Text('u dont Saved any post yet'),
+                    child: Text(translator.translate("u dont Saved any post yet")),
                   );
                 }
               },

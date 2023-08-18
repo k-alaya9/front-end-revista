@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Services/apis/forgetpassword_api.dart';
 
 import '../../Controllers/settingsController.dart';
@@ -28,7 +29,7 @@ class _Change_EmailState extends State<Change_Email> {
             ),
           ),
           centerTitle: true,
-          title: Text('Change Email', style:Theme.of(context).textTheme.headline1
+          title: Text( translator.translate("Change Email"), style:Theme.of(context).textTheme.headline1
           ),
         ),
         body: Padding(
@@ -39,7 +40,7 @@ class _Change_EmailState extends State<Change_Email> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:[
-                  Text('Change your Email ',
+                  Text( translator.translate("Change your Email "),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   SizedBox(height: 25.0,),
@@ -49,7 +50,7 @@ class _Change_EmailState extends State<Change_Email> {
                     cursorColor: Theme.of(context).primaryColor,
                     decoration: InputDecoration(
                       labelStyle: Theme.of(context).textTheme.bodyText1,
-                      labelText: 'UserName',
+                      labelText:  translator.translate("UserName"),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Theme.of(context).accentColor),
@@ -61,7 +62,7 @@ class _Change_EmailState extends State<Change_Email> {
                     ),
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return 'This filed is required';
+                        return  translator.translate("This filed is required");
                       }
                     },
                     onSaved: (val) {
@@ -74,7 +75,7 @@ class _Change_EmailState extends State<Change_Email> {
                     cursorColor: Theme.of(context).primaryColor,
                     decoration: InputDecoration(
                       labelStyle: Theme.of(context).textTheme.bodyText1,
-                      labelText: 'New Email',
+                      labelText:  translator.translate("New Email"),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Theme.of(context).accentColor),
@@ -86,10 +87,10 @@ class _Change_EmailState extends State<Change_Email> {
                     ),
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return 'This filed is required';
+                        return translator.translate("This filed is required");
                       }
                       if(!val!.isEmail){
-                        return 'please enter a valid email';
+                        return translator.translate("please enter a valid email");
                       }
                     },
                     onSaved: (val) {
@@ -109,7 +110,7 @@ class _Change_EmailState extends State<Change_Email> {
                           controller.submitEmail();
                         },
                         child: Text(
-                          'Change Email',
+                          translator.translate("Change Email"),
                           style: TextStyle(color: Colors.white),
                         ) ,
 

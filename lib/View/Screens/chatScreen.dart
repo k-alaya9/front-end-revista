@@ -66,14 +66,14 @@ class ChatScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        createContainer(icon: Icons.call,text: 'Voice Call',func: (){print('call');}),
-                        createContainer(icon: Icons.video_call_rounded,text: 'Video Call',func: (){print('video');}),
-                        createContainer(icon: Icons.report_problem_outlined,text: 'Report',func: (){ Get.defaultDialog(
-                          content: Report(type: 'chat',id: controller.profileId.value),
-                          title: 'Report',
+                        createContainer(icon: Icons.call,text: "Voice Call",func: (){print('call');}),
+                        createContainer(icon: Icons.video_call_rounded,text: "Video Call",func: (){print('video');}),
+                        createContainer(icon: Icons.report_problem_outlined,text: "Report",func: (){ Get.defaultDialog(
+                          content: Report(type: "chat",id: controller.profileId.value),
+                          title: "Report",
                           contentPadding: EdgeInsets.zero,
                         );}),
-                        createContainer(icon: Icons.person,text: 'Profile',func: (){Get.toNamed('/visitProfile',arguments: {
+                        createContainer(icon: Icons.person,text: "Profile",func: (){Get.toNamed('/visitProfile',arguments: {
                           'id': controller.profileId.value,
                         });}),
                       ],
@@ -144,7 +144,7 @@ class ChatScreen extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Text(
-                                    'reply',
+                                    "reply",
                                     style:
                                     Theme.of(context).textTheme.bodyText1,
                                   ),
@@ -349,7 +349,7 @@ class ChatScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    hintText: 'Message...',
+                                    hintText: "Message...",
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius:
@@ -384,7 +384,8 @@ class ChatScreen extends StatelessWidget {
                                                   }
                                                 },
                                                 child: Text(
-                                                  'Send',
+                                                  "Send",
+
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyText1,
@@ -468,7 +469,7 @@ class ChatScreen extends StatelessWidget {
                                                                           const EdgeInsets
                                                                               .all(10),
                                                                           child: Text(
-                                                                            'Gallery',
+                                                                            "Gallery",
                                                                             style: Theme.of(
                                                                                 context)
                                                                                 .textTheme
@@ -482,7 +483,7 @@ class ChatScreen extends StatelessWidget {
                                                                     const EdgeInsets
                                                                         .all(10),
                                                                     child: Text(
-                                                                      'Gallery',
+                                                                      "Gallery",
                                                                       style: Theme.of(
                                                                           context)
                                                                           .textTheme
@@ -546,7 +547,7 @@ class ChatScreen extends StatelessWidget {
                                                                                         color: Theme.of(context).primaryColor,
                                                                                       ),
                                                                                       child: Text(
-                                                                                        'Send',
+                                                                                        "Send",
                                                                                         style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),
                                                                                       ),
                                                                                     ),
@@ -631,7 +632,7 @@ class ChatScreen extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Replaying to ${controller.messages[controller.id.value].authorId == sharedPreferences!.getInt('access_id') ? 'yourself' : controller.username}',
+                                          "Replaying to ${controller.messages[controller.id.value].authorId == sharedPreferences!.getInt('access_id') ? "yourself" : controller.username}",
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
@@ -671,7 +672,7 @@ class ChatScreen extends StatelessWidget {
                                     cursorColor: Theme.of(context).primaryColor,
                                     controller: controller.Textcontroller,
                                     decoration: InputDecoration(
-                                      hintText: 'Message...',
+                                      hintText: "Message...",
                                       focusedBorder: OutlineInputBorder(
                                           borderSide:BorderSide.none,
                                           borderRadius:
@@ -728,7 +729,7 @@ class ChatScreen extends StatelessWidget {
                                                       }
                                                     },
                                                     child: Text(
-                                                      'Send',
+                                                      "Send",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .bodyText1,

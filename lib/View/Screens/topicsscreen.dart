@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../Controllers/topicsController.dart';
 import '../Widgets/topicwidget.dart';
@@ -14,7 +15,7 @@ class TopicScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-          title: Text("Favorite Topics:"),
+          title: Text(translator.translate("Favorite Topics:")),
           titleTextStyle: Theme.of(context)
               .textTheme
               .headline1!
@@ -28,7 +29,7 @@ class TopicScreen extends StatelessWidget {
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                "Pick Your Favorite Topics:(at least 1 topic)",
+                translator.translate( "Pick Your Favorite Topics:(at least 1 topic)"),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!

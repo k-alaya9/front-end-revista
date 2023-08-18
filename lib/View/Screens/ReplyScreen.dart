@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:like_button/like_button.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/replyController.dart';
 
@@ -24,7 +25,7 @@ class ReplyScreen extends StatelessWidget {
         leading: Material(color: Theme.of(context).backgroundColor,
           child: IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back_ios_new)),
         ),
-        middle: Text('Comment',style: Theme.of(context).textTheme.headline1),
+        middle: Text(translator.translate("Comment"),style: Theme.of(context).textTheme.headline1),
       ),
       body:  GetX(builder: (ReplyController controller)=>controller.Replies.isNotEmpty&&controller.id!=null?
         SmartRefresher(
@@ -44,7 +45,7 @@ class ReplyScreen extends StatelessWidget {
                 children: [
                   if(controller.Replies!=[])
                     CommentScreen(
-                        type: 'comment',
+                        type: "comment",
                         authorid:controller.Replies[0].comment!.author!.id,
                         id:controller.Replies[0].comment!.id,
                         comment:controller.Replies[0].comment!.content,
@@ -55,7 +56,7 @@ class ReplyScreen extends StatelessWidget {
                   Container(
                       margin: EdgeInsets.only(left: 20),
                       alignment: Alignment.topLeft,
-                      child: Text('Replies',style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30),)),
+                      child: Text(translator.translate("Replies"),style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30),)),
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: Row(
@@ -81,7 +82,7 @@ class ReplyScreen extends StatelessWidget {
                                     userImage: controller.Replies[index].author!.user!.profileImage,
                                     id: controller.Replies[index].id);
                               }
-                              return Center(child: Text("You don't have any Replies yet"),);
+                              return Center(child: Text(translator.translate("You don't have any Replies yet")),);
 
                             },
                           ),
@@ -99,7 +100,7 @@ class ReplyScreen extends StatelessWidget {
             ),
           )
       ):controller.id!=null?Center(child: CupertinoActivityIndicator(),):
-      Center(child: Text("You don't have any Replies yet"),),
+      Center(child: Text(translator.translate("You don't have any Replies yet")),),
 
       ),
     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Services/apis/reply_api.dart';
 import 'package:revista/main.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
@@ -84,7 +85,7 @@ class comment_Screen extends StatelessWidget {
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                     fillColor: Colors.white,
-                    hintText: isComment? 'Enter your comment !':'Enter your Reply',
+                    hintText: isComment? translator.translate("Enter your comment !"):translator.translate("Enter your Reply"),
                   contentPadding: const EdgeInsets.all(10),
                   focusColor: Theme.of(context).primaryColor,
                   focusedBorder: OutlineInputBorder(

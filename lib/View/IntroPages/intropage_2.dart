@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:lottie/lottie.dart';
 class IntroPage_2 extends StatelessWidget {
 
@@ -27,11 +28,11 @@ class IntroPage_2 extends StatelessWidget {
               child:Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-              Text('Stay Up To Date',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text(translator.translate("Stay Up To Date"),style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
               SizedBox(height: 5,),
-              Text('On Topics that intersts you',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+              Text(translator.translate("On Topics that intersts you"),style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
               SizedBox(height: 5,),
-              Text('Like posts, share your opinion and save them for later',style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
+              Text(translator.translate("Like posts, share your opinion and save them for later"),style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,) ,
       ],
       ),
 

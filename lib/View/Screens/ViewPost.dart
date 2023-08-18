@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:revista/Controllers/commentController.dart';
 
@@ -34,7 +35,7 @@ class ViewPost extends StatelessWidget {
                               },
                               icon: Icon(Icons.arrow_back_ios)),
                         ),
-                        middle: Text('Post',style: Theme.of(context).textTheme.headline1,),
+                        middle: Text(translator.translate("Post"),style: Theme.of(context).textTheme.headline1,),
                       )
                     : PreferredSize(
                         child: SizedBox.shrink(),
@@ -89,7 +90,7 @@ class ViewPost extends StatelessWidget {
                                   margin: EdgeInsets.only(left: 20),
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                      "Comments",
+                                      translator.translate("Comments"),
                                       style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30)
                                   ),
                                 ),
@@ -104,7 +105,7 @@ class ViewPost extends StatelessWidget {
                                     itemCount: controller.Comment.length,
                                     itemBuilder: (ctx, index) {
                                       return CommentScreen(
-                                        type: 'comment',
+                                        type: "comment",
                                         authorid: controller.Comment[index].author!.id,
                                         id: controller.Comment[index].id,
                                         userImage: controller.Comment[index]

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:path/path.dart';
 import 'package:readmore/readmore.dart';
 import 'package:intl/intl.dart';
@@ -145,27 +146,27 @@ class Post extends StatelessWidget {
                     PopupMenuItem<int>(value: 0, child: Row(
                       children: [
                         Icon(Icons.delete,color: Colors.red,),
-                        Text('Delete post'),
+                        Text(translator.translate("Delete post")),
                       ],
                     ),),
                   if(authorId==sharedPreferences!.getInt('access_id'))
                     PopupMenuItem<int>(value: 1, child: Row(
                       children: [
                         Icon(Icons.edit_note_outlined),
-                        Text('Edit post'),
+                        Text(translator.translate("Edit post")),
                       ],
                     )),
                   PopupMenuItem<int>(value: 2, child: Row(
                     children: [
                       Icon(Icons.copy_rounded),
-                      Text('Copy Link'),
+                      Text(translator.translate("Copy Link")),
                     ],
                   )),
                   if(authorId!=sharedPreferences!.getInt('access_id'))
                     PopupMenuItem<int>(value: 3, child: Row(
                       children: [
                         Icon(Icons.report_problem_outlined,color: Colors.red),
-                        Text('Report post'),
+                        Text(translator.translate("Report post")),
                       ],
                     )),
 
@@ -188,8 +189,8 @@ class Post extends StatelessWidget {
                     trimLines: 3,
                     textAlign: TextAlign.justify,
                     trimMode: TrimMode.Line,
-                    trimCollapsedText: 'Show More',
-                    trimExpandedText: 'show less',
+                    trimCollapsedText: translator.translate("Show More"),
+                    trimExpandedText: translator.translate("show less"),
                     lessStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
@@ -347,7 +348,7 @@ class Post extends StatelessWidget {
                                 color:
                                     Get.isDarkMode ? Colors.white : Colors.black),
                           ),
-                          Text('Share',
+                          Text(translator.translate("Share"),
                               style: Theme.of(context).textTheme.headline1),
                           Expanded(
                             child: Scaffold(
@@ -426,7 +427,7 @@ class Post extends StatelessWidget {
                                       );
                                     } else {
                                       return Center(
-                                        child: Text('You Dont have any chat yet'),
+                                        child: Text(translator.translate("You Dont have any chat yet")),
                                       );
                                     }
                                   }),],),
@@ -450,7 +451,7 @@ class Post extends StatelessWidget {
                                                   color: Theme.of(context).primaryColor,
                                                 ),
                                                 child: Text(
-                                                  'Send',
+                                                  translator.translate("Send"),
                                                   style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),
                                                 ),
                                               ),
@@ -539,7 +540,7 @@ class Post extends StatelessWidget {
       case 2:
        Clipboard.setData( ClipboardData(text: "http://$ip/posts/post/$id/")).then((_) {
         Get.showSnackbar(GetSnackBar(
-          message: 'Copied to your clipboard !',
+          message: translator.translate("Copied to your clipboard !"),
         ));}
        );
         break;

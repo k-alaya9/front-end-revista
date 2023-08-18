@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:readmore/readmore.dart';
 import 'package:revista/Services/apis/reply_api.dart';
 
@@ -86,7 +87,7 @@ class CommentScreen extends StatelessWidget {
                                       PopupMenuItem<int>(value: 0, child: Row(
                                         children: [
                                           Icon(Icons.delete,color: Colors.red,),
-                                          Text('Delete comment'),
+                                          Text(translator.translate("Delete comment")),
                                         ],
                                       ),),
 
@@ -106,8 +107,8 @@ class CommentScreen extends StatelessWidget {
                             trimLines: 3,
                             textAlign: TextAlign.justify,
                             trimMode: TrimMode.Line,
-                            trimCollapsedText: ' More',
-                            trimExpandedText: ' less',
+                            trimCollapsedText: translator.translate(" More"),
+                            trimExpandedText: translator.translate(" less"),
                             lessStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey,
@@ -136,10 +137,7 @@ class CommentScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment:MainAxisAlignment.center,
                             children: [
-                              Text('Likes $numberOfLikesOfComments',style: TextStyle(color: Colors.grey),),
-                              SizedBox(
-                                width: 40,
-                              ),
+
                               TextButton(
                                 onPressed: (){
                                   print(id);
@@ -147,7 +145,7 @@ class CommentScreen extends StatelessWidget {
                                     'replyId':id,
                                   });
                                 },
-                                child: Text('Reply',style: TextStyle(color: Colors.grey[400]),),
+                                child: Text(translator.translate("Reply"),style: TextStyle(color: Colors.grey[400]),),
                               ),
                             ],
                           ),

@@ -164,16 +164,16 @@ getMySavedPosts(token)async{
   }
 
 }
-getPostsList(token) async {
+getPostsList(token,page) async {
   try {
-    final response = await http.get(Uri.parse('http://$ip/posts/'),
+    final response = await http.get(Uri.parse('http://$ip/posts/?page=$page'),
         headers: {
           'Authorization': 'Token $token',
           'Content-Type': 'application/json',
         },);
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print(data);
+      final map = jsonDecode(response.body);
+      var data=map['results'];
       final posts = data.map<post>((e) {
         return post.fromJson(e);
       }).toList();

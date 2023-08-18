@@ -7,6 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jumping_dot/jumping_dot.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:lottie/lottie.dart';
 import 'package:revista/main.dart';
 import '../../Controllers/chatController.dart';
@@ -80,8 +81,8 @@ class MessageBubble extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                   !isMe? Text('Replied to ${index.authorId==sharedPreferences!.getInt('authorId')?'you':'themself'}'):
-                                        Text('you replied to ${index.authorId!=sharedPreferences!.getInt('authorId')?'them':'Yourself'}'),
+                                   !isMe? Text(translator.translate("Replied to")+'${index.authorId==sharedPreferences!.getInt('authorId')?translator.translate("you"):translator.translate("themself")}'):
+                                        Text(translator.translate("you replied to")+ '${index.authorId!=sharedPreferences!.getInt('authorId')?translator.translate("them"):translator.translate("Yourself")}'),
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       decoration: BoxDecoration(

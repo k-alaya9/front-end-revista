@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:lottie/lottie.dart';
 import 'package:revista/Controllers/forget_password_controller.dart';
 import 'package:revista/Controllers/resetpassword_%20controller.dart';
@@ -17,8 +18,8 @@ class forgetPassword extends StatelessWidget {
         elevation: 0,
         backgroundColor: Theme.of(context).backgroundColor,
         leading: IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.arrow_back_ios,color: Get.isDarkMode?Colors.white:Colors.black,)),
-        title: const Text(
-          'Forgotten password',
+        title:  Text(
+          translator.translate("Forgotten password"),
         ),
         titleTextStyle: Theme.of(context)
             .textTheme
@@ -48,7 +49,7 @@ class forgetPassword extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  child: Text('Trouble with logging in ?',
+                  child: Text(translator.translate("Trouble with logging in ?"),
                       style: Theme.of(context)
                           .textTheme
                           .headline1!
@@ -57,7 +58,7 @@ class forgetPassword extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Text(
-                    "Enter your Username and \n we'll send a code to reset your password",
+                    translator.translate( "Enter your Username and \n we'll send a code to reset your password"),
                     maxLines: 2,
                     style: Theme.of(context)
                         .textTheme
@@ -68,7 +69,7 @@ class forgetPassword extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.only(top: 15),
                   child: Text(
-                    'Username',
+                    translator.translate("Username"),
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1,
@@ -99,7 +100,7 @@ class forgetPassword extends StatelessWidget {
                                         color: Theme.of(context).accentColor,
                                       ))
                                   : null,
-                          hintText: 'Enter Your Username...',
+                          hintText: translator.translate("Enter Your Username..."),
                           hintStyle: Theme.of(context)
                               .textTheme
                               .bodyText1!
@@ -126,9 +127,9 @@ class forgetPassword extends StatelessWidget {
                         ),
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "Please Enter Your Username";
+                            return translator.translate("Please Enter Your Username");
                           } else if (val.length < 4) {
-                            return "Please Enter a Valid Username";
+                            return translator.translate("Please Enter a Valid Username");
                           }
                           return null;
                         },
@@ -162,7 +163,7 @@ class forgetPassword extends StatelessWidget {
                                     RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(30)))),
-                            child: Text('Next',
+                            child: Text(translator.translate("Next"),
                                 style: Theme.of(context).textTheme.bodyText1),
                           ),
                   ),

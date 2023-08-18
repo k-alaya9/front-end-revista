@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/settingsController.dart';
 import 'package:revista/Services/apis/settings_api.dart';
 import 'package:revista/View/Screens/block_list.dart';
@@ -10,26 +11,15 @@ import 'package:revista/main.dart';
 
 import 'change_password.dart';
 
-class Settings extends StatefulWidget {
+class Settings extends StatelessWidget {
   const Settings({Key? key}) : super(key: key);
 
-  @override
-  State<Settings> createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings> {
-  bool valLan1 = true;
-
-  onChangeFunctions1(bool newValue1) {
-    setState(() {
-      valLan1 = newValue1;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     Get.put(settingsController());
     settingsController controller=Get.find();
+
+
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme
@@ -38,7 +28,7 @@ class _SettingsState extends State<Settings> {
         elevation: 1,
         leading: DrawerWidget(),centerTitle: true,
         title: Text(
-            'Settings', style: Theme.of(context).textTheme.headline1
+            translator.translate("Settings"), style: Theme.of(context).textTheme.headline1
         ),
 
       ),
@@ -53,29 +43,29 @@ class _SettingsState extends State<Settings> {
                     color: Colors.black26,
                   ),
                   SizedBox(width: 10,),
-                  Text("Account", style:Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30))
+                  Text(translator.translate("Account"), style:Theme.of(context).textTheme.headline1!.copyWith(fontSize: 30))
                 ],
               ),
               Divider(height: 15, thickness: 2,
               ),
-              buildAccountOption(context, "Change Password", () {
+              buildAccountOption(context, translator.translate("Change Password"), () {
                 Get.to(()=>Change_Password());
               }),
-              buildAccountOption(context, "Change email", () {
+              buildAccountOption(context, translator.translate("Change email"), () {
                 Get.to(()=>Change_Email());
               }),
-              buildLanguageOption("Language", valLan1, onChangeFunctions1),
-              buildAccountOption(context, "Block list", () async{
+            GetX(builder: (settingsController controller) =>   buildLanguageOption(translator.translate("Language"), controller.valLan1.value, controller.onChangeFunctions1),),
+              buildAccountOption(context, translator.translate("Block list"), () async{
                 await controller.fetchData();
                 Get.to(()=>Block_List());
               }),
-              buildAccountOption(context, "deactivate account", () {
-                Get.defaultDialog(content: Text('Are you sure you want to deactive your account'),onCancel: (){
+              buildAccountOption(context, translator.translate("deactivate account"), () {
+                Get.defaultDialog(content: Text(translator.translate("Are you sure you want to deactive your account")),onCancel: (){
                   Get.back();
                 }, onConfirm: ()async{
                   final token=sharedPreferences!.getString('access_token');
                   await deactiveAccount(token);
-                },title: 'Deactivate account' );
+                },title:translator.translate( "Deactivate account" ));
               }),
 
             ],
@@ -85,6 +75,12 @@ class _SettingsState extends State<Settings> {
       ),
     );
   }
+}
+
+
+
+  @override
+
 
   Padding buildLanguageOption(String title, bool value,
       Function onChangeMethod) {
@@ -93,16 +89,21 @@ class _SettingsState extends State<Settings> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: Theme.of(context).textTheme.headline1
+          Text(title, style: Theme.of(Get.context!).textTheme.headline1
           ),
           Transform.scale(
             scale: 0.7,
-            child: CupertinoSwitch(
-              activeColor: Theme.of(context).primaryColor,
-              trackColor: Theme.of(context).accentColor,
+            child:  CupertinoSwitch(
+              activeColor: Theme.of(Get.context!).primaryColor,
+              trackColor: Theme.of(Get.context!).accentColor,
               value: value,
               onChanged: (bool newValue) {
                 onChangeMethod(newValue);
+                translator.setNewLanguage(
+                  Get.context!,
+                  newLanguage: translator.currentLanguage=='ar'?'en':'ar',
+                  restart: true,
+                );
               }
               ,
             ),
@@ -131,4 +132,4 @@ class _SettingsState extends State<Settings> {
 
     );
   }
-}
+
