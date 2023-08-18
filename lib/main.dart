@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 import 'Services/Notifications/notifications.dart';
 import 'Services/apis/linking.dart';
+import 'View/IntroPages/splash.dart';
 import 'View/Screens/chatScreen.dart';
 import 'View/Screens/createPost.dart';
 import 'View/Screens/followingScreen.dart';
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
         darkTheme: Themes.dark,
         themeMode: ThemeService().theme,
         builder: EasyLoading.init(),
-        initialRoute: '/',
+        initialRoute: '/splash',
         defaultTransition: Transition.cupertino,
         locale: translator.locale,
         localizationsDelegates: translator.delegates,
@@ -92,7 +93,8 @@ class MyApp extends StatelessWidget {
           GetPage(name: '/following', page: () => FollowingScreen()),
           GetPage(name: '/visitProfile', page: () => visiterProfileScreen()),
           GetPage(name: '/Profile', page: () => ProfileScreen()),
-          GetPage(name: '/chatScreen', page: () => ChatScreen())
+          GetPage(name: '/chatScreen', page: () => ChatScreen()),
+          GetPage(name: '/splash', page: () => SplashScreen())
         ],
       ),
     );
