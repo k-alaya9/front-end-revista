@@ -14,7 +14,7 @@ class comment_Screen extends StatelessWidget {
 
   CommentController controller = Get.find();
   final id;
-  final isComment;
+  RxBool isComment;
   comment_Screen({super.key, this.id,required this.isComment,});
 
   @override
@@ -23,84 +23,73 @@ class comment_Screen extends StatelessWidget {
       margin: EdgeInsets.all(10),
       child: Row(
         children: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.camera_alt_outlined,
-                color: Theme.of(context).primaryColor,
-              )),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.image_outlined,
-                color: Theme.of(context).primaryColor,
-              )),
           Expanded(
             child: Container(
-              child: FlutterMentions(
-                key: isComment?controller.mentionsKeyComment:controller.mentionsKeyReply,
-                suggestionPosition: SuggestionPosition.Top,
-                onChanged: (value){
-                  controller.text!.value=value;
-                    var v=value.replaceAll('@','');
-                    controller.getSearch(v);
-                },
-                mentions: [
-                  Mention(
-                      trigger:'@',
-                    disableMarkup: true,
-                    matchAll: true,
-                    data:controller.allData,
-                    suggestionBuilder: (data) {
-                        print(data);
-                      return Container(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                data['photo'],
+              child: Obx(()=>FlutterMentions(
+                  key:controller.mentionsKeyComment,
+                  suggestionPosition: SuggestionPosition.Top,
+                  onChanged: (value){
+                    controller.text!.value=value;
+                      var v=value.replaceAll('@','');
+                      controller.getSearch(v);
+                  },
+                  mentions: [
+                    Mention(
+                        trigger:'@',
+                      disableMarkup: true,
+                      matchAll: true,
+                      data:controller.allData,
+                      suggestionBuilder: (data) {
+                          print(data);
+                        return Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  data['photo'],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Text(data['full_name']),
-                                Text('@${data['display']}'),
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  ),
-                ],
-                cursorColor: Theme.of(context).primaryColor,
-                minLines: 1,
-                //Normal textInputField will be displayed
-                maxLines: 3,
-                // when user presses enter it will adapt to it
-                keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    hintText: isComment? translator.translate("Enter your comment !"):translator.translate("Enter your Reply"),
-                  contentPadding: const EdgeInsets.all(10),
-                  focusColor: Theme.of(context).primaryColor,
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 1),
-                      borderRadius: BorderRadius.circular(30)
-                  ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 1),
-                      borderRadius: BorderRadius.circular(30)),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 1),
-                      borderRadius: BorderRadius.circular(30)),),
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text(data['full_name']),
+                                  Text('@${data['display']}'),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    ),
+                  ],
+                  cursorColor: Theme.of(context).primaryColor,
+                  minLines: 1,
+                  //Normal textInputField will be displayed
+                  maxLines: 3,
+                  // when user presses enter it will adapt to it
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      hintText: isComment.value? translator.translate("Enter your comment !"):translator.translate("Enter your Reply"),
+                    contentPadding: const EdgeInsets.all(10),
+                    focusColor: Theme.of(context).primaryColor,
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 1),
+                        borderRadius: BorderRadius.circular(30)
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 1),
+                        borderRadius: BorderRadius.circular(30)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 1),
+                        borderRadius: BorderRadius.circular(30)),),
+                ),
               ),
             ),
           ),

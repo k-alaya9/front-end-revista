@@ -35,7 +35,6 @@ class ChatController extends GetxController  {
   var id=0.obs;
   var profileId=0.obs;
   var loading=false.obs;
-  var page=1.obs;
   var isSending=false.obs;
   List<AssetEntity> selectedPhotos = [];
   RxString? message=''.obs;
@@ -52,16 +51,6 @@ class ChatController extends GetxController  {
   var chatId;
   var stream;
   late IOWebSocketChannel  channel;
-  RefreshController refreshController = RefreshController();
-
-  onRefresh() async {
-    // monitor network fetch
-    page.value++;
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    refreshController.refreshCompleted();
-  }
-
   @override
   void onInit()async {
 
@@ -97,11 +86,11 @@ class ChatController extends GetxController  {
         Uri.parse('ws://$ip/ws/chat/$chatId/',),
         headers: {'Authorization':token }
     );
-    var map = {"command": "fetch_messages", "page_number": page.value};
+    var map = {"command": "fetch_messages"};
     var body = jsonEncode(map);
     channel.sink.add(body);
     channel.stream.listen((event) {
-      var map = {"command": "fetch_messages", "page_number": page.value};
+      var map = {"command": "fetch_messages",};
       var body = jsonEncode(map);
       channel.sink.add(body);
           var json=jsonDecode(event);
@@ -113,15 +102,6 @@ class ChatController extends GetxController  {
     // stream =channel.stream;
     initRecorder();
     fetchPhotos();
-    scrollController.addListener(() {
-      if(loading.value)
-       if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
-        if(page.value!=1)
-          page.value--;
-        loading.value=true;
-      }
-      loading.value=false;
-    });
     super.onInit();
   }
   @override
@@ -168,7 +148,7 @@ class ChatController extends GetxController  {
     // Now that we got the album, fetch all the assets it contains
     final recentAssets = await recentAlbum.getAssetListRange(
       start: 0, // start at index 0
-      end:10000 , // end at a very big index (to get all the assets)
+      end:100 , // end at a very big index (to get all the assets)
     );
     photos = recentAssets;
   }
@@ -348,7 +328,6 @@ class ChatController extends GetxController  {
   }
   void scrollDown() {
     scrollController.animateTo(scrollController.position.maxScrollExtent,duration: Duration(milliseconds: 500,),curve: Curves.bounceIn);
-    page.value=1;
   }
 
     void scrollTo(index) async{

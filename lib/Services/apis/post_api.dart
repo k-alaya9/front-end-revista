@@ -9,32 +9,31 @@ import 'package:http/http.dart' as http;
 createPost({id, topics, text, link,File? image, token}) async {
   try {
     print(topics);
-    Map<String,String> body = {
-      'author': id,
-      'content': text,
-      'topics':topics,
-      'link': link
+    Map<String, String> body = {
+      'content': "$text",
+      'topics_string': '$topics',
+      'link': "$link",
     };
     print('hi');
     var request;
     if(image!.path!=''){
       request=
-      http.MultipartRequest('POST', Uri.parse('http://$ip/posts/'))
+      http.MultipartRequest('POST', Uri.parse('http://$ip/posts/create/'))
         ..headers.addAll({
           'Authorization': 'Token $token',
         })
         ..fields.addAll(body)..
       files.add(await http.MultipartFile.fromPath('image', image!.path));
-      // request = jsonToFormData(request, body);
-
+      print(body);
     }
     else{
        request =
-      http.MultipartRequest('POST', Uri.parse('http://$ip/posts/'))
+      http.MultipartRequest('POST', Uri.parse('http://$ip/posts/create/'))
          ..headers.addAll({
           'Authorization': 'Token $token',
         })..fields.addAll(body);
-       // request = jsonToFormData(request, body);
+       print(body);
+
     }
     var response = await http.Response.fromStream(await request.send());
     if (response.statusCode == 201) {
@@ -56,7 +55,7 @@ editPost({id, topics, text, link,File? image, token,postId}) async {
     Map<String, String> body = {
       'author': "$id",
       'content': "$text",
-      'topics': '$topics',
+      'topics_string': '$topics',
       'link': "$link",
     };
     print('hi');
@@ -76,10 +75,11 @@ editPost({id, topics, text, link,File? image, token,postId}) async {
         ..headers.addAll({
           'Authorization': 'Token $token',
         })
-        ..fields.addAll(body);
+        ..fields.addAll(body)..fields['image']='';
+
     }
     var response = await http.Response.fromStream(await request.send());
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       print(data);
       Get.back();

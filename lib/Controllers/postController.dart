@@ -53,6 +53,14 @@ class viewPostController extends GetxController {
       final List<post> data;
       final token =sharedPreferences!.getString('access_token');
       data = await getPostsList(token,page.value);
+      Posts.assignAll(data);
+      // for(int i=0;i<data.length;i++){
+      //   for(int j=0;j<Posts.length;j++){
+      //     if (Posts[j] != data[i]){
+      //       Posts.add(data[i]);
+      //     }
+      //   }
+      // }
       if (Posts != data){
         Posts.addAll(data);
       }

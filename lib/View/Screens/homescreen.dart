@@ -7,12 +7,14 @@ import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:revista/Controllers/postController.dart';
 import 'package:revista/Services/apis/linking.dart';
+import 'package:revista/Services/apis/live_api.dart';
 import 'package:revista/View/Screens/DiscoverScreen.dart';
 import 'package:revista/View/Screens/MessageScreen.dart';
 import 'package:revista/View/Screens/cameraScreen.dart';
 import 'package:revista/View/Screens/createPost.dart';
 import 'package:revista/View/Screens/home.dart';
 import 'package:revista/View/Screens/streamsScreen.dart';
+import 'package:revista/main.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/cupertino.dart';
 import '../../Controllers/ViewPostController.dart';
@@ -25,6 +27,7 @@ class HomeScreen extends StatelessWidget {
     homeController controller = Get.find();
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: NotificationListener<ScrollNotification>(
             onNotification: (value) => controller.onNotification(value),
             child: GetX(
@@ -94,9 +97,62 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: (){
-                            Get.to(()=>MyAppdd(role: true,));
-                          },
+                          onTap: ()async{
+                            Get.back();
+                            Get.defaultDialog(
+                              title: translator.translate('Go Live'),
+                              content: Container(
+                                height: MediaQuery.of(context).size.height/4,
+                                child: Form(
+                                  key: controller.formKey,
+                                  autovalidateMode: AutovalidateMode.always,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        TextFormField(
+                                          controller: controller.textController,
+                                          decoration: InputDecoration(
+                                            label: Text('Title'),
+                                            labelStyle: Theme.of(context).textTheme.bodyText1,
+                                          ),
+                                          validator: (val){
+                                            if(val!.isEmpty){
+                                              return 'This Filed is Required';
+                                            }
+                                          },
+                                          onSaved: (val){
+                                            controller.title=val;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          controller: controller.descController,
+                                          decoration: InputDecoration(
+                                            label: Text('Description'),
+                                            labelStyle: Theme.of(context).textTheme.bodyText1,
+                                          ),
+                                          validator: (val){
+                                            if(val!.isEmpty){
+                                              return 'This Filed is Required';
+                                            }
+                                          },
+                                          onSaved: (val){
+                                            controller.decsription=val;
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onConfirm:(){
+                              controller.submit();
+                              Get.back();
+                              },
+                              onCancel: (){
+                                Get.back();
+                              }
+                            );
+                            },
                           splashFactory: NoSplash.splashFactory,
                           child: Column(
                             children: [

@@ -46,14 +46,14 @@ class CommentController extends GetxController{
   final content = text;
   final token = sharedPreferences!.getString(
       'access_token'); // Replace with the user's authentication token
-  if(isComment){
+  if(isComment.value){
   await newComment(id, content, token!);
   text='';
   mentionsKeyComment.currentState!.controller!.text = '';
 
   }else{
   await newReply(id, content, token!);
-  text!.value='';
+  text!='';
   mentionsKeyReply.currentState!.controller!.text = '';
   }
 

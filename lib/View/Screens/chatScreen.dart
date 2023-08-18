@@ -107,112 +107,104 @@ class ChatScreen extends StatelessWidget {
               if (controller.messages.value.isEmpty) {
                 return Container();
               } else {
-                return SmartRefresher(
-                  controller: controller.refreshController,
-                   onRefresh: controller.onRefresh,
-                  enablePullUp: false,
-                  enablePullDown: true,
-                  header: ClassicHeader(refreshingIcon: CupertinoActivityIndicator(),idleText: '',completeText: '',completeIcon: Container(),idleIcon: Container(),releaseText: '',releaseIcon: Container(),refreshingText: '',completeDuration: Duration(milliseconds: 0)),
-                  child: ListView.builder(
-                    controller: controller.scrollController,
-                    shrinkWrap: true,
-                    itemCount: controller.loading.value? controller.messages.length +1:controller.messages.length,
-                    itemBuilder: (context, index) {
-                      var isMe = controller.messages[index].authorId ==
-                          sharedPreferences!.getInt('access_id')
-                          ? true
-                          : false;
-                      return AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 500),
-                        child: SlideAnimation(
-                          horizontalOffset: !isMe ? 50 : -50,
-                          child: Dismissible(
-                            // behavior: HitTestBehavior.opaque,
-                            key: UniqueKey(),
-                            direction: DismissDirection.horizontal,
-                            movementDuration: Duration(milliseconds: 500),
-                            onDismissed: (dir) {},
-                            confirmDismiss: (direction) async {
-                              FocusScope.of(context).requestFocus(focusNode);
-                              if (direction == DismissDirection.startToEnd) {
-                                controller.replied.value = true;
-                                controller.id.value = index;
-                              }
-                            },
-                            background: Container(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "reply",
-                                    style:
-                                    Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ],
-                              ),
+                return ListView.builder(
+                  controller: controller.scrollController,
+                  shrinkWrap: true,
+                  itemCount: controller.loading.value? controller.messages.length +1:controller.messages.length,
+                  itemBuilder: (context, index) {
+                    var isMe = controller.messages[index].authorId ==
+                        sharedPreferences!.getInt('access_id')
+                        ? true
+                        : false;
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 500),
+                      child: SlideAnimation(
+                        horizontalOffset: !isMe ? 50 : -50,
+                        child: Dismissible(
+                          // behavior: HitTestBehavior.opaque,
+                          key: UniqueKey(),
+                          direction: DismissDirection.horizontal,
+                          movementDuration: Duration(milliseconds: 500),
+                          onDismissed: (dir) {},
+                          confirmDismiss: (direction) async {
+                            FocusScope.of(context).requestFocus(focusNode);
+                            if (direction == DismissDirection.startToEnd) {
+                              controller.replied.value = true;
+                              controller.id.value = index;
+                            }
+                          },
+                          background: Container(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "reply",
+                                  style:
+                                  Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
                             ),
-                            secondaryBackground: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(Icons.arrow_circle_left_outlined),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    DateFormat.jm().format(DateTime.parse(
-                                        controller.messages[index].createdAt!)),
-                                    style:
-                                    Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ],
-                              ),
+                          ),
+                          secondaryBackground: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Icon(Icons.arrow_circle_left_outlined),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  DateFormat.jm().format(DateTime.parse(
+                                      controller.messages[index].createdAt!)),
+                                  style:
+                                  Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
                             ),
-                            child: AutoScrollTag(
+                          ),
+                          child: AutoScrollTag(
+                            key: ValueKey(index),
+                            index: index,
+                            controller: controller.scrollController,
+                            child: MessageBubble(
                               key: ValueKey(index),
-                              index: index,
-                              controller: controller.scrollController,
-                              child: MessageBubble(
-                                key: ValueKey(index),
-                                id: controller.messages[index].id,
-                                message: controller.messages[index].text,
-                                userName: '',
-                                userImage: isMe ? '' : controller.imageUrl.value,
-                                urlImage: controller.messages[index].image,
-                                isMe: isMe,
-                                TimeSent: controller.messages[index].createdAt,
-                                urlVoice: controller.messages[index].voiceRecord,
-                                isTyping: false,
-                                selected: false.obs,
-                                reaction: controller.messages[index].reaction == 1
-                                    ? Reaction.like.obs
-                                    : controller.messages[index].reaction == 2
-                                    ? Reaction.love.obs
-                                    : controller.messages[index].reaction == 4
-                                    ? Reaction.wow.obs
-                                    : controller.messages[index]
-                                    .reaction ==
-                                    3
-                                    ? Reaction.lol.obs
-                                    : controller.messages[index]
-                                    .reaction ==
-                                    5
-                                    ? Reaction.sad.obs
-                                    : controller.messages[index]
-                                    .reaction ==
-                                    6
-                                    ? Reaction.angry.obs
-                                    : Reaction.none.obs,
-                                replyId: controller.messages[index].reply_id,
-                                isSending: false.obs,
-                              ),
+                              id: controller.messages[index].id,
+                              message: controller.messages[index].text,
+                              userName: '',
+                              userImage: isMe ? '' : controller.imageUrl.value,
+                              urlImage: controller.messages[index].image,
+                              isMe: isMe,
+                              TimeSent: controller.messages[index].createdAt,
+                              urlVoice: controller.messages[index].voiceRecord,
+                              isTyping: false,
+                              selected: false.obs,
+                              reaction: controller.messages[index].reaction == 1
+                                  ? Reaction.like.obs
+                                  : controller.messages[index].reaction == 2
+                                  ? Reaction.love.obs
+                                  : controller.messages[index].reaction == 4
+                                  ? Reaction.wow.obs
+                                  : controller.messages[index]
+                                  .reaction ==
+                                  3
+                                  ? Reaction.lol.obs
+                                  : controller.messages[index]
+                                  .reaction ==
+                                  5
+                                  ? Reaction.sad.obs
+                                  : controller.messages[index]
+                                  .reaction ==
+                                  6
+                                  ? Reaction.angry.obs
+                                  : Reaction.none.obs,
+                              replyId: controller.messages[index].reply_id,
+                              isSending: false.obs,
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-
+                      ),
+                    );
+                  },
                 );
               }
             }),
@@ -478,17 +470,6 @@ class ChatScreen extends StatelessWidget {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                Container(
-                                                                    padding:
-                                                                    const EdgeInsets
-                                                                        .all(10),
-                                                                    child: Text(
-                                                                      "Gallery",
-                                                                      style: Theme.of(
-                                                                          context)
-                                                                          .textTheme
-                                                                          .headline1,
-                                                                    )),
                                                                 Expanded(
                                                                   child: Scaffold(
                                                                     body:

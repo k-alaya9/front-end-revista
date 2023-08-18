@@ -23,6 +23,7 @@ class EditPostController extends GetxController{
   var userName=''.obs;
   var Name=''.obs;
   var isVisible=false.obs;
+  var image=false.obs;
   late PickedFile imageFile;
   var PostImage=''.obs;
   PanelController panelController=PanelController();
@@ -50,6 +51,7 @@ class EditPostController extends GetxController{
     Get.back();
   }
   deletePhoto(){
+    image.value=true;
     PostImage.value='';
     fileImage.value = File('');
   }
@@ -146,7 +148,11 @@ class EditPostController extends GetxController{
         var token=await getAccessToken();
         var id=sharedPreferences!.getInt('access_id');
         var Postid=Get.arguments['editPostId'];
-        await editPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:fileImage.value,token: token,postId: Postid);
+        if(!image.value)
+          await editPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:fileImage.value,token: token,postId: Postid);
+       else
+          await editPost(id: id,topics:selecteditems,text:  PostTextField.text,link: UrlTextField.text,image:null,token: token,postId: Postid);
+
       }
       catch(e){
         print(e);

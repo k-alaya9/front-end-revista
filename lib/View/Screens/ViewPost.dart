@@ -59,6 +59,7 @@ class ViewPost extends StatelessWidget {
                 child:SingleChildScrollView(
                   controller: controller.scrollController,
                   child: Container(
+                    padding: EdgeInsets.only(bottom: 60),
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: [
@@ -125,10 +126,7 @@ class ViewPost extends StatelessWidget {
                             ),
                           ),
                         ),
-                        //newComment
-                        Align(
-                            alignment: Alignment.bottomCenter,
-                            child: comment_Screen(id: controller.id.value,isComment: true)),
+
                       ],
                     ),
                   ),
@@ -136,6 +134,12 @@ class ViewPost extends StatelessWidget {
             ),
           ),
         ),
+
+          floatingActionButton: Container(
+            width: MediaQuery.of(context).size.width,
+            color: Theme.of(context).backgroundColor,
+            child:     comment_Screen(id: controller.id.value,isComment: false.obs),),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

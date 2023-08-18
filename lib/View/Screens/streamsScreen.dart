@@ -1,110 +1,15 @@
-// import 'dart:convert';
-//
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-// import 'package:localize_and_translate/localize_and_translate.dart';
-// import 'package:web_socket_channel/io.dart';
-//
-// import '../../Services/apis/linking.dart';
-// import '../../main.dart';
-//
-// class Streams extends StatefulWidget {
-//    Streams({Key? key}) : super(key: key);
-//
-//   @override
-//   State<Streams> createState() => _StreamsState();
-// }
-//
-// class _StreamsState extends State<Streams> {
-//   late IOWebSocketChannel channel;
-//    bool _isConnected = false;
-//
-//    void connect(BuildContext context) async {
-//      var token = sharedPreferences!.getInt('access_id');
-//      channel = IOWebSocketChannel.connect(
-//          Uri.parse('ws://$ip/ws/live/74/'),
-//          headers: {'Authorization': token});
-//      setState(() {
-//        _isConnected = true;
-//      });
-//    }
-//
-//    void disconnect() {
-//
-//      setState(() {
-//        _isConnected = false;
-//      });
-//    }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title:  Text(translator.translate("Live Video")),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(20.0),
-//         child: Center(
-//           child: Column(
-//             children: [
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   ElevatedButton(
-//                     onPressed: () => connect(context),
-//                     child:  Text(translator.translate("Connect")),
-//                   ),
-//                   ElevatedButton(
-//                     onPressed: disconnect,
-//                     child:  Text(translator.translate("Disconnect")),
-//                   ),
-//                 ],
-//               ),
-//               const SizedBox(
-//                 height: 50.0,
-//               ),
-//               _isConnected
-//                   ? StreamBuilder(
-//                 stream:channel.stream,
-//                 builder: (context, snapshot) {
-//                   if (!snapshot.hasData) {
-//                     return const CircularProgressIndicator();
-//                   }
-//
-//                   if (snapshot.connectionState == ConnectionState.done) {
-//                     return  Center(
-//                       child: Text(translator.translate("Connection Closed !")),
-//                     );
-//                   }
-//                   //? Working for single frames/**/
-//                   // Decode the base64 encoded JSON data to bytes
-//                   final frameData = jsonDecode(snapshot.data)['frame_data']['content'];
-//                   var data=jsonDecode(frameData);
-//                   print(data);
-//                   final decodedData = base64Decode(data);
-//                   return Image.memory(
-//                   decodedData,
-//                     gaplessPlayback: true,
-//                     excludeFromSemantics: true,
-//                   );
-//                 },
-//               )
-//                   :  Text(translator.translate("Initiate Connection"))
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:revista/Services/apis/live_api.dart';
+import 'package:revista/main.dart';
 
 const appId = "500f54f570b943f1a9a16f992323e073";
 const token = "<-- Insert Token -->";
-const channel = "hahaha";
+var channel = Get.arguments['channel'];
 
 
 class MyAppdd extends StatefulWidget {
@@ -119,11 +24,20 @@ class _MyAppState extends State<MyAppdd> {
   int? _remoteUid;
   bool _localUserJoined = false;
   late RtcEngine _engine;
+  var frontCamera=true;
 
   @override
   void initState() {
     super.initState();
     initAgora();
+  }
+  @override
+  void dispose(){
+    delete();
+    super.dispose();
+  }
+  void delete()async{
+    await _engine.leaveChannel();
   }
 
   Future<void> initAgora() async {
@@ -169,12 +83,12 @@ class _MyAppState extends State<MyAppdd> {
     }
     else{
       await _engine.setClientRole(role: ClientRoleType.clientRoleAudience);
+      await _engine.enableVideo();
+      await _engine.startPreview();
     }
-
-
     await _engine.joinChannel(
       token: '',
-      channelId: channel,
+      channelId: channel.toString(),
       uid: 0,
       options: const ChannelMediaOptions(),
     );
@@ -185,26 +99,52 @@ class _MyAppState extends State<MyAppdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agora Video Call'),
+        elevation: 0,
+        leading: IconButton(onPressed: ()async{
+          if(widget.role){
+            var token=sharedPreferences!.getString('access_token');
+            await deleteLive(token, channel);
+            await _engine.leaveChannel();
+          }else{
+            await _engine.leaveChannel();
+          }
+          Get.back();
+        }, icon: Icon(Icons.close)),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        title:  widget.role? IconButton(onPressed: ()async{
+          setState(() {
+            frontCamera=!frontCamera;
+          });
+          if(frontCamera) {
+            await _engine.enableMultiCamera(enabled: true, config: CameraCapturerConfiguration(cameraDirection: CameraDirection.cameraFront));
+          }else{
+            await _engine.enableMultiCamera(enabled: true, config: CameraCapturerConfiguration(cameraDirection: CameraDirection.cameraRear));
+
+          }
+        }, icon: Icon(Icons.cameraswitch)):Container(),
+        actions: [
+          IconButton(onPressed: ()async{
+            widget.role? await _engine.disableAudio():await _engine.muteLocalAudioStream(true);
+          }, icon: Icon(Icons.mic_off))
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
          !widget.role? Center(
             child: _remoteVideo(),
-          ):Center(
-            child: _localUserJoined
-                ? AgoraVideoView(
+          ):
+
+         Center(
+            child: channel!=null?AgoraVideoView(
               controller: VideoViewController(
                 rtcEngine: _engine,
                 canvas: const VideoCanvas(uid: 0),
+                useAndroidSurfaceView: true
               ),
-            )
-                : const CircularProgressIndicator(),
-          ),
-          if(widget.role)
-            Align(
-              alignment: Alignment.bottomCenter,
-                child: toolbar()),
+            ):CupertinoActivityIndicator()
+          )
         ],
       ),
     );
@@ -217,25 +157,12 @@ class _MyAppState extends State<MyAppdd> {
         controller: VideoViewController.remote(
           rtcEngine: _engine,
           canvas: VideoCanvas(uid: _remoteUid),
-          connection: const RtcConnection(channelId: channel),
+          connection:  RtcConnection(channelId: channel.toString()),
         ),
       );
     } else {
-      return const Text(
-        'Please wait for remote user to join',
-        textAlign: TextAlign.center,
-      );
+      return const CupertinoActivityIndicator();
     }
   }
-  
-  
-  Widget toolbar(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ElevatedButton(onPressed: ()async{await _engine.leaveChannel();}, child: Text('End Stream')),
-        ElevatedButton(onPressed: ()async{await _engine.disableAudio();}, child: Text('Mute Myself'))
-      ],
-    );
-  }
+
 }
