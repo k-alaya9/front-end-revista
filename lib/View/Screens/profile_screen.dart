@@ -328,37 +328,37 @@ class ProfileScreen extends StatelessWidget {
                                                               : Theme.of(context).accentColor)),
                                             ),
                                           ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                border: !controller
-                                                        .postView.value
-                                                    ? Border(
-                                                        bottom: BorderSide(
-                                                            width: 4,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor))
-                                                    : null),
-                                            child: TextButton(
-                                              style: ButtonStyle(
-                                                  splashFactory:
-                                                      NoSplash.splashFactory),
-                                              onPressed: () => controller
-                                                  .switchViewSavedPosts(),
-                                              child: Text(translator.translate("Saved"),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline1!
-                                                      .copyWith(
-                                                          color: !controller
-                                                                  .postView
-                                                                  .value
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .primaryColor
-                                                              : Theme.of(context).accentColor)),
-                                            ),
-                                          ),
+                                          // Container(
+                                          //   decoration: BoxDecoration(
+                                          //       border: !controller
+                                          //               .postView.value
+                                          //           ? Border(
+                                          //               bottom: BorderSide(
+                                          //                   width: 4,
+                                          //                   color: Theme.of(
+                                          //                           context)
+                                          //                       .primaryColor))
+                                          //           : null),
+                                          //   child: TextButton(
+                                          //     style: ButtonStyle(
+                                          //         splashFactory:
+                                          //             NoSplash.splashFactory),
+                                          //     onPressed: () => controller
+                                          //         .switchViewSavedPosts(),
+                                          //     child: Text(translator.translate("Saved"),
+                                          //         style: Theme.of(context)
+                                          //             .textTheme
+                                          //             .headline1!
+                                          //             .copyWith(
+                                          //                 color: !controller
+                                          //                         .postView
+                                          //                         .value
+                                          //                     ? Theme.of(
+                                          //                             context)
+                                          //                         .primaryColor
+                                          //                     : Theme.of(context).accentColor)),
+                                          //   ),
+                                          // ),
                                           Row(
                                             children: [
                                               Container(
@@ -376,22 +376,22 @@ class ProfileScreen extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
-                                              Container(
-                                                child: IconButton(
-                                                  onPressed: () => controller
-                                                      .switchViewHorizontal(),
-                                                  icon: Icon(
-                                                    Icons
-                                                        .horizontal_split_outlined,
-                                                    color: !controller
-                                                            .View.value
-                                                        ? Theme.of(context)
-                                                            .primaryColor
-                                                        :Theme.of(context).accentColor,
-                                                    size: 25,
-                                                  ),
-                                                ),
-                                              ),
+                                              // Container(
+                                              //   child: IconButton(
+                                              //     onPressed: () => controller
+                                              //         .switchViewHorizontal(),
+                                              //     icon: Icon(
+                                              //       Icons
+                                              //           .horizontal_split_outlined,
+                                              //       color: !controller
+                                              //               .View.value
+                                              //           ? Theme.of(context)
+                                              //               .primaryColor
+                                              //           :Theme.of(context).accentColor,
+                                              //       size: 25,
+                                              //     ),
+                                              //   ),
+                                              // ),
                                             ],
                                           )
                                         ],

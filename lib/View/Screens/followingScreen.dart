@@ -39,10 +39,10 @@ class FollowingScreen extends StatelessWidget {
               placeholder: translator.translate("Search here..."),
             ): Text(translator.translate("Followings"),style: Theme.of(context).textTheme.headline1,),
           ),),
-        trailing: Material(
-            color: Theme.of(context).backgroundColor,
-            child: IconButton(
-                onPressed: controller.switchSearch, icon: Icon(Icons.search))),
+        // trailing: Material(
+        //     color: Theme.of(context).backgroundColor,
+        //     child: IconButton(
+        //         onPressed: controller.switchSearch, icon: Icon(Icons.search))),
       ),
       body: FutureBuilder(
           future: controller.fetchData(),

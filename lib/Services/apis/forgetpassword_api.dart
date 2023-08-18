@@ -61,13 +61,19 @@ checkCode(int code,) async {
 }
 resetPasswordController resetController=Get.find();
 resetPasswordApi(int id, String password)async{
+  var map={
+    'id':id,
+    'password':password,
+  };
+  
     try{
       print("$id\n$password");
       resetController.onLoading(true);
-      final response=await http.post(Uri.parse('http://$ip/auth/reset-password/'),body: {
-        'id':id,
-        'password':password,
-      });
+      final response=await http.post(Uri.parse('http://$ip/auth/reset-password/'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body:jsonEncode(map) );
       if(response.statusCode==200){
         final data=jsonDecode(response.body);
         print(data);

@@ -13,9 +13,14 @@ class resetPasswordController extends GetxController{
   RxBool onLoading = false.obs;
   String confirmPassword='';
   String newPassword='';
+  var id=0.obs;
   final formKey=GlobalKey<FormState>();
 
-
+@override
+  void onInit() {
+  id.value=Get.arguments['resetId'];
+    super.onInit();
+  }
   void switchVisibility() {
     visibility.value=!visibility.value;
     update();
@@ -29,8 +34,7 @@ class resetPasswordController extends GetxController{
     if(isValid){
       formKey.currentState!.save();
       try{
-        forgetPasswordController controller=Get.find();
-        resetPasswordApi(controller.id,newPassword);
+        resetPasswordApi(id.value,newPassword);
       } catch (e) {
         showSnackBar(e);
       }

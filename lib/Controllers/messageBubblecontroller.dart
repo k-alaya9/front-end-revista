@@ -236,7 +236,7 @@ class messageBubbleController extends GetxController {
                         InkWell(
                             onTap: () {
                                onCloseOverlay();
-                               showShare();
+                               showShare(id);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -341,9 +341,12 @@ class messageBubbleController extends GetxController {
       useSafeArea: true,
     );
   }
-  send(){
+  send(id)async{
+    final token=sharedPreferences!.getString('access_token');
+    for(int i=0;i<selectedMessages.length;i++){
+      await forward(token,id, selectedMessages[i]);
+    }
     selectedMessages.clear();
-    print('hi');
     picked.value=false;
     Get.back();
   }
@@ -353,7 +356,7 @@ class messageBubbleController extends GetxController {
   setId(id){
     this.id=id;
   }
-showShare()async{
+showShare(id)async{
   var token = sharedPreferences!.getString('access_token');
   try {
     final data;
@@ -465,7 +468,7 @@ showShare()async{
                   }),],),
               persistentFooterButtons: [
                 InkWell(
-                  onTap: () => picked.value?send():(){},
+                  onTap: () => picked.value?send(id):(){},
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Obx(

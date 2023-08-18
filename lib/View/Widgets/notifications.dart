@@ -52,6 +52,9 @@ class Notifications extends StatelessWidget {
                 'chat_id':id
               });
               break;
+            default:
+              (){} ;
+              break;
           }
         },
         leading: Container(

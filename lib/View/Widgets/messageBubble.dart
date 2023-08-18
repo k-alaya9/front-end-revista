@@ -12,11 +12,12 @@ import 'package:lottie/lottie.dart';
 import 'package:revista/main.dart';
 import '../../Controllers/chatController.dart';
 import '../../Controllers/messageBubblecontroller.dart';
+import '../Screens/ViewPost.dart';
 
 class MessageBubble extends StatelessWidget {
   final ValueKey? key;
   final id;
-  final  message;
+  String?  message;
   final replyId;
   final  userName;
   final  userImage;
@@ -283,29 +284,29 @@ class MessageBubble extends StatelessWidget {
                                                 BorderRadius.circular(25),
                                           ),
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              controller.formatTime(
-                                                  controller.position),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(color: Colors.white),
-                                            ),
-                                            Text(
-                                              controller.formatTime(
-                                                  controller.duration -
-                                                      controller.position),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(color: Colors.white),
-                                            ),
-                                          ],
-                                        )
+                                        // Row(
+                                        //   mainAxisAlignment:
+                                        //       MainAxisAlignment.spaceBetween,
+                                        //   children: [
+                                        //     Text(
+                                        //       controller.formatTime(
+                                        //           controller.position),
+                                        //       style: Theme.of(context)
+                                        //           .textTheme
+                                        //           .bodyText1!
+                                        //           .copyWith(color: Colors.white),
+                                        //     ),
+                                        //     Text(
+                                        //       controller.formatTime(
+                                        //           controller.duration -
+                                        //               controller.position),
+                                        //       style: Theme.of(context)
+                                        //           .textTheme
+                                        //           .bodyText1!
+                                        //           .copyWith(color: Colors.white),
+                                        //     ),
+                                        //   ],
+                                        // )
                                       ]),
                                     ),
                                   //image message
@@ -326,7 +327,7 @@ class MessageBubble extends StatelessWidget {
                                     ),
                                   //text message
                                   if (message != null)
-                                    Text(
+                                    !message!.isURL?Text(
                                       message!,
                                       style: TextStyle(
                                           color: !isMe
@@ -334,7 +335,19 @@ class MessageBubble extends StatelessWidget {
                                               : Colors.white),
                                       textAlign:
                                           !isMe ? TextAlign.end : TextAlign.start,
-                                    ),
+                                    ):TextButton(onPressed: (){
+                                      Uri uri = Uri.parse(message!);
+                                      List<String> pathSegments = uri.pathSegments;
+                                      String numberBeforeLast = pathSegments[pathSegments.length - 2];
+                                      Get.to(ViewPost(), arguments: {'postId': int.parse(numberBeforeLast)});
+                                    }, child: Text(
+                                      message!,
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                          color: Colors.blue),
+                                      textAlign:
+                                      !isMe ? TextAlign.end : TextAlign.start,
+                                    )),
                                   //is typing or not
                                   isTyping&&!isMe?Center(child: JumpingDots(
                                     color: Theme.of(context).backgroundColor,

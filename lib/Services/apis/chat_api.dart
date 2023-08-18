@@ -45,3 +45,28 @@ getChats(token)async{
     print(e);
   }
 }
+
+forward(token,id,chatid)async{
+  var map={
+    'message_id':id,
+    'new_chat_id':chatid,
+  };
+  try{
+    final response=await http.post(Uri.parse('http://$ip/chat/forward/'),
+        headers: {
+          'Authorization': 'Token $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(map)
+    );
+    if(response.statusCode==201){
+      var data=jsonDecode(response.body);
+      print(data);
+    }else{
+      var data=jsonDecode(response.body);
+      print(data);
+    }
+  }catch(e){
+    print(e);
+  }
+}

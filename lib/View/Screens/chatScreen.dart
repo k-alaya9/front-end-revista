@@ -64,16 +64,17 @@ class ChatScreen extends StatelessWidget {
                   Text(controller.username.value),
                     SizedBox(height: 20,),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        createContainer(icon: Icons.call,text: "Voice Call",func: (){print('call');}),
-                        createContainer(icon: Icons.video_call_rounded,text: "Video Call",func: (){print('video');}),
                         createContainer(icon: Icons.report_problem_outlined,text: "Report",func: (){ Get.defaultDialog(
                           content: Report(type: "chat",id: controller.profileId.value),
                           title: "Report",
                           contentPadding: EdgeInsets.zero,
                         );}),
-                        createContainer(icon: Icons.person,text: "Profile",func: (){Get.toNamed('/visitProfile',arguments: {
+                        createContainer(icon: Icons.person,text: "Profile",func: (){
+                          print(controller.profileId);
+
+                          Get.toNamed('/visitProfile',arguments: {
                           'id': controller.profileId.value,
                         });}),
                       ],
@@ -622,6 +623,7 @@ class ChatScreen extends StatelessWidget {
                                         SizedBox(
                                           height: 5,
                                         ),
+                                        if(controller.messages[controller.id.value].text!=null)
                                         Text(
                                           controller.messages[controller.id.value].text!,
                                           textAlign: TextAlign.start,
@@ -629,6 +631,22 @@ class ChatScreen extends StatelessWidget {
                                               .textTheme
                                               .bodyText1,
                                         ),
+                                        if(controller.messages[controller.id.value].voiceRecord!=null)
+                                          Text(
+                                           'Voice',
+                                            textAlign: TextAlign.start,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        if(controller.messages[controller.id.value].image!=null)
+                                          Text(
+                                            'Image',
+                                            textAlign: TextAlign.start,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                       ],
                                     ),
                                   ),

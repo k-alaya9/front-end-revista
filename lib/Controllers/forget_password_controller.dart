@@ -79,7 +79,9 @@ class forgetPasswordController extends GetxController {
                               if (isValid) {
                                 codeKey.currentState!.save();
                                 await checkCode(code);
-                                Get.offAllNamed('/resetpass');
+                                Get.offAllNamed('/resetpass',arguments: {
+                                  'resetId':id
+                                });
                               }
                             } catch (e) {
                               showSnackBar(e);

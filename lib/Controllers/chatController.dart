@@ -51,11 +51,12 @@ class ChatController extends GetxController  {
   var chatId;
   var stream;
   late IOWebSocketChannel  channel;
+
+  var x=Get.put(visitProfileController());
+  visitProfileController visitcontroller=Get.find();
   @override
   void onInit()async {
 
-    Get.put(visitProfileController());
-    visitProfileController visitcontroller=Get.find();
 
     var chatId=Get.arguments['chat_id'];
 

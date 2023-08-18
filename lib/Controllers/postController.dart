@@ -116,9 +116,14 @@ class viewPostController extends GetxController {
     }
   }
 
-  send(){
+  send(id)async{
+    final token=sharedPreferences!.getString('access_token');
+    for(int i=0;i<selectedChats.length;i++){
+      await sharePost(token,id, selectedChats[i]);
+    }
     selectedChats.clear();
     picked.value=selectedChats.isNotEmpty;
+    Get.back();
   }
 
 

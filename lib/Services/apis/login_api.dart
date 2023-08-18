@@ -83,7 +83,7 @@ Future<void> loginGoogle(String username, String email,String imageurl) async {
       await saveTokens(accessToken);// Save the tokens to shared preferences
       await saveid(accessid);
       final list=await getYourTopic(accessToken);
-      if(list==null){
+      if(list.isEmpty){
         sharedPreferences!.setBool('topicsSelected',false);
         Get.offAllNamed('/topic');
       }

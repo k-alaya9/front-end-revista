@@ -74,10 +74,15 @@ class Post extends StatelessWidget {
       child: Column(children: [
         InkWell(
           onTap: () {
-            print(authorId);
-            Get.toNamed('/visitProfile', arguments: {
+            final id=sharedPreferences!.getString('access_id');
+            if(id!=authorId) {
+              Get.toNamed('/visitProfile', arguments: {
               'id': authorId,
             });
+            }
+            else{
+              Get.toNamed('/Profile');
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -367,10 +372,12 @@ class Post extends StatelessWidget {
                                         child: ListTile(
                                           onTap: () {
                                             selected.value = !selected.value;
-                                            if(selected.value)
-                                            controller.selectedChats.add(controller.chats[index].id);
-                                            if(!selected.value)
+                                            if(selected.value) {
+                                              controller.selectedChats.add(controller.chats[index].id);
+                                            }
+                                            if(!selected.value) {
                                               controller.selectedChats.remove(controller.chats[index].id);
+                                            }
                                             print(controller.picked.value);
                                             controller.picked.value=controller.selectedChats.isNotEmpty;
                                           },
@@ -439,7 +446,7 @@ class Post extends StatelessWidget {
                                           duration: Duration(milliseconds: 500),
                                           child: controller.picked.value
                                               ? InkWell(
-                                            onTap: () => controller.send(),
+                                            onTap: () => controller.send(this.id),
                                             child: Align(
                                               alignment: Alignment.bottomCenter,
                                               child: Container(

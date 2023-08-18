@@ -337,3 +337,30 @@ jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
   }
   return request;
 }
+
+sharePost(token,postId,chatId)async{
+  var map={
+    'chat_id':chatId,
+    'post_id':postId,
+    'post_url':"http://$ip/posts/post/$postId/"
+  };
+  print(map);
+  try{
+    final response=await http.post(Uri.parse('http://$ip/chat/share-post/'),
+      headers: {
+        'Authorization': 'Token $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(map)
+    );
+    if(response.statusCode==201){
+      var data=jsonDecode(response.body);
+      print(data);
+    }else{
+      var data=jsonDecode(response.body);
+      print(data);
+    }
+  }catch(e){
+    print(e);
+  }
+}

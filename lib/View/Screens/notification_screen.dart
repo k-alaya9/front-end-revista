@@ -24,8 +24,6 @@ class notification_screen extends StatelessWidget {
     notificationsController controller = Get.put(notificationsController());
     WidgetsBinding.instance.addPostFrameCallback((_){
       controller.notifiction_number.value=0;
-      // Add Your Code here.
-
     });
 
     return Scaffold(
@@ -35,17 +33,17 @@ class notification_screen extends StatelessWidget {
         appBar: CupertinoNavigationBar(
           padding: EdgeInsetsDirectional.zero,
           border: null,
-          // leading: Material(
-          //     color: Theme
-          //         .of(context)
-          //         .backgroundColor,
-          //     child: IconButton(
-          //         onPressed: () {
-          //           Get.back();
-          //         },
-          //         icon: Icon(Icons.arrow_back_ios),
-          //         splashRadius: 1)),
-          middle: Text(translator.translate("Notifications  "),
+          leading: Material(
+              color: Theme
+                  .of(context)
+                  .backgroundColor,
+              child: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: Icon(Icons.arrow_back_ios),
+                  splashRadius: 1)),
+          middle: Text(translator.translate("Notifications"),
               style:
               Theme
                   .of(context)

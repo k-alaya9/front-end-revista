@@ -65,31 +65,31 @@ class followerList extends StatelessWidget {
                   .bodyText1!
                   .copyWith(color: Colors.grey, fontSize: 13),
             ),
-            trailing: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  onPressed: () async {
-                    var token = sharedPreferences!.getString('access_token');
-                    Get.put(visitProfileController());
-                    visitProfileController controller = Get.find();
-                    if (followId== 0) {
-                      followId = await followUser(token, id);
-                    } else if (followId.value != 0) {
-                      await unfollowUser(token, followId);
-                      followId = 0;
-                    }
-                  },
-                  style: ButtonStyle(
-                    elevation: MaterialStatePropertyAll(0),
-                    backgroundColor: MaterialStatePropertyAll(
-                        Theme.of(context).primaryColor),
-                  ),
-                  child: GetBuilder(
-                    builder: (followingController controller) => Text(
-                      followId == 0 ? translator.translate("Follow") : translator.translate("Following"),
-                    ),
-                  )),
-            ),
+            // trailing: Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: ElevatedButton(
+            //       onPressed: () async {
+            //         var token = sharedPreferences!.getString('access_token');
+            //         Get.put(visitProfileController());
+            //         visitProfileController controller = Get.find();
+            //         if (followId== 0) {
+            //           followId = await followUser(token, id);
+            //         } else if (followId.value != 0) {
+            //           await unfollowUser(token, followId);
+            //           followId = 0;
+            //         }
+            //       },
+            //       style: ButtonStyle(
+            //         elevation: MaterialStatePropertyAll(0),
+            //         backgroundColor: MaterialStatePropertyAll(
+            //             Theme.of(context).primaryColor),
+            //       ),
+            //       child: GetBuilder(
+            //         builder: (followingController controller) => Text(
+            //           followId == 0 ? translator.translate("Follow") : translator.translate("Following"),
+            //         ),
+            //       )),
+            // ),
           ),
         ),
       ],

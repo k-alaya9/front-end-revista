@@ -8,6 +8,7 @@ import 'package:revista/Models/block.dart';
 
 import '../../View/Screens/settings.dart';
 import 'linking.dart';
+import 'login_api.dart';
 changePassword(String url, Map<String, dynamic> data, String token) async {
   var headers = {
     'Content-Type': 'application/json',
@@ -169,7 +170,7 @@ getMyBlockList(token)async{
 }
 deactiveAccount(token,)async{
   try {
-    var response = await http.put(
+    var response = await http.patch(
       Uri.parse('http://$ip/auth/deactivate-account/'),
       headers: {
         'Content-Type': 'application/json',
@@ -177,6 +178,7 @@ deactiveAccount(token,)async{
       } ,
     );
     if(response.statusCode==200){
+     await deleteTokens();
       Get.offAllNamed('/login');
     }
     else{

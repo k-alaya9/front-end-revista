@@ -21,6 +21,7 @@ class visiterProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     visitProfileController controller = Get.find();
+    controller.fetchData();
     return SafeArea(
       child: Scaffold(
         appBar: CupertinoNavigationBar(
@@ -318,20 +319,20 @@ class visiterProfileScreen extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            Container(
-                                              child: IconButton(
-                                                onPressed: () => controller
-                                                    .switchViewHorizontal(),
-                                                icon: Icon(
-                                                  Icons.horizontal_split_outlined,
-                                                  color: !controller.View.value
-                                                      ? Theme.of(context)
-                                                      .primaryColor
-                                                      : Theme.of(context).accentColor,
-                                                  size: 25,
-                                                ),
-                                              ),
-                                            ),
+                                            // Container(
+                                            //   child: IconButton(
+                                            //     onPressed: () => controller
+                                            //         .switchViewHorizontal(),
+                                            //     icon: Icon(
+                                            //       Icons.horizontal_split_outlined,
+                                            //       color: !controller.View.value
+                                            //           ? Theme.of(context)
+                                            //           .primaryColor
+                                            //           : Theme.of(context).accentColor,
+                                            //       size: 25,
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ],
                                         )
                                       ],

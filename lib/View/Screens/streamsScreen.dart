@@ -9,7 +9,7 @@ import 'package:revista/main.dart';
 
 const appId = "500f54f570b943f1a9a16f992323e073";
 const token = "<-- Insert Token -->";
-var channel = Get.arguments['channel'];
+var channel ;
 
 
 class MyAppdd extends StatefulWidget {
@@ -23,12 +23,13 @@ class MyAppdd extends StatefulWidget {
 class _MyAppState extends State<MyAppdd> {
   int? _remoteUid;
   bool _localUserJoined = false;
-  late RtcEngine _engine;
+   RtcEngine? _engine;
   var frontCamera=true;
 
   @override
   void initState() {
     super.initState();
+    channel= Get.arguments['channel'];
     initAgora();
   }
   @override
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyAppdd> {
     super.dispose();
   }
   void delete()async{
-    await _engine.leaveChannel();
+    await _engine!.leaveChannel();
   }
 
   Future<void> initAgora() async {
@@ -46,12 +47,12 @@ class _MyAppState extends State<MyAppdd> {
 
     //create the engine
     _engine = createAgoraRtcEngine();
-    await _engine.initialize(const RtcEngineContext(
+    await _engine!.initialize(const RtcEngineContext(
       appId: appId,
       channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
     ));
 
-    _engine.registerEventHandler(
+    _engine!.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
           debugPrint("local user ${connection.localUid} joined");
@@ -77,16 +78,16 @@ class _MyAppState extends State<MyAppdd> {
       ),
     );
     if(widget.role) {
-      await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await _engine.enableVideo();
-    await _engine.startPreview();
+      await _engine!.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    await _engine!.enableVideo();
+    await _engine!.startPreview();
     }
     else{
-      await _engine.setClientRole(role: ClientRoleType.clientRoleAudience);
-      await _engine.enableVideo();
-      await _engine.startPreview();
+      await _engine!.setClientRole(role: ClientRoleType.clientRoleAudience);
+      await _engine!.enableVideo();
+      await _engine!.startPreview();
     }
-    await _engine.joinChannel(
+    await _engine!.joinChannel(
       token: '',
       channelId: channel.toString(),
       uid: 0,
@@ -104,9 +105,9 @@ class _MyAppState extends State<MyAppdd> {
           if(widget.role){
             var token=sharedPreferences!.getString('access_token');
             await deleteLive(token, channel);
-            await _engine.leaveChannel();
+            await _engine!.leaveChannel();
           }else{
-            await _engine.leaveChannel();
+            await _engine!.leaveChannel();
           }
           Get.back();
         }, icon: Icon(Icons.close)),
@@ -117,20 +118,20 @@ class _MyAppState extends State<MyAppdd> {
             frontCamera=!frontCamera;
           });
           if(frontCamera) {
-            await _engine.enableMultiCamera(enabled: true, config: CameraCapturerConfiguration(cameraDirection: CameraDirection.cameraFront));
+            await _engine!.enableMultiCamera(enabled: true, config: CameraCapturerConfiguration(cameraDirection: CameraDirection.cameraFront));
           }else{
-            await _engine.enableMultiCamera(enabled: true, config: CameraCapturerConfiguration(cameraDirection: CameraDirection.cameraRear));
+            await _engine!.enableMultiCamera(enabled: true, config: CameraCapturerConfiguration(cameraDirection: CameraDirection.cameraRear));
 
           }
         }, icon: Icon(Icons.cameraswitch)):Container(),
         actions: [
           IconButton(onPressed: ()async{
-            widget.role? await _engine.disableAudio():await _engine.muteLocalAudioStream(true);
+            widget.role? await _engine!.disableAudio():await _engine!.muteLocalAudioStream(true);
           }, icon: Icon(Icons.mic_off))
         ],
       ),
       extendBodyBehindAppBar: true,
-      body: Stack(
+      body: _engine==null?Center(child: CupertinoActivityIndicator(),):Stack(
         children: [
          !widget.role? Center(
             child: _remoteVideo(),
@@ -139,7 +140,7 @@ class _MyAppState extends State<MyAppdd> {
          Center(
             child: channel!=null?AgoraVideoView(
               controller: VideoViewController(
-                rtcEngine: _engine,
+                rtcEngine: _engine!,
                 canvas: const VideoCanvas(uid: 0),
                 useAndroidSurfaceView: true
               ),
@@ -155,7 +156,7 @@ class _MyAppState extends State<MyAppdd> {
     if (_remoteUid != null) {
       return AgoraVideoView(
         controller: VideoViewController.remote(
-          rtcEngine: _engine,
+          rtcEngine: _engine!,
           canvas: VideoCanvas(uid: _remoteUid),
           connection:  RtcConnection(channelId: channel.toString()),
         ),

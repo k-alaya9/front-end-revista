@@ -30,30 +30,33 @@ class MessageScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).backgroundColor,
         middle: Text(translator.translate("Chat"),style: Theme.of(context).textTheme.headline1),
        trailing: GetX(builder: (notificationsController ncontroller)=>
-           InkWell(
-             splashFactory: NoSplash.splashFactory,
-             onTap: (){
-               Get.toNamed('/notification');
-             },
-             child: Stack(
-               clipBehavior: Clip.none,
-               children: [
-                 Icon(Icons.notifications_active_outlined),
-                 if(ncontroller.notifiction_number.value!=0)
-                   Positioned(
-                     right: -8,
-                     top: -7,
-                     child: Container(
-                       width: 20,
-                       height: 20,
-                       decoration: BoxDecoration(
-                         shape: BoxShape.circle,
-                         color: Theme.of(context).primaryColor,
+           Padding(
+             padding: EdgeInsets.only(right: 10),
+             child: InkWell(
+               splashFactory: NoSplash.splashFactory,
+               onTap: (){
+                 Get.toNamed('/notification');
+               },
+               child: Stack(
+                 clipBehavior: Clip.none,
+                 children: [
+                   Icon(Icons.notifications_active_outlined),
+                   if(ncontroller.notifiction_number.value!=0)
+                     Positioned(
+                       right: -8,
+                       top: -7,
+                       child: Container(
+                         width: 20,
+                         height: 20,
+                         decoration: BoxDecoration(
+                           shape: BoxShape.circle,
+                           color: Theme.of(context).primaryColor,
+                         ),
+                         child: Center(child: Text((ncontroller.notifiction_number.value).toInt().toString(),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)),),
                        ),
-                       child: Center(child: Text((ncontroller.notifiction_number.value).toInt().toString(),style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)),),
                      ),
-                   ),
-               ],
+                 ],
+               ),
              ),
            ),
 

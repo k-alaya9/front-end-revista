@@ -31,8 +31,8 @@ class visitProfileController extends GetxController {
   final ListKey = GlobalKey();
 
   @override
-  void onInit() async {
-    await fetchData();
+  void onInit()  {
+     fetchData();
     super.onInit();
   }
 

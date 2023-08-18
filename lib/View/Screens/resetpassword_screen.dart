@@ -6,7 +6,7 @@ import '../../Controllers/resetpassword_ controller.dart';
 
 class resetPassword extends StatelessWidget {
   resetPassword({Key? key}) : super(key: key);
-  var _controller=Get.put(resetPasswordController(),permanent: true);
+  var _controller=Get.put(resetPasswordController());
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,7 @@ class resetPassword extends StatelessWidget {
                   if (val.isEmpty) {
                     return translator.translate(" this fields is required");
                   }
-                  if(val!=controller.newPassword){
+                  if(val!=controller.newPasswordController.text){
                     return translator.translate("this password does not match");
                   }
                 },
